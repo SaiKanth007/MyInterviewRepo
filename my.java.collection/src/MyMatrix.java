@@ -1,6 +1,11 @@
+package src;
+
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+
+import src.Utilities.JavaUtility;
 
 public class MyMatrix {
 
@@ -76,7 +81,7 @@ public class MyMatrix {
 
 	// https://www.geeksforgeeks.org/print-unique-rows/
 	public static void printUniqueRowsInMatrix(int[][] matrix, int length, int breadth) {
-		Map<String, Integer> map = new HashMap<>();
+		Map<String, Integer> map = new HashMap();
 		String temp = "";
 		for (int i = 0; i < length; i++) {
 			temp = "";

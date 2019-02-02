@@ -1,5 +1,9 @@
+package src.Others;
+
 import java.util.Comparator;
 import java.util.PriorityQueue;
+
+import src.Utilities.JavaUtility;
 
 public class MedianFromRunningStreamOfIntegers {
 
@@ -15,8 +19,8 @@ public class MedianFromRunningStreamOfIntegers {
 		heapSort(array);
 		// System.out.println(Arrays.toString(array));
 
-		PriorityQueue<Integer> minQueue = new PriorityQueue<>();
-		PriorityQueue<Integer> maxQueue = new PriorityQueue<>(new Comparator<Integer>() {
+		PriorityQueue<Integer> minQueue = new PriorityQueue();
+		PriorityQueue<Integer> maxQueue = new PriorityQueue(new Comparator<Integer>() {
 			@Override
 			public int compare(Integer o1, Integer o2) {
 				// TODO Auto-generated method stub

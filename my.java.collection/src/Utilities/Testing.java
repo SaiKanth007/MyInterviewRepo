@@ -1,3 +1,4 @@
+package src.Utilities;
 
 /* IMPORTANT: Multiple classes and nested static classes are supported */
 
@@ -15,7 +16,7 @@ class Testing {
 		Parent parent = new Parent();
 		Child child = new Child();
 		Parent parent2 = new Child();
-		
+
 		String input = "011100";
 		System.out.println(findLengthOfLargestSubString(input, input.length()));
 		System.out.println(findLengthOfLargestSubString2(input, input.length()));
@@ -24,7 +25,7 @@ class Testing {
 		int[] coffArray = { 2, 1, -1, 3, 5 };
 		System.out.println(findNumberOfPairs(array, coffArray));
 
-		List<String> strings = new ArrayList<>();
+		List<String> strings = new ArrayList();
 		strings.add("sai");
 		strings.add("kanth");
 		Iterator<String> it = strings.iterator();
@@ -137,11 +138,9 @@ class Testing {
 }
 
 class Parent {
-	
+
 }
 
 class Child extends Parent {
-	
+
 }
-
-

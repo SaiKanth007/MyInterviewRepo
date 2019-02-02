@@ -1,3 +1,6 @@
+package src.Threads;
+
+
 /**
  * https://www.journaldev.com/1079/multithreading-in-java http://tutorials.jenkov.com/java-concurrency/index.html
  *

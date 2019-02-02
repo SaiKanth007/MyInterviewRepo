@@ -1,10 +1,12 @@
+package src;
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import utils.MyJavaUtils;
+import src.Utilities.*;
 
 public class MyString {
 
@@ -12,7 +14,7 @@ public class MyString {
         final String stringForPermutations = "abb";
 
         // printCombinations(stringForPermutations);
-        final Set<String> stringStore = new HashSet<>();
+        final Set<String> stringStore = new HashSet();
         // printPermutations(stringForPermutations.toCharArray(), 0, stringForPermutations.length() - 1);
         printPermutationsWithoutDuplicates(stringForPermutations.toCharArray(), 0, stringForPermutations.length()
                         - 1, stringStore);
@@ -71,9 +73,9 @@ public class MyString {
             System.out.println(String.valueOf(inputArray));
         }
         for (int i = lowerIndex; i <= upperIndex; i++) {
-            MyJavaUtils.swap(inputArray, lowerIndex, i);
+            JavaUtility.swap(inputArray, lowerIndex, i);
             printPermutations(inputArray, lowerIndex + 1, upperIndex);
-            MyJavaUtils.swap(inputArray, lowerIndex, i);
+            JavaUtility.swap(inputArray, lowerIndex, i);
         }
 
     }
@@ -87,9 +89,9 @@ public class MyString {
             stringStore.add(String.valueOf(inputArray));
         }
         for (int i = lowerIndex; i <= upperIndex; i++) {
-            MyJavaUtils.swap(inputArray, lowerIndex, i);
+            JavaUtility.swap(inputArray, lowerIndex, i);
             printPermutationsWithoutDuplicates(inputArray, lowerIndex + 1, upperIndex, stringStore);
-            MyJavaUtils.swap(inputArray, lowerIndex, i);
+            JavaUtility.swap(inputArray, lowerIndex, i);
 
         }
 
@@ -98,11 +100,11 @@ public class MyString {
     public static boolean checkIfDistincCharacterCountIsPrime(String input) {
         final char[] inputArray = input.toCharArray();
         final int length = inputArray.length;
-        final Set<String> set = new HashSet<>();
+        final Set<String> set = new HashSet();
         for (int i = 0; i < length; i++) {
             set.add(String.valueOf(inputArray[i]));
         }
-        return Others.checkIfPrime(set.size());
+        return CommonProblems.checkIfPrime(set.size());
     }
 
     // https://www.geeksforgeeks.org/minimum-amount-of-lamps-needed-to-be-installed/
@@ -158,7 +160,7 @@ public class MyString {
         int i = length - 2;
         for (; i >= 0; i--) {
             if (inputArray[i] < inputArray[i + 1]) {
-                MyJavaUtils.swap(inputArray, i, length - 1);
+                JavaUtility.swap(inputArray, i, length - 1);
                 break;
             }
         }

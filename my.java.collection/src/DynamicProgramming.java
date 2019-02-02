@@ -1,6 +1,11 @@
+package src;
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import src.Utilities.JavaUtility;
 
 public class DynamicProgramming {
 
@@ -14,7 +19,7 @@ public class DynamicProgramming {
 		System.out.println("There exists a subset with the given sum :"
 				+ checkSubSetWithGivenSumUsingMatrix(subSetWithSum, 100, subSetWithSum.length - 1));
 		int[] printSubSetWithSum = { 4, 8, 1, 4, 2, 1 };
-		List<Integer> result = new ArrayList<>();
+		List<Integer> result = new ArrayList();
 		System.out.println("There exists a subset with the given sum :"
 				+ checkSubSetWithGivenSum(printSubSetWithSum, 10, printSubSetWithSum.length - 1, result));
 		System.out.println("The length of the result set is: " + result.size());
@@ -113,7 +118,7 @@ public class DynamicProgramming {
 		if (index < 0 && sum != 0)
 			return false;
 		if (inputArray[index] > sum) {
-			List<Integer> tempList = new ArrayList<>();
+			List<Integer> tempList = new ArrayList();
 			if (checkSubSetWithGivenSum(inputArray, sum, index - 1, tempList)) {
 
 				result.addAll(tempList);
@@ -122,8 +127,8 @@ public class DynamicProgramming {
 			return false;
 
 		} else {
-			List<Integer> firstList = new ArrayList<>();
-			List<Integer> secondList = new ArrayList<>();
+			List<Integer> firstList = new ArrayList();
+			List<Integer> secondList = new ArrayList();
 			Boolean firstResult = checkSubSetWithGivenSum(inputArray, sum - inputArray[index], index - 1, firstList);
 			Boolean secondResult = checkSubSetWithGivenSum(inputArray, sum, index - 1, secondList);
 

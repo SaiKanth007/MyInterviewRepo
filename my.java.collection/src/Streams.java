@@ -1,3 +1,6 @@
+package src;
+
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -5,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import utils.Employee;
+import src.Utilities.Employee;
 
 // https://stackify.com/streams-guide-java-8/
 // https://github.com/Baeldung/stackify/blob/master/core-java/src/test/java/com/stackify/stream/EmployeeTest.java

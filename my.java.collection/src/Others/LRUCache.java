@@ -1,3 +1,6 @@
+package src.Others;
+
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -11,7 +14,7 @@ public class LRUCache {
 
 	public LRUCache(int length) {
 		this.length = length;
-		nodeMap = new HashMap<>();
+		nodeMap = new HashMap();
 		myList = new MyLinkedList();
 	}
 

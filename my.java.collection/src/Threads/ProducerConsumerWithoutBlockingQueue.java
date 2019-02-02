@@ -1,5 +1,7 @@
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
+package src.Threads;
+
+import java.util.LinkedList;
+import java.util.Queue;
 
 /*
  * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2019. // This software
@@ -9,14 +11,14 @@ import java.util.concurrent.BlockingQueue;
 
 /**
  */
-public class ProducerConsumerProblem {
+public class ProducerConsumerWithoutBlockingQueue {
 
     public static void main(String[] args) throws InterruptedException {
 
-        final BlockingQueue queue = new ArrayBlockingQueue<String>(10);
+        final Queue queue = new LinkedList<String>();
 
-        final Thread producer = new Thread(new Producer(queue));
-        final Thread consumer = new Thread(new Consumer(queue));
+        final Thread producer = new Thread(new ProducerTwo(queue));
+        final Thread consumer = new Thread(new ConsumerTwo(queue));
         producer.start();
         consumer.start();
         producer.join();
@@ -29,14 +31,14 @@ public class ProducerConsumerProblem {
 }
 
 
-class Producer implements Runnable {
+class ProducerTwo implements Runnable {
 
-    BlockingQueue queue = new ArrayBlockingQueue<String>(10);
+    Queue queue = new LinkedList<String>();
 
     /**
      * @param queue2
      */
-    public Producer(BlockingQueue queue) {
+    public ProducerTwo(Queue queue) {
         // TODO Auto-generated constructor stub
         this.queue = queue;
     }
@@ -44,21 +46,21 @@ class Producer implements Runnable {
     /**
      *
      */
-    public Producer() {
+    public ProducerTwo() {
         // TODO Auto-generated constructor stub
     }
 
     /**
      * @return the queue
      */
-    public BlockingQueue getQueue() {
+    public Queue getQueue() {
         return queue;
     }
 
     /**
      * @param queue the queue to set
      */
-    public void setQueue(BlockingQueue queue) {
+    public void setQueue(Queue queue) {
         this.queue = queue;
     }
 
@@ -69,8 +71,11 @@ class Producer implements Runnable {
         for (int i = 0; i < 4; i++) {
             System.out.println("Putting Data inside the queue");
             System.out.println("current size of the queue is" + this.queue.size());
-            this.queue.add(this.queue.size() + 1);
+            this.queue.add(i * 21);
             try {
+                synchronized (queue) {
+                    queue.notify();
+                }
                 Thread.sleep(1000);
             } catch (final InterruptedException e) {
                 // TODO Auto-generated catch block
@@ -83,14 +88,14 @@ class Producer implements Runnable {
 }
 
 
-class Consumer implements Runnable {
+class ConsumerTwo implements Runnable {
 
-    BlockingQueue queue = new ArrayBlockingQueue<String>(10);
+    Queue queue = new LinkedList<String>();
 
     /**
      * @param queue2
      */
-    public Consumer(BlockingQueue queue) {
+    public ConsumerTwo(Queue queue) {
         // TODO Auto-generated constructor stub
         this.queue = queue;
     }
@@ -98,7 +103,7 @@ class Consumer implements Runnable {
     /**
      *
      */
-    public Consumer() {
+    public ConsumerTwo() {
         // TODO Auto-generated constructor stub
     }
 
@@ -108,7 +113,22 @@ class Consumer implements Runnable {
         for (int i = 0; i < 4; i++) {
             System.out.println("Reading from the queue");
             System.out.println("From Consumer: current size of the queue is" + this.queue.size());
-            System.out.println(queue.poll());
+
+            try {
+                if (this.queue.size() <= 0) {
+                    synchronized (this) {
+                        System.out.println("Queue is empty, waiting for producer to put the data");
+                        wait();
+                        System.out.println("Consumer got notifiied");
+                    }
+                }
+
+            } catch (final InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+            System.out.println("Reading data" + queue.poll());
             try {
                 Thread.sleep(1000);
             } catch (final InterruptedException e) {

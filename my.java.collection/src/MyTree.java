@@ -1,3 +1,6 @@
+package src;
+
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -143,7 +146,7 @@ public class MyTree {
 		System.out.println("Sum of all nodes along longest path in a tree are:"
 				+ findSumAlongLongestPath(tree1.root, new Storage()));
 
-		List<Node> nodes = new ArrayList<>();
+		List<Node> nodes = new ArrayList();
 		printPathToNode(tree1.root, tree1.root.left.right.right, nodes);
 		System.out.println("The path from the root to the given node is:");
 		nodes.stream().map(Node::getData).forEach(System.out::println);
@@ -354,7 +357,7 @@ public class MyTree {
 	// check for iterative traversal -
 	// https://www.geeksforgeeks.org/iterative-diagonal-traversal-binary-tree/
 	public static void printDiagonalTraversalOfTree(Node root) {
-		Map<Integer, LinkedList<Node>> map = new HashMap<>();
+		Map<Integer, LinkedList<Node>> map = new HashMap();
 		printDiagonalTraversalOfTreeUtil(root, map, 0);
 		System.out.println("Diagonal View of the tree is");
 		for (Map.Entry<Integer, LinkedList<Node>> entry : map.entrySet()) {
@@ -653,8 +656,8 @@ public class MyTree {
 			nodes.add(node);
 			return true;
 		} else {
-			List<Node> subRightNodes = new ArrayList<>();
-			List<Node> subLeftNodes = new ArrayList<>();
+			List<Node> subRightNodes = new ArrayList();
+			List<Node> subLeftNodes = new ArrayList();
 			if (printPathToNode(root.left, node, subLeftNodes)) {
 				nodes.add(root);
 				nodes.addAll(subLeftNodes);

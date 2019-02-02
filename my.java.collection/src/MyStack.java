@@ -1,3 +1,5 @@
+package src;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -91,7 +93,7 @@ public class MyStack {
 		else {
 			char[] inputArray = input.toCharArray();
 			int length = input.length();
-			Stack stack = new Stack<>();
+			Stack stack = new Stack();
 			for (int index = 0; index < length; index++) {
 
 				char currentElement = inputArray[index];
@@ -157,7 +159,7 @@ public class MyStack {
 			this.value = value;
 		}
 
-		@Override
+	
 		public int compareTo(IndexValue o) {
 			// TODO Auto-generated method stub
 			return o.getIndex() > this.index ? 1 : -1;
@@ -170,7 +172,7 @@ public class MyStack {
 	// [4, 5, 2, 25},
 	// working
 	public static void printNextGreatestElement(int[] input) {
-		Stack<IndexValue> stack = new Stack<>();
+		Stack<IndexValue> stack = new Stack();
 		List<IndexValue> result = new ArrayList<IndexValue>();
 
 		// creating the comparator on the fly using Java8,
@@ -282,7 +284,7 @@ public class MyStack {
 	// https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
 	// working
 	public static String infixToPostFix(String exp) {
-		Map<String, Integer> priorityMap = new HashMap<>();
+		Map<String, Integer> priorityMap = new HashMap();
 		priorityMap.put("-", 1);
 		priorityMap.put("+", 2);
 		priorityMap.put("*", 3);
@@ -374,7 +376,7 @@ public class MyStack {
 	// yet to check
 	// https://www.geeksforgeeks.org/expression-evaluation/
 	public static Integer evaluateInfixExpression(String input) {
-		Map<String, Integer> priorityMap = new HashMap<>();
+		Map<String, Integer> priorityMap = new HashMap();
 		priorityMap.put("-", 1);
 		priorityMap.put("+", 2);
 		priorityMap.put("*", 3);

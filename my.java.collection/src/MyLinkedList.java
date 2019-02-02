@@ -1,3 +1,6 @@
+package src;
+
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -362,7 +365,7 @@ public class MyLinkedList {
     // https://www.geeksforgeeks.org/remove-duplicates-from-a-sorted-linked-list/
     public void removeDuplicatesFromLinkedList() {
         Node start = this.head;
-        final Map<Integer, Node> llMap = new LinkedHashMap<>();
+        final Map<Integer, Node> llMap = new LinkedHashMap();
         while (start != null) {
             if (llMap.get(start.data) == null) {
                 llMap.put(start.data, start);
@@ -505,7 +508,7 @@ public class MyLinkedList {
         }
         Node temp1 = head1;
         Node temp2 = head2;
-        final List<Node> list = new ArrayList<>();
+        final List<Node> list = new ArrayList();
         while (temp1 != null) {
             list.add(temp1);
             temp1 = temp1.next;

@@ -1,3 +1,6 @@
+package src;
+
+
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -14,7 +17,7 @@ public class MyGraph {
 
 	public void addEdge(int startVertex, int endVertex) {
 		if (Objects.isNull(adjacencyMatrix[startVertex])) {
-			adjacencyMatrix[startVertex] = new LinkedList<>();
+			adjacencyMatrix[startVertex] = new LinkedList();
 		}
 		adjacencyMatrix[startVertex].add(endVertex);
 
@@ -22,11 +25,11 @@ public class MyGraph {
 
 	public void addTwoSideEdge(int startVertex, int endVertex) {
 		if (Objects.isNull(adjacencyMatrix[startVertex])) {
-			adjacencyMatrix[startVertex] = new LinkedList<>();
+			adjacencyMatrix[startVertex] = new LinkedList();
 		}
 		adjacencyMatrix[startVertex].add(endVertex);
 		if (Objects.isNull(adjacencyMatrix[endVertex])) {
-			adjacencyMatrix[endVertex] = new LinkedList<>();
+			adjacencyMatrix[endVertex] = new LinkedList();
 		}
 		adjacencyMatrix[endVertex].add(startVertex);
 	}
@@ -67,7 +70,7 @@ public class MyGraph {
 			boolean[] visited = new boolean[this.noOfVertices];
 			visited[startVertex] = true;
 			LinkedList<Integer> adjList;
-			Queue<Integer> vertices = new LinkedList<>();
+			Queue<Integer> vertices = new LinkedList();
 			vertices.add(startVertex);
 			System.out.println("Vertex is: " + startVertex);
 

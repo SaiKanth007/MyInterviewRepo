@@ -1,3 +1,6 @@
+package src;
+
+import src.Utilities.JavaUtility;
 
 public class MySudoku {
 

@@ -1,7 +1,9 @@
+package src;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import utils.MyJavaUtils;
+import src.Utilities.JavaUtility;;
 
 /*
  * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2018. // This software
@@ -16,37 +18,37 @@ public class MyArray {
     public static void main(String[] args) {
 
         final int[] arrayForBubbleSort = {4, 5, 3, 2, -1, -1};
-        MyJavaUtils.printBeforeSorting(arrayForBubbleSort);
+        JavaUtility.printBeforeSorting(arrayForBubbleSort);
         bubbleSort(arrayForBubbleSort);
-        MyJavaUtils.printAfterSorting(arrayForBubbleSort, "bubble");
+        JavaUtility.printAfterSorting(arrayForBubbleSort, "bubble");
 
         final int[] arrayForSelectionSort = {-1, 0, -2, 5, 6, -1};
-        MyJavaUtils.printBeforeSorting(arrayForSelectionSort);
+        JavaUtility.printBeforeSorting(arrayForSelectionSort);
         selectionSort(arrayForSelectionSort);
-        MyJavaUtils.printAfterSorting(arrayForSelectionSort, "selection");
+        JavaUtility.printAfterSorting(arrayForSelectionSort, "selection");
 
         final int[] arrayForInsertionSort = {-1, 0, -2, 5, 6, -1};
-        MyJavaUtils.printBeforeSorting(arrayForInsertionSort);
+        JavaUtility.printBeforeSorting(arrayForInsertionSort);
         insertionSort(arrayForInsertionSort);
-        MyJavaUtils.printAfterSorting(arrayForInsertionSort, "insertion");
+        JavaUtility.printAfterSorting(arrayForInsertionSort, "insertion");
 
         final int[] arrayForMergeSort = {0, 5, -1, -2, 6, -1};
-        MyJavaUtils.printBeforeSorting(arrayForMergeSort);
+        JavaUtility.printBeforeSorting(arrayForMergeSort);
         mergeSort(arrayForMergeSort, 0, arrayForMergeSort.length - 1);
-        MyJavaUtils.printAfterSorting(arrayForMergeSort, "merge");
+        JavaUtility.printAfterSorting(arrayForMergeSort, "merge");
 
         final int[] arrayForHeapSort = {12, 11, 10, 5, 13, 7};
-        MyJavaUtils.printBeforeSorting(arrayForHeapSort);
+        JavaUtility.printBeforeSorting(arrayForHeapSort);
         heapSort(arrayForHeapSort);
-        MyJavaUtils.printAfterSorting(arrayForHeapSort, "heap");
+        JavaUtility.printAfterSorting(arrayForHeapSort, "heap");
 
         final int[] arrayForQuickSort = {12, 11, 10, 5, 13, 7};
-        MyJavaUtils.printBeforeSorting(arrayForQuickSort);
+        JavaUtility.printBeforeSorting(arrayForQuickSort);
         quickSort(arrayForQuickSort, 0, arrayForQuickSort.length - 1);
-        MyJavaUtils.printAfterSorting(arrayForQuickSort, "quick");
+        JavaUtility.printAfterSorting(arrayForQuickSort, "quick");
 
         final int[] arrayForKthLargestElement = {12, 5, 787, 1, 23};
-        MyJavaUtils.print(arrayForKthLargestElement);
+        JavaUtility.print(arrayForKthLargestElement);
         final int k = 2;
         System.out
             .println("The " + k + "th smallest element is: " + findKthLargestElement(arrayForKthLargestElement, k));
@@ -69,7 +71,7 @@ public class MyArray {
 
         final int[] zeroOneTwoArray = {2, 1, 0, 2, 1, 0, 1, 2, 0, 0, 2, 0, 1, 2};
         sortZerosOnesTwos(zeroOneTwoArray);
-        MyJavaUtils.print(zeroOneTwoArray);
+        JavaUtility.print(zeroOneTwoArray);
 
         final Integer[] maxSumContigiousArray = {12, -3, 4, -1, -2, 1, 5, 33};
         System.out.println("Maximum value of contigious sub arrays is:"
@@ -80,14 +82,14 @@ public class MyArray {
                         + findLargetSumContiguousIncreasingArray(maxSumContigiousIncreasingArray));
 
         final int[] arrayForReverse = {1, 2, 3, 4, 5, 6, 7, 8};
-        MyJavaUtils.reverseArray(arrayForReverse);
-        MyJavaUtils.print(arrayForReverse);
-        MyJavaUtils.reverseArray(arrayForReverse, 2, 6);
-        MyJavaUtils.print(arrayForReverse);
+        JavaUtility.reverseArray(arrayForReverse);
+        JavaUtility.print(arrayForReverse);
+        JavaUtility.reverseArray(arrayForReverse, 2, 6);
+        JavaUtility.print(arrayForReverse);
 
         final int[] arrayForRotate = {1, 2, 3, 4, 5, 6, 7, 8};
         rotateArray(arrayForRotate, 0);
-        MyJavaUtils.print(arrayForRotate);
+        JavaUtility.print(arrayForRotate);
 
         final int[] arrayForRotatedBinarySearch = {30, 40, 50, 10, 20};
         binarySearchInSortedAndRotatedArray(arrayForRotatedBinarySearch, 0, arrayForRotatedBinarySearch.length - 1, 10);
@@ -118,7 +120,7 @@ public class MyArray {
         for (int index = 0; index < length; index++) {
             for (int innerIndex = 0; innerIndex < length - index - 1; innerIndex++) {
                 if (inputArray[innerIndex] > inputArray[innerIndex + 1]) {
-                    MyJavaUtils.swap(inputArray, innerIndex + 1, innerIndex);
+                    JavaUtility.swap(inputArray, innerIndex + 1, innerIndex);
                 }
             }
         }
@@ -129,7 +131,7 @@ public class MyArray {
         for (int index = 0; index < length; index++) {
             for (int innerIndex = index + 1; innerIndex < length; innerIndex++) {
                 if (inputArray[index] > inputArray[innerIndex]) {
-                    MyJavaUtils.swap(inputArray, index, innerIndex);
+                    JavaUtility.swap(inputArray, index, innerIndex);
                 }
             }
         }
@@ -188,10 +190,10 @@ public class MyArray {
         for (int i = lowerIndex; i < upperIndex; i++) {
             if (array[i] < pivot) {
                 k++;
-                MyJavaUtils.swap(array, k, i);
+                JavaUtility.swap(array, k, i);
             }
         }
-        MyJavaUtils.swap(array, k + 1, upperIndex);
+        JavaUtility.swap(array, k + 1, upperIndex);
 
         return k + 1;
     }
@@ -242,7 +244,7 @@ public class MyArray {
         }
 
         for (int i = length - 1; i > 0; i--) {
-            MyJavaUtils.swap(input, 0, i);
+            JavaUtility.swap(input, 0, i);
             heapify(input, 0, i);
         }
     }
@@ -259,7 +261,7 @@ public class MyArray {
 
         }
         if (max != i) {
-            MyJavaUtils.swap(input, i, max);
+            JavaUtility.swap(input, i, max);
             heapify(input, max, length);
         }
     }
@@ -318,7 +320,7 @@ public class MyArray {
 
     // print numbers in words
     public static String convertNumberToWords(Integer number) {
-        final Map<Integer, String> map = MyJavaUtils.NumbersToWordsMap();
+        final Map<Integer, String> map = JavaUtility.NumbersToWordsMap();
         StringBuilder result = new StringBuilder();
         Integer dividend = 0;
         if (number <= 20) {
@@ -327,21 +329,21 @@ public class MyArray {
 
         if (number / 100000 != 0) {
             dividend = number / 100000;
-            result = result.append(MyJavaUtils.NumberToWordsUtil(dividend)).append(" lakhs ");
+            result = result.append(JavaUtility.NumberToWordsUtil(dividend)).append(" lakhs ");
             number = number % 100000;
         }
         if (number / 1000 != 0) {
             dividend = number / 1000;
-            result = result.append(MyJavaUtils.NumberToWordsUtil(dividend)).append(" thousands ");
+            result = result.append(JavaUtility.NumberToWordsUtil(dividend)).append(" thousands ");
             number = number % 1000;
         }
         if (number / 100 != 0) {
             dividend = number / 100;
-            result = result.append(MyJavaUtils.NumberToWordsUtil(dividend)).append(" hundred and ");
+            result = result.append(JavaUtility.NumberToWordsUtil(dividend)).append(" hundred and ");
             number = number % 100;
         }
         if (number != 0) {
-            result = result.append(MyJavaUtils.NumberToWordsUtil(number));
+            result = result.append(JavaUtility.NumberToWordsUtil(number));
         }
 
         return result.toString();
@@ -396,11 +398,11 @@ public class MyArray {
         for (int i = 0; i < length && i <= j; i++) {
             switch (array[i]) {
                 case 0:
-                    MyJavaUtils.swap(array, i, k);
+                    JavaUtility.swap(array, i, k);
                     k++;
                     break;
                 case 2:
-                    MyJavaUtils.swap(array, i, j);
+                    JavaUtility.swap(array, i, j);
                     i--;
                     j--;
                     break;
@@ -411,9 +413,9 @@ public class MyArray {
     }
 
     public static void rotateArray(int[] array, int noOfRotations) {
-        MyJavaUtils.reverseArray(array, 0, noOfRotations - 1);
-        MyJavaUtils.reverseArray(array, noOfRotations, array.length - 1);
-        MyJavaUtils.reverseArray(array, 0, array.length - 1);
+        JavaUtility.reverseArray(array, 0, noOfRotations - 1);
+        JavaUtility.reverseArray(array, noOfRotations, array.length - 1);
+        JavaUtility.reverseArray(array, 0, array.length - 1);
 
     }
 
@@ -513,7 +515,7 @@ public class MyArray {
     static int maxLen(int arr[]) {
         // Creates an empty hashMap hM
         final int n = arr.length;
-        final HashMap<Integer, Integer> hM = new HashMap<>();
+        final HashMap<Integer, Integer> hM = new HashMap();
 
         int sum = 0; // Initialize sum of elements
         int max_len = 0; // Initialize result
