@@ -4,7 +4,7 @@
  * Unauthorized use and distribution are prohibited. //***********************************************
  */
 
-package sockets;
+package src.sockets;
 
 import java.io.DataInputStream;
 import java.io.IOException;

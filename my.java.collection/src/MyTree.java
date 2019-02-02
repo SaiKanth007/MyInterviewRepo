@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -167,6 +166,18 @@ public class MyTree {
 		int[] findAllPossibleBinaryTreesFromInorder = { 4, 5, 7 };
 		System.out.println("The number of possible trees are: " + findAllPossibleBinaryTreesFromInorder(
 				findAllPossibleBinaryTreesFromInorder, 0, findAllPossibleBinaryTreesFromInorder.length - 1));
+
+		int[] inorderArray = { 4, 3, 1, 8, 2, 6, 9, 5, 7 };
+		int[] preOrderArray = { 2, 3, 4, 8, 1, 5, 6, 9, 7 };
+		Node result = getTreeFromPreorderAndInOrder(preOrderArray, inorderArray, 0, preOrderArray.length - 1, 0,
+				inorderArray.length - 1);
+		postorderTraversal(result);
+
+		System.out.println();
+		int[] postOrderArray = { 4, 1, 8, 3, 9, 6, 7, 5, 2 };
+		Node result2 = getTreeFromPostorderAndInOrder(postOrderArray, inorderArray, 0, postOrderArray.length - 1, 0,
+				inorderArray.length - 1);
+		postorderTraversal(result2);
 
 	}
 
@@ -448,7 +459,7 @@ public class MyTree {
 
 	public static void printPerimeterOfTheTree(Node root) {
 		if (root != null) {
-			// print left view of root.left
+			// print left view of root.left (while doing this, avoid leaf nodes)
 			// print right view root.right
 			// print leaf nodes
 		}
@@ -610,14 +621,7 @@ public class MyTree {
 
 	}
 
-	public static void constructTreeFromInorderAndPreOrder() {
-
-	}
-
-	public static void convertTreeToLinkedList(Node root) {
-
-	}
-
+	//working
 	public static int findSumOfAllNodes(Node root) {
 		if (root == null)
 			return 0;
@@ -702,6 +706,7 @@ public class MyTree {
 
 	}
 
+	//working
 	public static int printDistanceBetweenTwoNodes(Node root, Node node) {
 		Storage distance = new Storage();
 		printDistanceOfGivenNodeFromRoot(root, node, distance);
@@ -775,6 +780,7 @@ public class MyTree {
 		findTriplet(root.right, root, tripletSum);
 	}
 
+	//working
 	public static void printEveryNodeAlongWithItsParent(Node root, Node parent) {
 		if (root == null)
 			return;
@@ -783,6 +789,7 @@ public class MyTree {
 		printEveryNodeAlongWithItsParent(root.right, root);
 	}
 
+	//working
 	public boolean checkIfGivenTreeIsBST(Node root) {
 		if (root != null) {
 			Boolean leftBST = checkIfGivenTreeIsBST(root.left);
@@ -816,15 +823,63 @@ public class MyTree {
 		return 1;
 	}
 
-	public static Node getTreeFromInorderAndPreOrder(int[] preOrder, int inOrder, int pStart, int pEnd, int iStart,
+	// working
+	public static Node getTreeFromPreorderAndInOrder(int[] preOrder, int[] inOrder, int pStart, int pEnd, int iStart,
 			int iEnd) {
+		if (pStart <= pEnd && iStart <= iEnd) {
+
+			int rootElement = preOrder[pStart];
+			Node root = new Node(rootElement);
+			if (pStart == pEnd)
+				return root;
+			int rootInInorderArray = -1;
+			for (int index = iStart; index <= iEnd; index++) {
+				if (inOrder[index] == rootElement) {
+					rootInInorderArray = index;
+					break;
+				}
+			}
+			root.left = getTreeFromPreorderAndInOrder(preOrder, inOrder, pStart + 1,
+					pStart + rootInInorderArray - iStart, iStart, rootInInorderArray - 1);
+			root.right = getTreeFromPreorderAndInOrder(preOrder, inOrder, pStart + rootInInorderArray - iStart + 1,
+					pEnd, rootInInorderArray + 1, iEnd);
+			return root;
+		}
 		return null;
 	}
 
+	// working
+	public static Node getTreeFromPostorderAndInOrder(int[] postOrder, int[] inOrder, int pStart, int pEnd, int iStart,
+			int iEnd) {
+		if (pStart <= pEnd && iStart <= iEnd) {
+
+			int rootElement = postOrder[pEnd];
+			Node root = new Node(rootElement);
+			if (pStart == pEnd)
+				return root;
+			int rootInInorderArray = -1;
+			for (int index = iStart; index <= iEnd; index++) {
+				if (inOrder[index] == rootElement) {
+					rootInInorderArray = index;
+					break;
+				}
+			}
+			root.left = getTreeFromPostorderAndInOrder(postOrder, inOrder, pStart,
+					pStart + rootInInorderArray - iStart - 1, iStart, rootInInorderArray - 1);
+			root.right = getTreeFromPostorderAndInOrder(postOrder, inOrder, pStart + rootInInorderArray - iStart,
+					pEnd - 1, rootInInorderArray + 1, iEnd);
+			return root;
+		}
+		return null;
+	}
+	
+	public static void convertTreeToLinkedList(Node root) {
+
+	}
+
 	/***
-	 * Bottom view of the tree tree to linkedlist tree construction from preorder,
-	 * inorder two nodes of a BST are swapped, find out the them
-	 * https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+	 * Bottom view of the tree tree to linkedlist two nodes of a BST are swapped,
+	 * find out the them https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 	 */
 
 }
