@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collector;
@@ -456,6 +457,12 @@ public class MyTree {
 		}
 
 	}
+	
+	public static void printVerticalViewOfTheTree(Node root) {
+		if (root != null) {
+		}
+
+	}
 
 	public static void printPerimeterOfTheTree(Node root) {
 		if (root != null) {
@@ -874,7 +881,7 @@ public class MyTree {
 	}
 	
 	public static void convertTreeToLinkedList(Node root) {
-
+		Scanner  in = new Scanner(System.in);
 	}
 
 	/***

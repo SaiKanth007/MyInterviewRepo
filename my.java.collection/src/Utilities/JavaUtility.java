@@ -3,6 +3,7 @@ package src.Utilities;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class JavaUtility {
 
@@ -149,5 +150,22 @@ enum Values {
 
 	public int getLeveCode() {
 		return levelCode;
+	}
+
+	public static void scannerInput() {
+		Scanner in = new Scanner(System.in);
+		int noOfTestCases = in.nextInt();
+		int arraySize = -1;
+		int[] array;
+		int sum = -1;
+		for (int i = 0; i < noOfTestCases; i++) {
+			arraySize = in.nextInt();
+			array = new int[arraySize];
+			for (int j = 0; j < arraySize; j++) {
+				array[j] = in.nextInt();
+			}
+			sum = in.nextInt();
+			//System.out.println(minCoinProblem(array, sum));
+		}
 	}
 }

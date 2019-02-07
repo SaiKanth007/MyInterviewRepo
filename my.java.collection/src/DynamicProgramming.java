@@ -1,9 +1,10 @@
 package src;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import src.Utilities.JavaUtility;
 
@@ -55,6 +56,9 @@ public class DynamicProgramming {
 		int[] arrayForMinSteps = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
 		System.out.println("Number of steps to reach the end of the array");
 		System.out.println(minNoOfSteps(arrayForMinSteps, 0, arrayForMinSteps.length - 1));
+
+		int[] coinDenominations = { 86, 7, 43, 67, 6 };
+		System.out.println("Number of coins required for the given sum is:" + minCoinProblem(coinDenominations, 8777));
 	}
 
 	// https://www.geeksforgeeks.org/gold-mine-problem/
@@ -243,7 +247,7 @@ public class DynamicProgramming {
 
 	}
 
-	//also think of the matrix solution
+	// also think of the matrix solution
 	public static int minStepsToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
 			boolean[][] visited) {
 		if (i == length - 1 && j == breadth - 1)
@@ -282,18 +286,56 @@ public class DynamicProgramming {
 				actualSum = localSum;
 		}
 		return actualSum;
-
 	}
-	
-	
-	
+
+	// https://practice.geeksforgeeks.org/problems/word-boggle/0
+	public static int noOfWordsFromDictionary(int[][] boggle, String[] words) {
+		return 0;
+	}
+
+	public static int minCoinProblem(int[] coinValues, int sum) {
+		Arrays.sort(coinValues);
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		return minCoinProblem(coinValues, sum, map);
+		// return minCoinProblem(coinValues, coinValues.length - 1, sum);
+	}
+
+	// working
+	public static int minCoinProblem(int[] coinValues, int sum, Map<Integer, Integer> map) {
+
+		if (sum == 0)
+			return 0;
+		Integer localCoins = 0;
+		Integer globalCount = Integer.MAX_VALUE;
+		int length = coinValues.length;
+		for (int i = 0; i < length; i++) {
+			if (sum < coinValues[i]) {
+				continue;
+			} else if (map.containsKey(sum)) {
+				return map.get(sum);
+			} else {
+				localCoins = minCoinProblem(coinValues, sum - coinValues[i], map);
+				if (localCoins < globalCount) {
+					globalCount = localCoins;
+				}
+			}
+		}
+		globalCount = globalCount == Integer.MAX_VALUE ? globalCount : globalCount + 1;
+		map.put(sum, globalCount);
+		return globalCount;
+	}
+
 	/**
 	 * Yet to do: 1.
-	 * https://www.geeksforgeeks.org/minimum-cost-make-two-strings-identical/
-	 * total no of path from top left to bottom right of a matrix
+	 * https://www.geeksforgeeks.org/minimum-cost-make-two-strings-identical/ total
+	 * no of path from top left to bottom right of a matrix
 	 * 
-	 * nimsum problem : 
+	 * nimsum problem :
 	 * https://www.geeksforgeeks.org/combinatorial-game-theory-set-2-game-nim/
-	 * https://www.geeksforgeeks.org/painters-partition-problem-set-2/
+	 * https://www.geeksforgeeks.org/painters-partition-problem-set-2/ longest
+	 * common subsequence -
+	 * https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/ minimum coin
+	 * change problem -
+	 * https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChangingMinimumCoin.java
 	 */
 }
