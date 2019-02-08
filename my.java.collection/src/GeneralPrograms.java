@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -39,11 +40,15 @@ public class GeneralPrograms {
 		store.put(123, 12);
 		store.put(12, 124);
 		store.put(-1, 100);
-		// store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
-		// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->
-		// e1, LinkedHashMap::new));
+		// sort by value using streams
+		store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
 		List<Map.Entry<Integer, Integer>> sets = new ArrayList(store.entrySet());
+
+		// using lamba's for comparions
+		Collections.sort(sets, (o1, o2) -> o1.getValue().compareTo(o2.getValue()));
+
 		Collections.sort(sets, new Comparator<Map.Entry<Integer, Integer>>() {
 
 			@Override
@@ -80,6 +85,8 @@ public class GeneralPrograms {
 		removeDuplicatesFromSortedArray(sortedArrayWithDuplicates);
 		JavaUtility.print(sortedArrayWithDuplicates);
 
+		System.out.println("The value of the given roman no is: " + covertRomansToNumber("MMMDXLIX"));
+		System.out.println("The roman value of the given number is: " + covertNumberToRomans(3549));
 	}
 
 	public static int findGCD(int a, int b) {
@@ -93,6 +100,8 @@ public class GeneralPrograms {
 	}
 
 	// working
+	// does not maintain order, so has to look into that as well
+	// one approach would be to use an extra array
 	public static void groupNegativeBeforePositive(int[] array) {
 		int j = -1;
 		int length = array.length;
@@ -176,42 +185,54 @@ public class GeneralPrograms {
 			if (array[i] != array[i - 1]) {
 				index++;
 				array[index] = array[i];
-
 			}
 		}
 		System.out.println("index is:" + index);
 	}
 
-	// https://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
-	public static void findLengthOfMaxSubArrayWithEqualOnesAndZeros() {
-
-	}
-
-
-
 	public static String covertNumberToRomans(Integer Number) {
-		return "";
+		if (Number == 0 || Number > 3999)
+			return "";
+		String[] thousands = { "", "M", "MM", "MMM" };
+		String[] hundres = { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
+		String tens[] = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XL" };
+		String ones[] = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+		Integer thousandValue = Number / 1000;
+		Integer hundredValue = (Number % 1000) / 100;
+		Integer tensValue = ((Number % 1000) % 100) / 10;
+		Integer oneValue = ((Number % 1000) % 100) % 10;
+		return thousands[thousandValue].concat(hundres[hundredValue]).concat(tens[tensValue]).concat(ones[oneValue]);
 	}
 
+	// working
+	// maximum number that can be formed from roman numbers is 3999
 	public static Integer covertRomansToNumber(String romanNumber) {
 		if (romanNumber == null || romanNumber == " ") {
 			return 0;
 		}
 		final char[] array = romanNumber.toCharArray();
 		final int length = array.length;
-		final Map<String, Integer> romantToNumberMap = JavaUtility.getRomansToNumberMap();
-		if (length == 1) {
-			return romantToNumberMap.get(String.valueOf(array[0]));
-		}
-		Integer sum = romantToNumberMap.get(String.valueOf(array[length - 1]));
-		for (int i = length - 2; i >= 0; i--) {
-			if (romantToNumberMap.get(String.valueOf(array[i])) < romantToNumberMap.get(String.valueOf(array[i + 1]))) {
-				sum = sum - romantToNumberMap.get(String.valueOf(array[i]));
+		final Map<Integer, Integer> romantToNumberMap = JavaUtility.getRomansToNumberMap();
+		Integer prev = romantToNumberMap.get((int) array[length - 1]);
+		Integer current = -1;
+		Integer sum = prev;
+		boolean currentLessThanPrev = false;
+		for (int index = length - 2; index >= 0; index--) {
+			current = romantToNumberMap.get((int) array[index]);
+			if (current > prev) {
+				sum = sum + current;
+				currentLessThanPrev = false;
+			} else if (current < prev) {
+				sum = sum - current;
+				currentLessThanPrev = true;
 			} else {
-				sum = romantToNumberMap.get(String.valueOf(array[i])) + sum;
-
+				if (currentLessThanPrev) {
+					sum = sum - current;
+				} else {
+					sum = sum + current;
+				}
 			}
-
+			prev = current;
 		}
 		return sum;
 
@@ -232,5 +253,6 @@ public class GeneralPrograms {
 
 	/**
 	 * length of maximum sub array with equal ones and zeros
+	 * https://www.geeksforgeeks.org/how-to-print-maximum-number-of-a-using-given-four-keys/
 	 */
 }

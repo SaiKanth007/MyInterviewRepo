@@ -8,39 +8,20 @@ import java.util.Map;
 
 import src.Utilities.JavaUtility;
 
+//yet to learn about the matrix approach of DP
 public class DynamicProgramming {
 
 	public static void main(String[] args) {
 		int[][] goldMine = { { 10, 33, 13, 15 }, { 22, 21, 04, 1 }, { 5, 0, 2, 3 }, { 0, 6, 14, 2 } };
 		System.out
 				.println("The maximum amount of the gold that can be collecetd is: " + goldMineProblem(goldMine, 4, 4));
-		int[] subSetWithSum = { 1, 2, 3, 56, 44 };
-		System.out.println("There exists a subset with the given sum :"
-				+ checkSubSetWithGivenSum(subSetWithSum, 100, subSetWithSum.length - 1));
-		System.out.println("There exists a subset with the given sum :"
-				+ checkSubSetWithGivenSumUsingMatrix(subSetWithSum, 100, subSetWithSum.length - 1));
-		int[] printSubSetWithSum = { 4, 8, 1, 4, 2, 1 };
-		List<Integer> result = new ArrayList();
-		System.out.println("There exists a subset with the given sum :"
-				+ checkSubSetWithGivenSum(printSubSetWithSum, 10, printSubSetWithSum.length - 1, result));
-		System.out.println("The length of the result set is: " + result.size());
-		System.out.println("The values are: ");
-		for (Integer value : result) {
-			System.out.println(value + " ");
-		}
-		System.out.println();
-		int[] longestIncreasingSubSequence = { 3, 2 };
+		int[] longestIncreasingSubSequence = { 2, 5, 3, 7, 11, 8, 10, 13, 6 };
 		System.out.println("The length of the longest increasing sub sequence is:"
 				+ longestIncreasingSubSequence(longestIncreasingSubSequence));
 
 		int[] longestIncreasingOddEvenSubSequence = { 5, 6, 9, 4, 7, 8 };
 		System.out.println("The length of the longest increasing consecutive sub sequence is:"
 				+ longestIncreasingOddEvenSubSequence(longestIncreasingOddEvenSubSequence));
-
-		String longestPalindromicSubSequence = "GEEKSFORGEEKS";
-		System.out
-				.println("The length of longest increasing palindromic subsequence is:" + longestPalindromicSubSequence(
-						longestPalindromicSubSequence.toCharArray(), 0, longestPalindromicSubSequence.length() - 1));
 
 		int[][] minCostMatrix = { { 1, 2, 3 }, { 4, 8, 2 }, { 1, 5, 3 } };
 
@@ -59,6 +40,11 @@ public class DynamicProgramming {
 
 		int[] coinDenominations = { 86, 7, 43, 67, 6 };
 		System.out.println("Number of coins required for the given sum is:" + minCoinProblem(coinDenominations, 8777));
+
+		int[] maxSumOfNonAdjacentElements = { 1, 0, 3, 9, 2 };
+		System.out.println("The max sum of non adjancent elements is: "
+				+ maxSumOfNonAdjacentElements(maxSumOfNonAdjacentElements, maxSumOfNonAdjacentElements.length - 1));
+
 	}
 
 	// https://www.geeksforgeeks.org/gold-mine-problem/
@@ -93,13 +79,29 @@ public class DynamicProgramming {
 
 	}
 
+	// working
+	public static boolean checkSubSetWithGivenSumAndGivenCount(int[] inputArray, int sum, int index, int count) {
+		if (sum == 0) {
+			if (count == 0)
+				return true;
+			return false;
+		}
+		if ((count == 0 || index < 0) && sum != 0)
+			return false;
+
+		if (inputArray[index] > sum)
+			return checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
+		return checkSubSetWithGivenSumAndGivenCount(inputArray, sum - inputArray[index], index - 1, count - 1)
+				|| checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
+
+	}
+
 	// https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/SubsetSum.java
 	public static boolean checkSubSetWithGivenSumUsingMatrix(int[] inputArray, int sum, int index) {
 		boolean sumMatrix[][] = new boolean[inputArray.length + 1][sum + 1];
 		for (int i = 0; i <= inputArray.length; i++) {
 			sumMatrix[i][0] = true;
 		}
-
 		for (int i = 1; i <= inputArray.length; i++) {
 			for (int j = 1; j <= sum; j++) {
 				if (j - inputArray[i - 1] >= 0) {
@@ -108,10 +110,8 @@ public class DynamicProgramming {
 					sumMatrix[i][j] = sumMatrix[i - 1][j];
 				}
 			}
-
 		}
 		return sumMatrix[inputArray.length][index];
-
 	}
 
 	// https://www.geeksforgeeks.org/maximum-size-subset-given-sum/
@@ -124,7 +124,6 @@ public class DynamicProgramming {
 		if (inputArray[index] > sum) {
 			List<Integer> tempList = new ArrayList();
 			if (checkSubSetWithGivenSum(inputArray, sum, index - 1, tempList)) {
-
 				result.addAll(tempList);
 				return true;
 			}
@@ -137,7 +136,7 @@ public class DynamicProgramming {
 			Boolean secondResult = checkSubSetWithGivenSum(inputArray, sum, index - 1, secondList);
 
 			if (firstResult && secondResult) {
-				// uncomment this out if u want minimum numbers to get the required sum
+				// uncomment this out if u do not want minimum numbers to get the required sum
 				if (firstList.size() < secondList.size()) {
 					result.addAll(firstList);
 					if (firstResult && inputArray[index] != 0) {
@@ -158,6 +157,57 @@ public class DynamicProgramming {
 			return firstResult || secondResult;
 		}
 
+	}
+
+	// https://www.geeksforgeeks.org/maximum-size-subset-given-sum/
+	// returns sub set of given size for the given sum
+	public static boolean checkSubSetWithGivenSumWithCount(int[] inputArray, int sum, int index, List<Integer> result,
+			int count) {
+		if (sum == 0) {
+			if (count == 0)
+				return true;
+			return false;
+		}
+		if (count == 0 && sum != 0)
+			return false;
+		if (index < 0 && sum != 0)
+			return false;
+		if (inputArray[index] > sum) {
+			List<Integer> tempList = new ArrayList();
+			if (checkSubSetWithGivenSumWithCount(inputArray, sum, index - 1, tempList, count)) {
+				result.addAll(tempList);
+				return true;
+			}
+			return false;
+
+		} else {
+			List<Integer> firstList = new ArrayList();
+			List<Integer> secondList = new ArrayList();
+			Boolean firstResult = checkSubSetWithGivenSumWithCount(inputArray, sum - inputArray[index], index - 1,
+					firstList, count - 1);
+			Boolean secondResult = checkSubSetWithGivenSumWithCount(inputArray, sum, index - 1, secondList, count);
+
+			if (firstResult && secondResult) {
+				// uncomment this out if u do not want minimum numbers to get the required sum
+				if (firstList.size() < secondList.size()) {
+					result.addAll(firstList);
+					if (firstResult && inputArray[index] != 0) {
+						result.add(inputArray[index]);
+					}
+				} else {
+					result.addAll(secondList);
+				}
+			} else if (firstResult) {
+				result.addAll(firstList);
+				if (firstResult && inputArray[index] != 0) {
+					result.add(inputArray[index]);
+				}
+
+			} else if (secondResult) {
+				result.addAll(secondList);
+			}
+			return firstResult || secondResult;
+		}
 	}
 
 	// https://www.geeksforgeeks.org/puzzle-set-35-2-eggs-and-100-floors/
@@ -217,20 +267,6 @@ public class DynamicProgramming {
 				max = lis[i];
 		}
 		return max;
-	}
-
-	// https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
-	public static int longestPalindromicSubSequence(char[] array, int i, int j) {
-		if (i == j)
-			return 1;
-		else if (array[i] == array[j] && j == i + 1)
-			return 2;
-		else if (array[i] == array[j])
-			return longestPalindromicSubSequence(array, i + 1, j - 1) + 2;
-		else
-			return Math.max(longestPalindromicSubSequence(array, i + 1, j),
-					longestPalindromicSubSequence(array, i, j - 1));
-
 	}
 
 	// https://www.geeksforgeeks.org/min-cost-path-dp-6/
@@ -325,6 +361,51 @@ public class DynamicProgramming {
 		return globalCount;
 	}
 
+	public static int minNoStepsForKnightToReachDestination() {
+		return 0;
+	}
+
+	// http://blog.gainlo.co/index.php/2016/12/02/uber-interview-question-maximum-sum-non-adjacent-elements/
+	public static int maxSumOfNonAdjacentElements(int[] array, int index) {
+		if (index >= 0 && index < array.length) {
+			if (index == 0) {
+				if (array[0] >= 0)
+					return array[0];
+				else
+					return 0;
+			} else {
+				return Math.max(array[index] + maxSumOfNonAdjacentElements(array, index - 2),
+						maxSumOfNonAdjacentElements(array, index - 1));
+			}
+		}
+		return 0;
+	}
+
+	// https://www.geeksforgeeks.org/c-program-for-tower-of-hanoi/
+	// also think of the iterative approach
+	public static void towerOfHanoi(int n, char from, char to, char aux) {
+		if (n == 1)
+			System.out.println("Move disk from: " + from + " to " + to);
+		else {
+			towerOfHanoi(n - 1, from, aux, to);
+			System.out.println("Move disk from: " + from + " to " + to);
+			towerOfHanoi(n - 1, aux, to, from);
+		}
+	}
+
+	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
+	public static void printPermutations() {
+
+	}
+
+	public static void fibonacciNumbers() {
+
+	}
+	
+	public static void knightsProblem() {
+		
+	}
+
 	/**
 	 * Yet to do: 1.
 	 * https://www.geeksforgeeks.org/minimum-cost-make-two-strings-identical/ total
@@ -337,5 +418,6 @@ public class DynamicProgramming {
 	 * https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/ minimum coin
 	 * change problem -
 	 * https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChangingMinimumCoin.java
+	 * https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/
 	 */
 }

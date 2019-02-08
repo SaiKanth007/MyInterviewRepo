@@ -13,6 +13,7 @@ package src.Threads;
 public class ThreadWaitProblem {
 
 	Integer cash = 901;
+	Integer main = null;
 
 	public static void main(String[] args) {
 		final ThreadWaitProblem account = new ThreadWaitProblem();

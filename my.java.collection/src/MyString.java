@@ -1,9 +1,13 @@
 package src;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import src.Utilities.*;
@@ -12,13 +16,17 @@ public class MyString {
 
 	public static void main(String[] args) {
 		final String stringForPermutations = "abb";
+		final String stringForCombinations = "abc";
 
-		// printCombinations(stringForPermutations);
+		System.out.println("The combinations of the given string are:");
+		printCombinations(stringForCombinations);
 		final Set<String> stringStore = new HashSet();
 		// printPermutations(stringForPermutations.toCharArray(), 0,
 		// stringForPermutations.length() - 1);
 		printPermutationsWithoutDuplicates(stringForPermutations.toCharArray(), 0, stringForPermutations.length() - 1,
 				stringStore);
+
+		System.out.println("The distinct permuations of the given string are:");
 		final Iterator<String> iterator = stringStore.iterator();
 		while (iterator.hasNext()) {
 			System.out.println(iterator.next());
@@ -40,16 +48,16 @@ public class MyString {
 		System.out.println("Largest Number from the given array of strings is :");
 		largestNumberFromGivenArrayOfStrings(strings);
 
-		String stringForlongestPalindromicSubString = "forgeeksskeegfor";
-		System.out.println("The longest possible palindromic substring length is: " + longestPalindromicSubStringLength(
-				stringForlongestPalindromicSubString, 0, stringForlongestPalindromicSubString.length() - 1));
-		System.out.println("The longest possible palindromic substring is: " + longestPalindromicSubString(
-				stringForlongestPalindromicSubString, 0, stringForlongestPalindromicSubString.length() - 1));
+		String stringForlexoGraphicallyLargestSubSequence = "geeksforgeeks";
+		System.out.println("Lexographically largest subsequence is:"
+				+ lexoGraphicallyLargestSubSequence(stringForlexoGraphicallyLargestSubSequence));
 
-		String stringForlongestPalindromicSubSequence = "GEEKSFORGEEKS";
-		System.out.println("The longest possible palindromic sub sequence length is: "
-				+ longestPalindromicSubSequenceLength(stringForlongestPalindromicSubSequence, 0,
-						stringForlongestPalindromicSubSequence.length() - 1));
+		System.out.println("Minimum no of splits is:" + printMinimumSplits("111011100110101100101", 0));
+		System.out.println("Print the lexographical order of the array");
+		String[] array = { "33123", "15", "1", "0", "54215", "21", "12" };
+
+		lexoGraphicalOrderOfString(Arrays.asList(array));
+
 	}
 
 	// doesn't scale for large strings
@@ -58,9 +66,9 @@ public class MyString {
 		final int length = inputArray.length;
 		int quotient = 0;
 		int j = 0;
+		// this is used to find which element in the array has to be printed or not
 		int count = 0;
 		StringBuilder resultString = new StringBuilder();
-		;
 		for (int i = 0; i < Math.pow(2.0, length); i++) {
 			j = i;
 			while (j != 0) {
@@ -208,88 +216,103 @@ public class MyString {
 
 	}
 
+	public static String lexoGrphicallyLargestSubString(String input) {
+		return input;
+	}
+
+	// https://www.geeksforgeeks.org/lexicographically-largest-sub-sequence-of-the-given-string/
 	// working
-	// https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
-	public static int longestPalindromicSubStringLength(String input, int l, int h) {
-		if (l <= h) {
-			if (l == h)
-				return 1;
-			if (input.charAt(l) == input.charAt(h) && l + 1 == h)
-				return 2;
-			if (input.charAt(l) == input.charAt(h) && l + 2 == h)
-				return 3;
-			if (input.charAt(l) == input.charAt(h)) {
-				if (l < input.length() - 1 && h > 0 && input.charAt(l + 1) == input.charAt(h - 1)) {
-					return 2 + longestPalindromicSubStringLength(input, l + 1, h - 1);
+	public static String lexoGraphicallyLargestSubSequence(String input) {
+		char[] inputArray = input.toCharArray();
+		int length = inputArray.length;
+		StringBuilder sb = new StringBuilder();
+		sb.append(inputArray[0]);
+		for (int i = 1; i < length; i++) {
+			if (inputArray[i] > sb.charAt(0)) {
+				sb = new StringBuilder();
+			} else if (inputArray[i] > sb.charAt(sb.length() - 1)) {
+				sb.delete(1, sb.length());
+			}
+			sb.append(inputArray[i]);
+		}
+		return sb.toString();
+	}
+
+	/***
+	 * Given a string of 0 and 1, if possible, tell that how many splits would be
+	 * required such that each split part is a number which can be represented as
+	 * power of 5 in binary and tell the least number of splits.
+	 */
+	// working
+	public static int printMinimumSplits(String input, int startIndex) {
+		if (startIndex < input.length()) {
+			Map<String, String> power5BinaryMap = new HashMap<>();
+			for (Integer i = 1; i > 0 && i < Integer.MAX_VALUE; i = i * 5) {
+				power5BinaryMap.put(Integer.toBinaryString(i), "1");
+			}
+			power5BinaryMap.put("01", "1");
+			if (startIndex == input.length() - 1) {
+				if (input.charAt(input.length() - 1) == '1') {
+					return 1;
 				} else {
-					return Math.max(longestPalindromicSubStringLength(input, l + 1, h),
-							longestPalindromicSubStringLength(input, l, h - 1));
+					return 0;
 				}
 			}
-			if (input.charAt(l) != input.charAt(h))
-				return Math.max(longestPalindromicSubStringLength(input, l + 1, h),
-						longestPalindromicSubStringLength(input, l, h - 1));
-		}
-		return 0;
-	}
-
-	// working
-	// https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
-	// also learn about the matrix approach
-	public static int longestPalindromicSubSequenceLength(String input, int l, int h) {
-		if (l <= h) {
-			if (l == h)
-				return 1;
-			if (input.charAt(l) == input.charAt(h) && l + 1 == h)
-				return 2;
-			if (input.charAt(l) == input.charAt(h) && l + 2 == h)
-				return 3;
-			if (input.charAt(l) == input.charAt(h)) {
-				return 2 + longestPalindromicSubSequenceLength(input, l + 1, h - 1);
-			}
-			if (input.charAt(l) != input.charAt(h))
-				return Math.max(longestPalindromicSubSequenceLength(input, l + 1, h),
-						longestPalindromicSubSequenceLength(input, l, h - 1));
-		}
-		return 0;
-	}
-
-	// working
-	// https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
-	public static String longestPalindromicSubString(String input, int l, int h) {
-		if (l <= h) {
-			if (l == h) {
-				return String.valueOf(input.charAt(l));
-			}
-			String result1 = "";
-			String result2 = "";
-			if (input.charAt(l) == input.charAt(h) && (l + 1 == h || l + 2 == h))
-				return input.substring(l, h + 1);
-			if (input.charAt(l) == input.charAt(h)) {
-				if (l < input.length() - 1 && h > 0 && input.charAt(l + 1) == input.charAt(h - 1)) {
-					return String.valueOf(input.charAt(l)) + longestPalindromicSubString(input, l + 1, h - 1)
-							+ String.valueOf(input.charAt(h));
-				} else {
-					result1 = longestPalindromicSubString(input, l + 1, h);
-					result2 = longestPalindromicSubString(input, l, h - 1);
-					return result1.length() > result2.length() ? result1 : result2;
+			Integer returnValue = Integer.MAX_VALUE;
+			Integer localMin = Integer.MAX_VALUE;
+			for (int i = startIndex; i < input.length(); i++) {
+				if (power5BinaryMap.containsKey(input.substring(startIndex, i + 1))) {
+					returnValue = printMinimumSplits(input, i + 1);
+					if (returnValue != Integer.MAX_VALUE && returnValue < localMin) {
+						localMin = returnValue;
+					}
 				}
 			}
-			if (input.charAt(l) != input.charAt(h))
-				result1 = longestPalindromicSubString(input, l + 1, h);
-			result2 = longestPalindromicSubString(input, l, h - 1);
-			return result1.length() > result2.length() ? result1 : result2;
+			if (localMin != Integer.MAX_VALUE)
+				return 1 + localMin;
+			return Integer.MAX_VALUE;
 		}
-		return "";
-	}
-
-	// https://www.geeksforgeeks.org/count-palindrome-sub-strings-string/
-	public static int totalNumberOfPalindromicSubStrings(String input) {
 		return 0;
 	}
 
-	public static int totalNumberOfPalindromsFromGivenCharacters(char[] input) {
-		return 0;
+	// https://www.geeksforgeeks.org/allocate-minimum-number-pages/
+	// https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
+	public static void allocateMinNoOfPages(int[] input) {
+
 	}
 
+	public static void lexoGraphicalOrderOfString(List<String> input) {
+		// Collections.sort(input);
+		Collections.sort(input, new Comparator<String>() {
+
+			public int compare2(String o1, String o2) {
+				// TODO Auto-generated method stub
+				return o1.compareTo(o2);
+			}
+
+			@Override
+			public int compare(String o1, String o2) {
+				// TODO Auto-generated method stub
+				char[] firstArray = o1.toCharArray();
+				char[] secondArray = o2.toCharArray();
+				int length = Math.min(firstArray.length, secondArray.length);
+				for (int i = 0; i < length; i++) {
+					if (o1.charAt(i) < o2.charAt(i))
+						return -1;
+					else if (o1.charAt(i) > o2.charAt(i))
+						return 1;
+				}
+				return o1.length() < o2.length() ? -1 : 1;
+			}
+
+		});
+		for (String string : input)
+			System.out.println(string);
+	}
+
+	/***
+	 * Google Interview links
+	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-hyderabad/
+	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
+	 */
 }

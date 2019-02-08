@@ -5,7 +5,6 @@ package src.Utilities;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Arrays;
-
 import java.util.*;
 
 // Warning: Printing unwanted or ill-formatted data to output will cause the test cases to fail
@@ -14,12 +13,14 @@ class Testing {
 	public static void main(String args[]) throws Exception {
 
 		Parent parent = new Parent();
+		// parent.getClass().getMethod("getName").setAccessible(true);
 		Child child = new Child();
 		Parent parent2 = new Child();
-
 		String input = "011100";
 		System.out.println(findLengthOfLargestSubString(input, input.length()));
 		System.out.println(findLengthOfLargestSubString2(input, input.length()));
+
+		System.out.println("The log value of the given number is:" + Math.log10(105));
 
 		int[] array = { 10, 2, 3, 14, 12 };
 		int[] coffArray = { 2, 1, -1, 3, 5 };
@@ -35,6 +36,10 @@ class Testing {
 				System.out.println("String removed");
 				System.out.println("String at length 0 is: " + strings.get(0));
 			}
+		}
+
+		if ('a' < 'b') {
+			System.out.println("Character comparision can be done");
 		}
 
 	}

@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -52,15 +51,12 @@ public class MyGraph {
 		visited = new boolean[graph.noOfVertices];
 		graph.topologicalSort(5, visited);
 
-		MyGraph undirectedGraph = new MyGraph(5);
-		undirectedGraph.addEdge(1, 0);
-		undirectedGraph.addEdge(0, 2);
-		undirectedGraph.addEdge(2, 0);
-		undirectedGraph.addEdge(0, 3);
-		undirectedGraph.addEdge(3, 4);
-		visited = new boolean[graph.noOfVertices];
+		MyGraph undirectedGraph = new MyGraph(6);
+		undirectedGraph.addEdge(1, 2);
+		undirectedGraph.addEdge(2, 3);
+		undirectedGraph.addEdge(3, 1);
 
-		System.out.println("Given graph is cyclic:" + undirectedGraph.isCyclic());
+		System.out.println("Given graph is cyclic:" + !undirectedGraph.canFinishDFS());
 	}
 
 	public void BFS(Integer startVertex) {
@@ -85,25 +81,58 @@ public class MyGraph {
 						}
 					}
 				}
-
 			}
 		}
 	}
 
+	// https://www.programcreek.com/2014/05/leetcode-course-schedule-java/
 	public void topologicalSort(Integer startVertex, boolean[] visited) {
 		if (startVertex >= this.noOfVertices)
 			return;
 		else {
 			visited[startVertex] = true;
-			LinkedList<Integer> adjList;
-			adjList = adjacencyMatrix[startVertex];
-			if (adjList != null && !adjList.isEmpty())
+			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
+			if (Objects.nonNull(adjList))
 				for (Integer vertex : adjList) {
 					if (!visited[vertex]) {
 						topologicalSort(vertex, visited);
 					}
 				}
 			System.out.print(startVertex + " ");
+		}
+
+	}
+
+	// can also be used for detecting cycle in a graph
+	public boolean canFinishDFS() {
+		int visited[] = new int[this.noOfVertices];
+		for (int i = 0; i < this.noOfVertices; i++) {
+			if (!canFinishDFS(i, visited))
+				return false;
+		}
+		return true;
+
+	}
+
+	public boolean canFinishDFS(Integer startVertex, int[] visited) {
+		if (startVertex >= this.noOfVertices)
+			return false;
+		else {
+			if (visited[startVertex] == -1)
+				return false;
+			else if (visited[startVertex] == 1)
+				return true;
+
+			visited[startVertex] = -1;
+			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
+			if (Objects.nonNull(adjList))
+				for (Integer vertex : adjList) {
+					if (!canFinishDFS(vertex, visited)) {
+						return false;
+					}
+				}
+			visited[startVertex] = 1;
+			return true;
 		}
 
 	}
@@ -123,10 +152,6 @@ public class MyGraph {
 				}
 			}
 		}
-	}
-
-	public void primsAlgorithm() {
-
 	}
 
 	public boolean checkIfCyclePresentInGraph(Integer startVertex, boolean[] visited, Integer parent) {
@@ -168,7 +193,13 @@ public class MyGraph {
 		return false;
 	}
 
+	// yet to do
 	public static void minimumSpanningTree() {
+
+	}
+
+	// yet to do
+	public void primsAlgorithm() {
 
 	}
 

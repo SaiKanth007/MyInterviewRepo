@@ -1,22 +1,23 @@
-package src;
+package src.Others;
 
 public class ArrayListImpl {
 
 	int[] array;
+	// 2^31 = 2,147,483,648 max value
 	int capacity;
-	double threshold;
+	double loadFactor;
 	int currentSize;
 
 	public ArrayListImpl() {
 		capacity = 16;
 		array = new int[capacity];
-		threshold = 0.7;
+		loadFactor = 0.7;
 	}
 
 	public void add(int input) {
-		currentSize = currentSize + 1;
 		array[currentSize] = input;
-		if ((double) currentSize / capacity > threshold)
+		currentSize = currentSize + 1;
+		if ((double) currentSize / capacity > loadFactor)
 			doubleArray();
 		System.out.println("Size of the array after adding element " + input + " is " + currentSize);
 	}

@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class MyTree {
 
 	Node root;
+	Node head;
 
 	public static class Node {
 		public int getData() {
@@ -31,6 +32,7 @@ public class MyTree {
 		Node left;
 		Node right;
 		int data;
+		Node next;
 
 		Node(int pData) {
 			data = pData;
@@ -61,6 +63,8 @@ public class MyTree {
 		tree1.root.left.right.left.right = new Node(10);
 		tree1.root.right = new Node(7);
 		tree1.root.right.right = new Node(3);
+		tree1.root.right.left = new Node(1);
+		tree1.root.right.left.right = new Node(4);
 
 		// traversals
 		System.out.println("in order traversal with recursion");
@@ -106,7 +110,7 @@ public class MyTree {
 		System.out.println();
 		printBottomViewOfTheTree(tree1.root);
 
-		System.out.println();
+		System.out.println("The perimeter of the tree is:");
 		printPerimeterOfTheTree(tree1.root);
 
 		// distance
@@ -158,11 +162,15 @@ public class MyTree {
 		findTriplet(tree1.root, null, 16);
 
 		MyTree bst = new MyTree();
-		bst.root = new Node(1);
-		bst.root.left = new Node(5);
-		bst.root.right = new Node(3);
+		bst.root = new Node(3);
+		bst.root.left = new Node(1);
+		bst.root.right = new Node(5);
 		bst.prev = null;
 		System.out.println("Given tree is a BST: " + bst.checkIfGivenTreeIsBST(bst.root));
+
+		bst.prev = null;
+		bst.convertTreeToLinkedList(bst.root);
+		System.out.println("Sai");
 
 		int[] findAllPossibleBinaryTreesFromInorder = { 4, 5, 7 };
 		System.out.println("The number of possible trees are: " + findAllPossibleBinaryTreesFromInorder(
@@ -205,6 +213,31 @@ public class MyTree {
 				while (root != null) {
 					stack.push(root);
 					root = root.left;
+				}
+			}
+		}
+	}
+
+	// Morris traversal
+	// application - https://www.geeksforgeeks.org/find-median-bst-time-o1-space/
+	public static void inorderTraversalWithoutRecursionWithoutStack(Node root) {
+		Node node = new Node(root);
+		while (node != null) {
+			if (node.left == null) {
+				System.out.print(node.data + " ");
+				node = node.right;
+			} else {
+				Node current = node.left;
+				while (current.right != null && current.right != node) {
+					current = current.right;
+				}
+				if (current.right == node) {
+					System.out.print(node.data + " ");
+					current.right = null;
+					node = node.right;
+				} else {
+					current.right = node;
+					node = node.left;
 				}
 			}
 		}
@@ -282,30 +315,6 @@ public class MyTree {
 			}
 			while (!resultStack.isEmpty()) {
 				System.out.print(resultStack.pop().data + " ");
-			}
-		}
-	}
-
-	// Morris traversal
-	public static void inorderTraversalWithoutRecursionWithoutStack(Node root) {
-		Node node = new Node(root);
-		while (node != null) {
-			if (node.left == null) {
-				System.out.print(node.data + " ");
-				node = node.right;
-			} else {
-				Node current = node.left;
-				while (current.right != null && current.right != node) {
-					current = current.right;
-				}
-				if (current.right == node) {
-					System.out.print(node.data + " ");
-					current.right = null;
-					node = node.right;
-				} else {
-					current.right = node;
-					node = node.left;
-				}
 			}
 		}
 	}
@@ -457,20 +466,20 @@ public class MyTree {
 		}
 
 	}
-	
+
 	public static void printVerticalViewOfTheTree(Node root) {
 		if (root != null) {
 		}
 
 	}
 
+	// working
 	public static void printPerimeterOfTheTree(Node root) {
 		if (root != null) {
-			// print left view of root.left (while doing this, avoid leaf nodes)
-			// print right view root.right
-			// print leaf nodes
+			System.out.println(root.data);
+			printRightViewOfTheTree(root.right, 0, -1);
+			printLeftViewOfTheTree(root.left, 0, -1);
 		}
-
 	}
 
 	public static int printHeightOfTree(Node root) {
@@ -575,7 +584,6 @@ public class MyTree {
 			} else {
 				return false;
 			}
-
 		}
 	}
 
@@ -628,7 +636,7 @@ public class MyTree {
 
 	}
 
-	//working
+	// working
 	public static int findSumOfAllNodes(Node root) {
 		if (root == null)
 			return 0;
@@ -713,7 +721,9 @@ public class MyTree {
 
 	}
 
-	//working
+	// working
+	// will not work, if the parameters are interchanged or if both nodes are on
+	// either side of the tree
 	public static int printDistanceBetweenTwoNodes(Node root, Node node) {
 		Storage distance = new Storage();
 		printDistanceOfGivenNodeFromRoot(root, node, distance);
@@ -721,6 +731,8 @@ public class MyTree {
 	}
 
 	// working
+	// can be done in other way by using maps with nodes as keys and depths
+	// as values
 	public static boolean printDistanceOfGivenNodeFromRoot(Node root, Node node, Storage distance) {
 		if (root == null)
 			return false;
@@ -787,7 +799,7 @@ public class MyTree {
 		findTriplet(root.right, root, tripletSum);
 	}
 
-	//working
+	// working
 	public static void printEveryNodeAlongWithItsParent(Node root, Node parent) {
 		if (root == null)
 			return;
@@ -796,7 +808,7 @@ public class MyTree {
 		printEveryNodeAlongWithItsParent(root.right, root);
 	}
 
-	//working
+	// working
 	public boolean checkIfGivenTreeIsBST(Node root) {
 		if (root != null) {
 			Boolean leftBST = checkIfGivenTreeIsBST(root.left);
@@ -879,14 +891,31 @@ public class MyTree {
 		}
 		return null;
 	}
-	
-	public static void convertTreeToLinkedList(Node root) {
-		Scanner  in = new Scanner(System.in);
+
+	// https://www.geeksforgeeks.org/convert-given-binary-tree-doubly-linked-list-set-3/
+	// working perfectly fine
+	public void convertTreeToLinkedList(Node root) {
+		if (root == null)
+			return;
+		convertTreeToLinkedList(root.left);
+		if (prev == null) {
+			head = root;
+		} else {
+			root.left = prev;
+			prev.right = root;
+		}
+		prev = root;
+		convertTreeToLinkedList(root.right);
 	}
 
 	/***
-	 * Bottom view of the tree tree to linkedlist two nodes of a BST are swapped,
-	 * find out the them https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+	 * 1. Bottom view of the tree tree to linkedlist two nodes of a BST are swapped,
+	 * 2. find out the them
+	 * https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
+	 * 
+	 * 3. Find kth smallest element in BST 4. connect nodes at same level using
+	 * constant extra space -
+	 * https://www.geeksforgeeks.org/connect-nodes-at-same-level-with-o1-extra-space/
 	 */
 
 }

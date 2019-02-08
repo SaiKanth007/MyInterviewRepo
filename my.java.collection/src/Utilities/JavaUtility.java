@@ -5,7 +5,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import src.Others.SingleTon;
+
 public class JavaUtility {
+
+	public static void main(String[] args) {
+		System.out.println(System.getProperty("os.arch").indexOf("64") != -1);
+
+		SingleTon s1 = SingleTon.getSingleTon();
+		SingleTon s2 = SingleTon.getSingleTon();
+		if (s1 == s2)
+			System.out.println("SingleTon Implemented");
+
+		Map<String, String> testMap = new HashMap<>();
+		testMap.put("1", "abc");
+		String result = testMap.remove("1");
+		System.out.println(result);
+		System.out.println(testMap.size());
+
+	}
 
 	EnumSet<Values> enumSet = EnumSet.of(Values.HIGH, Values.MEDIUM);
 
@@ -91,8 +109,15 @@ public class JavaUtility {
 		return numberWordMap;
 	}
 
-	public static Map<String, Integer> getRomansToNumberMap() {
-		Map<String, Integer> map = new HashMap<>();
+	public static Map<Integer, Integer> getRomansToNumberMap() {
+		Map<Integer, Integer> map = new HashMap<>();
+		map.put((int) 'I', 1);
+		map.put((int) 'V', 5);
+		map.put((int) 'X', 10);
+		map.put((int) 'L', 50);
+		map.put((int) 'C', 100);
+		map.put((int) 'D', 500);
+		map.put((int) 'M', 1000);
 		return map;
 	}
 
@@ -165,7 +190,8 @@ enum Values {
 				array[j] = in.nextInt();
 			}
 			sum = in.nextInt();
-			//System.out.println(minCoinProblem(array, sum));
+			// System.out.println(minCoinProblem(array, sum));
 		}
 	}
+
 }

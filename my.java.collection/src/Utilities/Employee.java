@@ -4,6 +4,7 @@ public class Employee {
 
 	String name;
 	String id;
+	Integer rank;
 	public String getName() {
 		return name;
 	}
@@ -11,6 +12,19 @@ public class Employee {
 		super();
 		this.name = name;
 		this.id = id;
+	}
+	
+	public Employee(String name, String id, Integer rank) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.rank = rank;
+	}
+	public Integer getRank() {
+		return rank;
+	}
+	public void setRank(Integer rank) {
+		this.rank = rank;
 	}
 	public void setName(String name) {
 		this.name = name;

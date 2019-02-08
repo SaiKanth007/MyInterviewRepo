@@ -1,4 +1,4 @@
-package src;
+package src.Others;
 
 import src.Utilities.JavaUtility;
 
@@ -12,11 +12,6 @@ public class MySudoku {
 		solveSudoku(matrix);
 		System.out.println();
 		JavaUtility.printMatrix(matrix, 9, 9);
-		// solveSudokuOthers(matrix);
-		// System.out.println();
-		//
-		// JavaUtility.printMatrix(matrix, 9, 9);
-
 	}
 
 	public static boolean solveSudoku(int[][] matrix) {

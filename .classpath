@@ -24,5 +24,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/sai_kanth/Downloads/junit-4.12.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

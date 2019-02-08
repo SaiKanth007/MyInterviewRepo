@@ -53,10 +53,10 @@ public class MyArray {
 		System.out
 				.println("The " + k + "th smallest element is: " + findKthLargestElement(arrayForKthLargestElement, k));
 
-		final int[] arrayForBinarySearch = { 0, -1 };
+		final int[] arrayForBinarySearch = { 1, 2 };
 		selectionSort(arrayForBinarySearch);
 		System.out.println("The index of the search is: "
-				+ binarySearch(arrayForBinarySearch, 0, arrayForBinarySearch.length - 1, 0));
+				+ binarySearch(arrayForBinarySearch, 0, arrayForBinarySearch.length - 1, 2));
 
 		final int[] arrayForBinarySearchForRepeated = { 0, 5, -1, -2, 6, -1 };
 		selectionSort(arrayForBinarySearchForRepeated);
@@ -64,6 +64,7 @@ public class MyArray {
 				arrayForBinarySearchForRepeated, 0, arrayForBinarySearchForRepeated.length - 1, -1));
 
 		final int[] arrayForprintElementsWithGivenSum = { 0, 5, -1, -2, 6 };
+		System.out.println("The Elements with the given sum are :");
 		printElementsWithGivenSum(arrayForprintElementsWithGivenSum, 4);
 
 		System.out.println("Number to words: " + convertNumberToWords(1000000));
@@ -91,7 +92,7 @@ public class MyArray {
 		JavaUtility.print(arrayForRotate);
 
 		final int[] arrayForRotatedBinarySearch = { 30, 40, 50, 10, 20 };
-		binarySearchInSortedAndRotatedArray(arrayForRotatedBinarySearch, 0, arrayForRotatedBinarySearch.length - 1, 10);
+		binarySearchInSortedAndRotatedArray(arrayForRotatedBinarySearch, 0, arrayForRotatedBinarySearch.length - 1, 30);
 
 		final int[] arrivalTimes = { 900, 940, 950, 1100, 1500, 1800 };
 		final int[] deptTimes = { 910, 1200, 1120, 1130, 1900, 2000 };
@@ -111,11 +112,6 @@ public class MyArray {
 		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
 		System.out.println("The mimimum size of the array that is to be sorted is :"
 				+ minArrayLengthToMakeArraySorted(minArrayLengthToMakeArraySorted));
-
-		int[] arrayForNextSmallesPalindrome = { 9, 4, 1, 8, 7, 9, 7, 8, 3, 2, 2 };
-		nextSmallestPalindrom(arrayForNextSmallesPalindrome);
-		System.out.println("The next smallest palindrome is:");
-		JavaUtility.print(arrayForNextSmallesPalindrome);
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -197,7 +193,6 @@ public class MyArray {
 			}
 		}
 		JavaUtility.swap(array, k + 1, upperIndex);
-
 		return k + 1;
 	}
 
@@ -429,11 +424,11 @@ public class MyArray {
 
 			final int midIndex = (lowerIndex + upperIndex) / 2;
 			if (array[midIndex] == key) {
-				System.out.println("Element found at index" + midIndex);
+				System.out.println("Element found at index in sorted and rotated array: " + midIndex);
 				return;
 			}
 
-			if (midIndex > 0 && array[midIndex] > array[midIndex - 1]) {
+			if (array[lowerIndex] <= array[midIndex]) {
 				if (array[lowerIndex] <= key && key < array[midIndex]) {
 					binarySearchInSortedAndRotatedArray(array, lowerIndex, midIndex - 1, key);
 				} else {
@@ -619,62 +614,23 @@ public class MyArray {
 		return upperIndex - lowerIndex + 1;
 	}
 
-	// https://practice.geeksforgeeks.org/problems/next-smallest-palindrome/0
-	public static void nextSmallestPalindrom(int[] array) {
-		// {9 4 1 8 7 9 7 8 3 2 2};
-		int length = array.length;
+	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
+	public static void slidingWindowMaximum() {
 
-		if (length == 2) {
-			if (array[0] > array[1]) {
-				array[1] = array[0];
-			} else {
-				array[0] = array[1];
-			}
-		}
+	}
 
-		if (length > 2) {
-			boolean checkIfAllLeftsAreGreaterThanRights = true;
-			for (int i = length / 2 - 1; i >= 0; i--) {
-				if (array[length - i - 1] > array[i]) {
-					checkIfAllLeftsAreGreaterThanRights = false;
-					break;
-				}
-			}
-			if (checkIfAllLeftsAreGreaterThanRights) {
-				boolean alreadyIncreased = false;
-				for (int i = length / 2; i >= 0; i--) {
-					if (array[i] == array[length - i - 1]) {
-						continue;
-					} else {
-						if (array[length - i - 1] > array[i] && !alreadyIncreased) {
-							array[length - i - 1] = array[length - i - 1] + 1;
-							alreadyIncreased = true;
-						}
-						array[length - i - 1] = array[i];
+	// https://www.geeksforgeeks.org/find-the-maximum-repeating-number-in-ok-time/
+	// when ever it is said that array contains elements only less than k or some
+	// value
+	// try to think of bucket sort where we can make use of the input condition,
+	// array[i]%k<=k
+	public static int findMostRepeatedElementInArray() {
+		return 0;
+	}
 
-					}
-				}
-			} else {
-				if (length % 2 != 0) {
-					array[length / 2] = 0;
-					array[length / 2 - 1] = array[length / 2 - 1] + 1;
-					array[length / 2 + 1] = array[length / 2 + 1] + 1;
-				} else {
-					array[length / 2] = array[length / 2] + 1;
-					array[length / 2 - 1] = array[length / 2 - 1] + 1;
-				}
+	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
+	public static void printMaxInSlidingWindow() {
 
-				for (int i = length / 2 - 2; i >= 0; i--) {
-					array[length - i - 1] = array[i];
-				}
-			}
-		}
-
-		for (int i = 0; i < length; i++) {
-			System.out.print(array[i] + " ");
-
-		}
-		System.out.println();
 	}
 	// array rotation
 	// stocks buy

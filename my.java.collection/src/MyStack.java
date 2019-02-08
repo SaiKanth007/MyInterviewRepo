@@ -23,8 +23,11 @@ public class MyStack {
 		System.out.println(inputStack);
 		System.out.println(checkForBalanceParanthesis(""));
 
-		int[] printNextGreatestElement = { 13, 7, 6, 12 };
+		int[] printNextGreatestElement = { 13, 7, 6, 12, 24 };
 		printNextGreatestElement(printNextGreatestElement);
+
+		int[] ReplaceElementWithGreatestElementonRight = { 13, 50, 6, 12, 24 };
+		replaceElementLargestElementOnRightSide(ReplaceElementWithGreatestElementonRight);
 
 		int[] stockSpanProblem = { 100, 80, 60, 70, 60, 75, 85 };
 		stockSpanProblem(stockSpanProblem);
@@ -159,7 +162,6 @@ public class MyStack {
 			this.value = value;
 		}
 
-	
 		public int compareTo(IndexValue o) {
 			// TODO Auto-generated method stub
 			return o.getIndex() > this.index ? 1 : -1;
@@ -227,6 +229,8 @@ public class MyStack {
 	}
 
 	// https://www.geeksforgeeks.org/the-stock-span-problem/
+	// for each of the given day, span defines the number of consecutive days
+	// for which the stock price was less than or equal to the current day
 	public static void stockSpanProblem(int[] input) {
 		int length = input.length;
 		int[] span = new int[length];
@@ -249,6 +253,25 @@ public class MyStack {
 		for (int i = 0; i < length; i++) {
 			System.out.print(NGE[i] + " ");
 		}
+	}
+
+	// https://www.geeksforgeeks.org/replace-every-element-with-the-greatest-on-right-side/
+	public static void replaceElementLargestElementOnRightSide(int[] array) {
+		int length = array.length;
+		int maxOnRight = array[length - 1];
+		array[length - 1] = -1;
+		int temp = -1;
+		for (int i = length - 2; i >= 0; i--) {
+			temp = array[i];
+			array[i] = maxOnRight;
+			if (temp > maxOnRight)
+				maxOnRight = temp;
+		}
+		System.out.println("Array after replacing with next greatest elements");
+		for (int i = 0; i < length; i++) {
+			System.out.print(array[i] + " ");
+		}
+		System.out.println();
 	}
 
 	// https://www.geeksforgeeks.org/postfix-to-infix/
@@ -470,6 +493,7 @@ public class MyStack {
 	/**
 	 * Implement a stack using two queues Design a stack to get the minimum element
 	 * with O(1) time and O(1) extra space
+	 * https://www.geeksforgeeks.org/queue-using-stacks/
 	 * 
 	 * 1. Tower of Hanoi 2. Celebrity problem 3. Infix to Prefix 4. Reverse stack
 	 * without extra space and also sorting using two stacks 5. reverse a number

@@ -27,22 +27,28 @@ public class MedianFromRunningStreamOfIntegers {
 				return o2.compareTo(o1);
 			}
 		});
+		PriorityQueue<Integer> minQueueForNthMax = new PriorityQueue();
+		
 
-		int[] runningStreamOfIntegers = {5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4}; 
+		int[] runningStreamOfIntegers = { 5, 15, 1, 3, 2, 8, 7, 9, 10, 6, 11, 4 };
 
 		for (int i = 0; i < runningStreamOfIntegers.length; i++) {
 			System.out.print(medianOfRunningStreamOfIntegers(runningStreamOfIntegers[i], minQueue, maxQueue) + " ");
 		}
+		System.out.println();
+		for (int i = 0; i < runningStreamOfIntegers.length; i++) {
+			System.out.print(nThGreatestInRunningStreamOfIntegers(minQueueForNthMax, runningStreamOfIntegers[i], 4) + " ");
+		}
 
 	}
 
-	//working
+	// working
 	public static int medianOfRunningStreamOfIntegers(int input, PriorityQueue<Integer> minQueue,
 			PriorityQueue<Integer> maxQueue) {
 		if (maxQueue.size() == 0) {
 			maxQueue.add(input);
 			return input;
-		} 
+		}
 		if (input < maxQueue.peek()) {
 			maxQueue.add(input);
 		} else {
@@ -116,5 +122,15 @@ public class MedianFromRunningStreamOfIntegers {
 			JavaUtility.swap(array, min, index);
 			minHeapify(array, min, length);
 		}
+	}
+
+	public static int nThGreatestInRunningStreamOfIntegers(PriorityQueue minQueue, int input, int n) {
+		minQueue.add(input);
+		if(minQueue.size()<n)
+			return Integer.MIN_VALUE;
+		else if (minQueue.size()>n) {
+			minQueue.poll();
+		}
+		return (int)minQueue.peek();
 	}
 }
