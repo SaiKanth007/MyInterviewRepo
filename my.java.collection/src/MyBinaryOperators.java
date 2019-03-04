@@ -24,7 +24,7 @@ public class MyBinaryOperators {
 		System.out.println("The index of the repeated number is:" + findRepeatingNumber(
 				arrayForFinidngRepeatedNumberInSortedArray, 0, arrayForFinidngRepeatedNumberInSortedArray.length - 1));
 
-		System.out.println("The sum of given two numbers is: " + findSumOfTwoNumbers(41, 4));
+		System.out.println("The sum of given two numbers is: " + findSumOfTwoNumbersWithoutUsingAddOperator(41, 4));
 
 	}
 
@@ -95,20 +95,20 @@ public class MyBinaryOperators {
 	}
 
 	// working
-	public static String findSumOfTwoNumbers(int a, int b) {
-		String actualSum = "";
+	public static String findSumOfTwoNumbersWithoutUsingAddOperator(int a, int b) {
+		StringBuilder actualSum = new StringBuilder("");
 		int localSum = 0;
 		int prevCarry = 0;
 		while (a > 0 || b > 0) {
 			localSum = a % 2 ^ b % 2 ^ prevCarry % 2;
 			prevCarry = a % 2 & b % 2 | prevCarry % 2 & (a % 2 ^ b % 2);
-			actualSum = actualSum + String.valueOf(localSum);
+			actualSum = actualSum.append(localSum);
 			a = a >> 1;
 			b = b >> 1;
 
 		}
-		actualSum = actualSum + (prevCarry != 0 ? String.valueOf(prevCarry) : "");
-		return StringUtils.reverse(actualSum);
+		actualSum = actualSum.append(prevCarry != 0 ? String.valueOf(prevCarry) : "");
+		return actualSum.reverse().toString();
 	}
 
 	// https://www.geeksforgeeks.org/find-the-two-repeating-elements-in-a-given-array/
@@ -145,7 +145,7 @@ public class MyBinaryOperators {
 	public static void swapOddEvenBits() {
 
 	}
-	
+
 	public static String numberToBinaryString() {
 		return "";
 	}

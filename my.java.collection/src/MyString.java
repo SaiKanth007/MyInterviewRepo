@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,12 +17,12 @@ import src.Utilities.*;
 public class MyString {
 
 	public static void main(String[] args) {
-		final String stringForPermutations = "abb";
+		final String stringForPermutations = "abc";
 		final String stringForCombinations = "abc";
 
 		System.out.println("The combinations of the given string are:");
 		printCombinations(stringForCombinations);
-		final Set<String> stringStore = new HashSet();
+		final Set<String> stringStore = new LinkedHashSet();
 		// printPermutations(stringForPermutations.toCharArray(), 0,
 		// stringForPermutations.length() - 1);
 		printPermutationsWithoutDuplicates(stringForPermutations.toCharArray(), 0, stringForPermutations.length() - 1,
@@ -57,6 +59,10 @@ public class MyString {
 		String[] array = { "33123", "15", "1", "0", "54215", "21", "12" };
 
 		lexoGraphicalOrderOfString(Arrays.asList(array));
+
+		String lexographicallyFirstPalindromeString = "Apple";
+		System.out.println("Lexographically first palindrome of the given strings is:"
+				+ lexographicallyFirstPalindrome(lexographicallyFirstPalindromeString));
 
 	}
 
@@ -103,17 +109,18 @@ public class MyString {
 
 	// doesn't scale for large strings
 	// https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
+	// also think of printing it in alphabetical order
 	public static void printPermutationsWithoutDuplicates(char[] inputArray, int lowerIndex, int upperIndex,
 			Set<String> stringStore) {
-
-		if (lowerIndex == upperIndex) {
-			stringStore.add(String.valueOf(inputArray));
-		}
-		for (int i = lowerIndex; i <= upperIndex; i++) {
-			JavaUtility.swap(inputArray, lowerIndex, i);
-			printPermutationsWithoutDuplicates(inputArray, lowerIndex + 1, upperIndex, stringStore);
-			JavaUtility.swap(inputArray, lowerIndex, i);
-
+		if (lowerIndex <= upperIndex) {
+			if (lowerIndex == upperIndex) {
+				stringStore.add(String.valueOf(inputArray));
+			}
+			for (int i = lowerIndex; i <= upperIndex; i++) {
+				JavaUtility.swap(inputArray, lowerIndex, i);
+				printPermutationsWithoutDuplicates(inputArray, lowerIndex + 1, upperIndex, stringStore);
+				JavaUtility.swap(inputArray, lowerIndex, i);
+			}
 		}
 
 	}
@@ -308,6 +315,80 @@ public class MyString {
 		});
 		for (String string : input)
 			System.out.println(string);
+	}
+
+	public static void printAllPalindromicPermutationsLexoGraphically() {
+
+	}
+
+	public static String lexographicallyFirstPalindrome(String input) {
+		Map<Integer, Integer> freqMap = new LinkedHashMap<>();
+		boolean isPalindoromePossible = checkIfPalindromePossible(input, freqMap);
+		if (!isPalindoromePossible) {
+			return "Palindrome Not Possible";
+		} else {
+			String odd = getOddString(freqMap);
+			String rear = "";
+			String front = "";
+			char inputChar;
+			for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+				if (entry.getValue() % 2 == 0) {
+					inputChar = (char) entry.getKey().intValue();
+					String temp = "";
+					for (int index = 0; index < entry.getValue() / 2; index++) {
+						temp = temp + inputChar;
+					}
+					front = front + temp;
+					rear = temp + rear;
+				}
+			}
+			return front + odd + rear;
+		}
+
+	}
+
+	public static String getOddString(Map<Integer, Integer> freqMap) {
+		String result = "";
+		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+			if (entry.getValue() % 2 != 0) {
+				result = result + (char) entry.getKey().intValue();
+			}
+		}
+		return result;
+	}
+
+	public static boolean checkIfPalindromePossible(String input, Map<Integer, Integer> freqMap) {
+		int length = input.length();
+		int currentChar = 0;
+		for (int index = 0; index < length; index++) {
+			currentChar = (int) input.charAt(index);
+			if (freqMap.containsKey(currentChar)) {
+				freqMap.put(currentChar, 1 + freqMap.get(currentChar));
+			} else {
+				freqMap.put(currentChar, 1);
+			}
+		}
+		int oddCount = 0;
+		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+			if (entry.getValue() % 2 != 0) {
+				oddCount++;
+			}
+		}
+
+		if (length % 2 == 0) {
+			if (oddCount == 0)
+				return true;
+			return false;
+		} else {
+			if (oddCount != 1)
+				return false;
+			return true;
+		}
+	}
+
+	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
+	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
+
 	}
 
 	/***

@@ -1,6 +1,5 @@
 package src;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,18 +78,21 @@ public class MyMatrix {
 	}
 
 	// https://www.geeksforgeeks.org/print-unique-rows/
+	// think of other approaches as well
 	public static void printUniqueRowsInMatrix(int[][] matrix, int length, int breadth) {
 		Map<String, Integer> map = new HashMap();
-		String temp = "";
+		StringBuilder temp = new StringBuilder("");
+		String value = "";
 		for (int i = 0; i < length; i++) {
-			temp = "";
+			temp = new StringBuilder("");
 			for (int j = 0; j < breadth; j++) {
-				temp = temp.concat(String.valueOf(matrix[i][j]));
+				temp = temp.append(matrix[i][j]);
 			}
-			if (map.containsKey(temp)) {
-				map.put(temp, map.get(temp) + 1);
+			value = temp.toString();
+			if (map.containsKey(value)) {
+				map.put(value, map.get(value) + 1);
 			} else {
-				map.put(temp, 1);
+				map.put(value, 1);
 			}
 		}
 		for (String key : map.keySet()) {
@@ -133,10 +135,10 @@ public class MyMatrix {
 
 	}
 
-	//https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
+	// https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
 	public static void findRectangleInMatrix(int[][] matrix) {
-		
+
 	}
 	// matrix rotation by 90 degrees
-	//https://www.geeksforgeeks.org/find-median-row-wise-sorted-matrix/
+	// https://www.geeksforgeeks.org/find-median-row-wise-sorted-matrix/
 }

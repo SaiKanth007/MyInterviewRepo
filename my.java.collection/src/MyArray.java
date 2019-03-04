@@ -1,5 +1,6 @@
 package src;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,16 +43,17 @@ public class MyArray {
 		heapSort(arrayForHeapSort);
 		JavaUtility.printAfterSorting(arrayForHeapSort, "heap");
 
-		final int[] arrayForQuickSort = { 12, 11, 10, 5, 13, 7 };
+		final int[] arrayForQuickSort = { 12, 11, 10, 5, 13, 7, 7 };
 		JavaUtility.printBeforeSorting(arrayForQuickSort);
 		quickSort(arrayForQuickSort, 0, arrayForQuickSort.length - 1);
 		JavaUtility.printAfterSorting(arrayForQuickSort, "quick");
 
 		final int[] arrayForKthLargestElement = { 12, 5, 787, 1, 23 };
+		System.out.println("The array for kth smallest element is: ");
 		JavaUtility.print(arrayForKthLargestElement);
 		final int k = 2;
-		System.out
-				.println("The " + k + "th smallest element is: " + findKthLargestElement(arrayForKthLargestElement, k));
+		System.out.println(
+				"The " + k + "th smallest element is: " + findKthSmallestElement(arrayForKthLargestElement, k));
 
 		final int[] arrayForBinarySearch = { 1, 2 };
 		selectionSort(arrayForBinarySearch);
@@ -77,7 +79,7 @@ public class MyArray {
 		System.out.println(
 				"Maximum value of contigious sub arrays is:" + findLargetSumContiguousArray(maxSumContigiousArray));
 
-		final int[] maxSumContigiousIncreasingArray = { 38, 7, 8, 10, 12 };
+		final int[] maxSumContigiousIncreasingArray = { -2, -3, 4, -1, -2, 1, 5, -3 };
 		System.out.println("Maximum value of increasing contigious sub arrays is:"
 				+ findLargetSumContiguousIncreasingArray(maxSumContigiousIncreasingArray));
 
@@ -184,16 +186,16 @@ public class MyArray {
 	}
 
 	public static int getPivot(int[] array, int lowerIndex, int upperIndex) {
-		int k = lowerIndex - 1;
+		int k = lowerIndex;
 		final int pivot = array[upperIndex];
 		for (int i = lowerIndex; i < upperIndex; i++) {
-			if (array[i] < pivot) {
-				k++;
+			if (array[i] <= pivot) {
 				JavaUtility.swap(array, k, i);
+				k++;
 			}
 		}
-		JavaUtility.swap(array, k + 1, upperIndex);
-		return k + 1;
+		JavaUtility.swap(array, k, upperIndex);
+		return k;
 	}
 
 	public static void insertionSort(int[] array) {
@@ -212,7 +214,7 @@ public class MyArray {
 	}
 
 	// other appraoch is to use minHeap and constructing the minheap for k elements
-	public static int findKthLargestElement(int[] array, int kthSmallest) {
+	public static int findKthSmallestElement(int[] array, int kthSmallest) {
 		final int length = array.length;
 		int lowerIndex = 0;
 		int upperIndex = length - 1;
@@ -222,13 +224,27 @@ public class MyArray {
 				return array[pivot];
 			} else if (kthSmallest > pivot) {
 				lowerIndex = pivot + 1;
-
 			} else {
 				upperIndex = pivot - 1;
 			}
 		}
-
 		return -1;
+	}
+
+	// yet to be done
+	public static void findKthLargestElementUsingMaxHeap(int[] input, int kthSmallest) {
+		final int length = input.length;
+
+		// this logic is basically for constructing the heap, takes O(n/2 * log(N) time
+		// complexity)
+		for (int i = length / 2 - 1; i >= 0; i--) {
+			heapify(input, i, length);
+		}
+
+		for (int i = 0; i < kthSmallest; i++) {
+			JavaUtility.swap(input, 0, i);
+			heapify(input, 0, i);
+		}
 	}
 
 	// also do this, once heap sort is done
@@ -361,7 +377,8 @@ public class MyArray {
 		return globalSum;
 	}
 
-	// https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+	// https://www.geeksforgeeks.org/largest-sum-contiguous-increasing-subarray/
+	// Does not work if negative numbers are present
 	public static Integer findLargetSumContiguousIncreasingArray(int[] array) {
 		int localSumStartIndex = 0;
 		int globalSumStartIndex = 0;
@@ -448,8 +465,8 @@ public class MyArray {
 	}
 
 	public static int minNumberOfPlatforms(int[] arrivalTimes, int[] deptTimes) {
-		bubbleSort(arrivalTimes);
-		bubbleSort(deptTimes);
+		Arrays.sort(arrivalTimes);
+		Arrays.sort(deptTimes);
 		int noOfPlatforms = 1;
 		int totalNumberOfPlatforms = 0;
 		final int length = arrivalTimes.length;

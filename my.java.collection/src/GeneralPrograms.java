@@ -103,12 +103,12 @@ public class GeneralPrograms {
 	// does not maintain order, so has to look into that as well
 	// one approach would be to use an extra array
 	public static void groupNegativeBeforePositive(int[] array) {
-		int j = -1;
+		int j = 0;
 		int length = array.length;
 		for (int i = 0; i < length; i++) {
 			if (array[i] < 0) {
-				j++;
 				JavaUtility.swap(array, i, j);
+				j++;
 			}
 		}
 	}
@@ -161,9 +161,12 @@ public class GeneralPrograms {
 	 * @return
 	 */
 	// https://www.geeksforgeeks.org/josephus-problem-set-1-a-on-solution/
+	// takes O(n) time
 	public static int getLuckyPerson(int totalNoOfPersons, int k) {
 		if (totalNoOfPersons == 1)
 			return 0;
+		if (k > totalNoOfPersons)
+			return -1;
 		else
 			return (getLuckyPerson(totalNoOfPersons - 1, k) + k % totalNoOfPersons) % totalNoOfPersons;
 	}
@@ -210,15 +213,14 @@ public class GeneralPrograms {
 		if (romanNumber == null || romanNumber == " ") {
 			return 0;
 		}
-		final char[] array = romanNumber.toCharArray();
-		final int length = array.length;
+		final int length = romanNumber.length();
 		final Map<Integer, Integer> romantToNumberMap = JavaUtility.getRomansToNumberMap();
-		Integer prev = romantToNumberMap.get((int) array[length - 1]);
+		Integer prev = romantToNumberMap.get((int) romanNumber.charAt(length - 1));
 		Integer current = -1;
 		Integer sum = prev;
 		boolean currentLessThanPrev = false;
 		for (int index = length - 2; index >= 0; index--) {
-			current = romantToNumberMap.get((int) array[index]);
+			current = romantToNumberMap.get((int) romanNumber.charAt(index));
 			if (current > prev) {
 				sum = sum + current;
 				currentLessThanPrev = false;

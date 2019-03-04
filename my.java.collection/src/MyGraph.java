@@ -154,44 +154,30 @@ public class MyGraph {
 		}
 	}
 
-	public boolean checkIfCyclePresentInGraph(Integer startVertex, boolean[] visited, Integer parent) {
-		{
-			visited[startVertex] = true;
-			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
-			System.out.println("Vertex is: " + startVertex);
-			if (Objects.nonNull(adjList)) {
-				for (Integer adjVertex : adjList) {
-					if (!visited[adjVertex]) {
-						if (checkIfCyclePresentInGraph(adjVertex, visited, startVertex))
-							return true;
-					} else {
-						if (adjVertex != parent)
-							return true;
-					}
-				}
-			}
-			return false;
-		}
-
-	}
-
-	// Returns true if the graph contains a cycle, else false.
-	public boolean isCyclic() {
-		// Mark all the vertices as not visited and not part of
-		// recursion stack
-		boolean visited[] = new boolean[this.noOfVertices];
-		for (int i = 0; i < this.noOfVertices; i++)
-			visited[i] = false;
-
-		// Call the recursive helper function to detect cycle in
-		// different DFS trees
-		for (int u = 0; u < this.noOfVertices; u++)
-			if (!visited[u]) // Don't recur for u if already visited
-				if (this.checkIfCyclePresentInGraph(u, visited, -1))
-					return true;
-
-		return false;
-	}
+	/*
+	 * public boolean checkIfCyclePresentInGraph(Integer startVertex, boolean[]
+	 * visited, Integer parent) { { visited[startVertex] = true; LinkedList<Integer>
+	 * adjList = adjacencyMatrix[startVertex]; System.out.println("Vertex is: " +
+	 * startVertex); if (Objects.nonNull(adjList)) { for (Integer adjVertex :
+	 * adjList) { if (!visited[adjVertex]) { if
+	 * (checkIfCyclePresentInGraph(adjVertex, visited, startVertex)) return true; }
+	 * else { if (adjVertex != parent) return true; } } } return false; }
+	 * 
+	 * }
+	 * 
+	 * // Returns true if the graph contains a cycle, else false. public boolean
+	 * isCyclic() { // Mark all the vertices as not visited and not part of //
+	 * recursion stack boolean visited[] = new boolean[this.noOfVertices]; for (int
+	 * i = 0; i < this.noOfVertices; i++) visited[i] = false;
+	 * 
+	 * // Call the recursive helper function to detect cycle in // different DFS
+	 * trees for (int u = 0; u < this.noOfVertices; u++) if (!visited[u]) // Don't
+	 * recur for u if already visited if (this.checkIfCyclePresentInGraph(u,
+	 * visited, -1)) return true;
+	 * 
+	 * return false; }
+	 * 
+	 */
 
 	// yet to do
 	public static void minimumSpanningTree() {

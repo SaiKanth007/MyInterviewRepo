@@ -23,7 +23,7 @@ public class MyStack {
 		System.out.println(inputStack);
 		System.out.println(checkForBalanceParanthesis(""));
 
-		int[] printNextGreatestElement = { 13, 7, 6, 12, 24 };
+		int[] printNextGreatestElement = { 13, 7, 24, 6, 12 };
 		printNextGreatestElement(printNextGreatestElement);
 
 		int[] ReplaceElementWithGreatestElementonRight = { 13, 50, 6, 12, 24 };
@@ -172,7 +172,7 @@ public class MyStack {
 	// https://www.geeksforgeeks.org/next-greater-element/
 	// https://www.geeksforgeeks.org/find-next-smaller-next-greater-array/
 	// [4, 5, 2, 25},
-	// working
+	// working (also we can try using queue for maintaining order)
 	public static void printNextGreatestElement(int[] input) {
 		Stack<IndexValue> stack = new Stack();
 		List<IndexValue> result = new ArrayList<IndexValue>();
@@ -466,6 +466,7 @@ public class MyStack {
 	}
 
 	// https://www.geeksforgeeks.org/form-minimum-number-from-given-sequence/
+	// yet to go through
 	public static String minimumNumberFromGivenSeq(String seq) {
 		int n = seq.length();
 		if (n >= 9)
