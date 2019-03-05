@@ -45,6 +45,8 @@ public class DynamicProgramming {
 		System.out.println("The max sum of non adjancent elements is: "
 				+ maxSumOfNonAdjacentElements(maxSumOfNonAdjacentElements, maxSumOfNonAdjacentElements.length - 1));
 
+		int nthStair = 3;
+		System.out.println("No of ways reaching nth stair is: " + noOfWaysToReachGivenNumberOfSteps(nthStair));
 	}
 
 	// https://www.geeksforgeeks.org/gold-mine-problem/
@@ -393,6 +395,23 @@ public class DynamicProgramming {
 		}
 	}
 
+	// https://www.geeksforgeeks.org/count-ways-reach-nth-stair-using-step-1-2-3/
+	// try to print those possible paths also - imp
+	public static int noOfWaysToReachGivenNumberOfSteps(int totalSteps) {
+		if (totalSteps == 0)
+			return 0;
+		else if (totalSteps == 1)
+			return 1;
+		else if (totalSteps == 2)
+			return 2;
+		else if (totalSteps == 3)
+			return 4;
+		else
+			return noOfWaysToReachGivenNumberOfSteps(totalSteps - 1) + noOfWaysToReachGivenNumberOfSteps(totalSteps - 2)
+					+ noOfWaysToReachGivenNumberOfSteps(totalSteps - 3);
+
+	}
+
 	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
 	public static void printPermutations() {
 
@@ -401,9 +420,15 @@ public class DynamicProgramming {
 	public static void fibonacciNumbers() {
 
 	}
-	
+
 	public static void knightsProblem() {
-		
+
+	}
+
+	// https://www.geeksforgeeks.org/find-minimum-moves-reach-target-infinite-line/
+	// -- imp
+	public static void infineteLineProblem() {
+
 	}
 
 	/**

@@ -64,6 +64,27 @@ public class MyString {
 		System.out.println("Lexographically first palindrome of the given strings is:"
 				+ lexographicallyFirstPalindrome(lexographicallyFirstPalindromeString));
 
+		String firstNonRepeatingCharacter = "iijjkkllmm";
+		System.out.println(
+				"The first non repeating character is: " + getFirstNonRepeatingCharacter(firstNonRepeatingCharacter));
+	}
+
+	// other approach would be to use hashmap
+	public static char getFirstNonRepeatingCharacter(String input) {
+		int length = input.length();
+		for (int i = 0; i < length; i++) {
+			if (i == 0 && input.charAt(0) != input.charAt(1)) {
+				return input.charAt(0);
+			} else if (i == length - 1 && input.charAt(length - 1) != input.charAt(length - 2)) {
+				return input.charAt(length - 1);
+			}
+			if ((i > 0 && input.charAt(i) != input.charAt(i - 1))
+					&& (i < length - 1 && input.charAt(i) != input.charAt(i + 1))) {
+				return input.charAt(i);
+			}
+		}
+		return (char) 48;
+
 	}
 
 	// doesn't scale for large strings
@@ -321,6 +342,7 @@ public class MyString {
 
 	}
 
+	// https://www.geeksforgeeks.org/largest-palindromic-number-permuting-digits/
 	public static String lexographicallyFirstPalindrome(String input) {
 		Map<Integer, Integer> freqMap = new LinkedHashMap<>();
 		boolean isPalindoromePossible = checkIfPalindromePossible(input, freqMap);
@@ -388,6 +410,19 @@ public class MyString {
 
 	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
 	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
+
+	}
+
+	public void printAllPossiblePalindromicSubStrings() {
+
+	}
+
+	// https://stackoverflow.com/questions/35918762/make-the-all-of-combination-from-palindrome
+	public void printAllPossiblePalindromesForGivenString(String input) {
+
+	}
+
+	public static void dictionaryProblemWithDiffOrder() {
 
 	}
 
