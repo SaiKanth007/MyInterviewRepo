@@ -6,6 +6,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import src.Utilities.JavaUtility;
+
 /**
  */
 // https://practice.geeksforgeeks.org/explore/?category%5B%5D=Linked+List&problemType=functional&difficulty%5B%5D=1&difficulty%5B%5D=2&page=1
@@ -67,7 +69,7 @@ public class MyLinkedList {
 
 	public static void main(String[] args) {
 
-		final MyLinkedList LL = new MyLinkedList(new Node(3));
+		final MyLinkedList LL = JavaUtility.prepareLinkedListForGivenData("3,4,5,6,7,8,9,10");
 		LL.addNode(4);
 		LL.addNode(5);
 		LL.addNode(6);
@@ -85,70 +87,35 @@ public class MyLinkedList {
 		System.out.println("List after rotating is");
 		LL.printLL(LL.rotateLinkedList(LL.head, 2));
 
-		final MyLinkedList sumLL1 = new MyLinkedList(new Node(8));
-		sumLL1.addNode(4);
-		sumLL1.addNode(5);
-		final MyLinkedList sumLL2 = new MyLinkedList(new Node(2));
-		sumLL2.addNode(4);
-		sumLL2.addNode(9);
-		sumLL2.addNode(9);
-		sumLL2.addNode(2);
-		sumLL2.addNode(5);
-		sumLL2.addNode(-1);
+		final MyLinkedList sumLL1 = JavaUtility.prepareLinkedListForGivenData("8,4,5");
+		final MyLinkedList sumLL2 = JavaUtility.prepareLinkedListForGivenData("2,3,9,9,2,5,-1");
 		System.out.println("The sum of the two linked list are");
 		printLL(addTwoLinkedList(sumLL1.head, sumLL2.head));
 		final Node result = mergeSort(sumLL2.head);
 		System.out.println("The linked list after merge sort is:");
 		printLL(result);
 
-		final MyLinkedList llForDuplicates = new MyLinkedList(new Node(4));
-		llForDuplicates.addNode(4);
-		llForDuplicates.addNode(5);
-		llForDuplicates.addNode(8);
-		llForDuplicates.addNode(5);
-		llForDuplicates.addNode(6);
-		llForDuplicates.addNode(8);
+		final MyLinkedList llForDuplicates = JavaUtility.prepareLinkedListForGivenData("4,4,5,8,5,6,8");
 		llForDuplicates.removeDuplicatesFromLinkedList();
 		System.out.println("Members of linked list after removing duplicates");
 		llForDuplicates.printLL();
 
-		final MyLinkedList llForGroupingOddAndEvenNodes = new MyLinkedList(new Node(1));
-		llForGroupingOddAndEvenNodes.addNode(2);
-		llForGroupingOddAndEvenNodes.addNode(3);
-		llForGroupingOddAndEvenNodes.addNode(4);
-		llForGroupingOddAndEvenNodes.addNode(5);
-		llForGroupingOddAndEvenNodes.addNode(6);
+		final MyLinkedList llForGroupingOddAndEvenNodes = JavaUtility.prepareLinkedListForGivenData("1,2,3,4,5,6");
 		llForGroupingOddAndEvenNodes.groupOddAndEvenNodes(llForGroupingOddAndEvenNodes.head);
 		System.out.println("Members of linked list after grouping odd and even nodes");
 		llForGroupingOddAndEvenNodes.printLL();
 
-		final MyLinkedList orderedllForDuplicates = new MyLinkedList(new Node(11));
-		orderedllForDuplicates.addNode(11);
-		orderedllForDuplicates.addNode(11);
-		orderedllForDuplicates.addNode(21);
-		orderedllForDuplicates.addNode(43);
-		orderedllForDuplicates.addNode(43);
+		final MyLinkedList orderedllForDuplicates = JavaUtility.prepareLinkedListForGivenData("11,11,11,21,43,43");
 		orderedllForDuplicates.removeDuplicatesFromOrderLinkedList();
 		orderedllForDuplicates.printLL();
 
-		final MyLinkedList llForRotateInGroups = new MyLinkedList(new Node(10));
-		llForRotateInGroups.addNode(20);
-		llForRotateInGroups.addNode(30);
-		llForRotateInGroups.addNode(40);
-		llForRotateInGroups.addNode(50);
-		llForRotateInGroups.addNode(60);
+		final MyLinkedList llForRotateInGroups = JavaUtility.prepareLinkedListForGivenData("10,20,30,40,50,60");
 		llForRotateInGroups.printLL();
 		System.out.println("List after rotating in groups of 2");
 		printLL(llForRotateInGroups.reverseLLInGroups(llForRotateInGroups.head, 2));
 		llForRotateInGroups.printLL();
 
-		final MyLinkedList llForNthNodeFromEnd = new MyLinkedList(new Node(10));
-		llForNthNodeFromEnd.addNode(20);
-		llForNthNodeFromEnd.addNode(30);
-		llForNthNodeFromEnd.addNode(40);
-		llForNthNodeFromEnd.addNode(50);
-		llForNthNodeFromEnd.addNode(60);
-		llForNthNodeFromEnd.addNode(70);
+		final MyLinkedList llForNthNodeFromEnd = JavaUtility.prepareLinkedListForGivenData("10,20,30,40,50,60,70");
 		System.out.println("Nth node from end of the given linked list is: ");
 		System.out.println(llForNthNodeFromEnd.findNthNodeFromEnd(llForNthNodeFromEnd.head, 3).data);
 		System.out.println("Middle node of the given linked list is: ");
@@ -157,37 +124,20 @@ public class MyLinkedList {
 		// printLL(mergeTwoSortedLinkedLists(orderedllForDuplicates.head,
 		// llForNthNodeFromEnd.head));
 
-		final MyLinkedList llForNSortedLists = new MyLinkedList(new Node(-1));
-		llForNSortedLists.addNode(2);
-		llForNSortedLists.addNode(15);
-		llForNSortedLists.addNode(16);
-		llForNSortedLists.addNode(55);
-		llForNSortedLists.addNode(87);
-
+		final MyLinkedList llForNSortedLists = JavaUtility.prepareLinkedListForGivenData("-1,2,15,16,55,87");
 		final Node[] nSortedArray = { llForNthNodeFromEnd.head, llForNSortedLists.head, orderedllForDuplicates.head };
 		System.out.println("After merging the three sorted linked lists");
 		printLL(mergeNSortedLists(nSortedArray, 0, 2));
 
-		final MyLinkedList llForIntersecting = new MyLinkedList(new Node(10));
-		llForIntersecting.addNode(20);
-		llForIntersecting.addNode(30);
-		llForIntersecting.addNode(40);
-		llForIntersecting.addNode(50);
-		llForIntersecting.addNode(60);
-		final MyLinkedList llForIntersecting2 = new MyLinkedList(new Node(80));
-		llForIntersecting2.addNode(50);
-		llForIntersecting2.addNode(60);
+		final MyLinkedList llForIntersecting = JavaUtility.prepareLinkedListForGivenData("10,20,30,40,50,60");
+		final MyLinkedList llForIntersecting2 = JavaUtility.prepareLinkedListForGivenData("80,50,60");
 		llForIntersecting2.head.next.next.next = llForIntersecting.head.next.next;
 		final Node intersectingNode = findIntersectingNode(llForIntersecting.head, llForIntersecting2.head);
 		if (intersectingNode != null) {
 			System.out.println("The intersecing node is: " + intersectingNode.data);
 		}
-		final MyLinkedList llForFindingLoop = new MyLinkedList(new Node(10));
-		llForFindingLoop.addNode(20);
-		llForFindingLoop.addNode(30);
-		llForFindingLoop.addNode(40);
-		llForFindingLoop.addNode(50);
-		llForFindingLoop.addNode(60);
+
+		final MyLinkedList llForFindingLoop = JavaUtility.prepareLinkedListForGivenData("10,20,30,40,50,60");
 		llForFindingLoop.head.next.next.next.next.next.next = llForFindingLoop.head.next.next;
 		System.out.println("There is a loop present in the LL : " + checkLoopInLL(llForFindingLoop.head));
 		Node loopNode = findLoopNode(llForFindingLoop.head);
@@ -196,6 +146,10 @@ public class MyLinkedList {
 		} else {
 			System.out.println("There is no loop node persent");
 		}
+
+		final MyLinkedList findFractionOfLinkedList = JavaUtility.prepareLinkedListForGivenData("2,7,9,3,5");
+		System.out.println(
+				"n/kth node of the given list is: " + findFractionOfLinkedList(findFractionOfLinkedList.head, 3).data);
 	}
 
 	public Node reverseLL(Node pRoot) {
@@ -610,6 +564,28 @@ public class MyLinkedList {
 		}
 		first.next = temp2;
 		return temp;
+	}
+
+	// https://www.geeksforgeeks.org/find-fractional-nk-th-node-linked-list/
+	// working
+	public static Node findFractionOfLinkedList(Node head, int k) {
+		if (k <= 0 || head == null)
+			return null;
+		Node slow = head;
+		Node fast = head;
+		int count = 0;
+		while (slow != null && fast != null) {
+			count = 0;
+			while (fast != null && count != k) {
+				fast = fast.next;
+				count++;
+			}
+			if (fast == null) {
+				break;
+			}
+			slow = slow.next;
+		}
+		return slow;
 	}
 
 	public static void LLToBST(Node head) {

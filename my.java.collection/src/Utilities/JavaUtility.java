@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import src.MyLinkedList;
+import src.MyLinkedList.Node;
 import src.Others.SingleTon;
 
 public class JavaUtility {
@@ -119,6 +121,15 @@ public class JavaUtility {
 		map.put((int) 'D', 500);
 		map.put((int) 'M', 1000);
 		return map;
+	}
+
+	public static MyLinkedList prepareLinkedListForGivenData(String input) {
+		String[] inputs = input.split(",");
+		final MyLinkedList linkedList = new MyLinkedList(new Node(Integer.parseInt(inputs[0])));
+		for (int i = 1; i < inputs.length; i++) {
+			linkedList.addNode(Integer.parseInt(inputs[i]));
+		}
+		return linkedList;
 	}
 
 	public static void reverseArray(int[] array) {

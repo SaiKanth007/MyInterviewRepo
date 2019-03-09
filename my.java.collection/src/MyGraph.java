@@ -5,12 +5,15 @@ import java.util.Objects;
 import java.util.Queue;
 
 //djikstra's algorithm, Prims algorithm, minimum spanning tree
+//https://stackoverflow.com/questions/2218322/what-is-better-adjacency-lists-or-adjacency-matrices-for-graph-problems-in-c
 public class MyGraph {
 	int noOfVertices;
 	LinkedList<Integer>[] adjacencyMatrix;
 
 	public MyGraph(int pNoOfVertices) {
 		this.noOfVertices = pNoOfVertices;
+		// size of the adjacency matrix is pNoOfVertices and not pNoOfVertices-1,
+		// because it can also point to itself
 		adjacencyMatrix = new LinkedList[pNoOfVertices];
 	}
 
@@ -51,12 +54,25 @@ public class MyGraph {
 		visited = new boolean[graph.noOfVertices];
 		graph.topologicalSort(5, visited);
 
-		MyGraph undirectedGraph = new MyGraph(6);
-		undirectedGraph.addEdge(1, 2);
-		undirectedGraph.addEdge(2, 3);
-		undirectedGraph.addEdge(3, 1);
+		MyGraph directedGraph = new MyGraph(6);
+		directedGraph.addEdge(1, 2);
+		directedGraph.addEdge(2, 0);
+		directedGraph.addEdge(1, 0);
+		directedGraph.addEdge(3, 0);
+		directedGraph.addEdge(0, 4);
 
-		System.out.println("Given graph is cyclic:" + !undirectedGraph.canFinishDFS());
+		System.out.println("Cycle is present in the graph:" + directedGraph.isCyclePresentForDirectedGraph());
+
+		MyGraph undirectedGraph = new MyGraph(6);
+		undirectedGraph.addTwoSideEdge(1, 2);
+		undirectedGraph.addTwoSideEdge(1, 0);
+		undirectedGraph.addTwoSideEdge(0, 3);
+		undirectedGraph.addTwoSideEdge(2, 3);
+		undirectedGraph.addTwoSideEdge(3, 4);
+
+		System.out.println(
+				"Cycle is present in the undirected graph:" + undirectedGraph.isCyclePresentForUnDirectedGraph());
+
 	}
 
 	public void BFS(Integer startVertex) {
@@ -103,36 +119,69 @@ public class MyGraph {
 
 	}
 
-	// can also be used for detecting cycle in a graph
-	public boolean canFinishDFS() {
+	// can also be used for detecting cycle in a directed graph
+	// https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
+	public boolean isCyclePresentForDirectedGraph() {
 		int visited[] = new int[this.noOfVertices];
 		for (int i = 0; i < this.noOfVertices; i++) {
-			if (!canFinishDFS(i, visited))
-				return false;
+			if (visited[i] != 1)
+				if (isCyclePresentForDirectedGraph(i, visited))
+					return true;
 		}
-		return true;
-
+		return false;
 	}
 
-	public boolean canFinishDFS(Integer startVertex, int[] visited) {
+	public boolean isCyclePresentForDirectedGraph(Integer startVertex, int[] visited) {
 		if (startVertex >= this.noOfVertices)
 			return false;
 		else {
 			if (visited[startVertex] == -1)
-				return false;
-			else if (visited[startVertex] == 1)
 				return true;
+			else if (visited[startVertex] == 1)
+				return false;
 
 			visited[startVertex] = -1;
 			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
 			if (Objects.nonNull(adjList))
 				for (Integer vertex : adjList) {
-					if (!canFinishDFS(vertex, visited)) {
-						return false;
+					if (isCyclePresentForDirectedGraph(vertex, visited)) {
+						return true;
 					}
 				}
 			visited[startVertex] = 1;
-			return true;
+			return false;
+		}
+	}
+
+	// https://www.geeksforgeeks.org/detect-cycle-undirected-graph/
+	// working
+	public boolean isCyclePresentForUnDirectedGraph() {
+		boolean visited[] = new boolean[this.noOfVertices];
+		for (int i = 0; i < this.noOfVertices; i++) {
+			if (!visited[i])
+				if (isCyclePresentForUnDirectedGraph(i, visited, -1))
+					return true;
+		}
+		return false;
+	}
+
+	public boolean isCyclePresentForUnDirectedGraph(Integer startVertex, boolean[] visited, int parent) {
+		if (startVertex >= this.noOfVertices)
+			return false;
+		else {
+			visited[startVertex] = true;
+			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
+			if (Objects.nonNull(adjList))
+				for (Integer vertex : adjList) {
+					if (!visited[vertex]) {
+						if (isCyclePresentForUnDirectedGraph(vertex, visited, startVertex)) {
+							return true;
+						}
+					} else if (vertex != parent) {
+						return true;
+					}
+				}
+			return false;
 		}
 
 	}

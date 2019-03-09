@@ -96,7 +96,7 @@ public class MyStack {
 		else {
 			char[] inputArray = input.toCharArray();
 			int length = input.length();
-			Stack stack = new Stack();
+			Stack<Character> stack = new Stack<Character>();
 			for (int index = 0; index < length; index++) {
 
 				char currentElement = inputArray[index];
@@ -174,7 +174,7 @@ public class MyStack {
 	// [4, 5, 2, 25},
 	// working (also we can try using queue for maintaining order)
 	public static void printNextGreatestElement(int[] input) {
-		Stack<IndexValue> stack = new Stack();
+		Stack<IndexValue> stack = new Stack<IndexValue>();
 		List<IndexValue> result = new ArrayList<IndexValue>();
 
 		// creating the comparator on the fly using Java8,
@@ -307,13 +307,13 @@ public class MyStack {
 	// https://www.geeksforgeeks.org/stack-set-2-infix-to-postfix/
 	// working
 	public static String infixToPostFix(String exp) {
-		Map<String, Integer> priorityMap = new HashMap();
-		priorityMap.put("-", 1);
-		priorityMap.put("+", 2);
-		priorityMap.put("*", 3);
-		priorityMap.put("/", 4);
-		priorityMap.put("^", 5);
-		Stack stack = new Stack();
+		Map<Character, Integer> priorityMap = new HashMap();
+		priorityMap.put('-', 1);
+		priorityMap.put('+', 2);
+		priorityMap.put('*', 3);
+		priorityMap.put('/', 4);
+		priorityMap.put('^', 5);
+		Stack<Character> stack = new Stack<Character>();
 		char prevElement = ' ';
 		StringBuilder result = new StringBuilder();
 		char[] array = exp.toCharArray();
@@ -339,11 +339,10 @@ public class MyStack {
 					prevElement = (char) stack.peek();
 					if (prevElement == '(')
 						stack.push(array[i]);
-					else if (priorityMap.get(String.valueOf(array[i])) > priorityMap.get(String.valueOf(prevElement))) {
+					else if (priorityMap.get(array[i]) > priorityMap.get(prevElement)) {
 						stack.push(array[i]);
 					} else {
-						while (prevElement != '(' && priorityMap.get(String.valueOf(array[i])) < priorityMap
-								.get(String.valueOf(prevElement))) {
+						while (prevElement != '(' && priorityMap.get(array[i]) < priorityMap.get(prevElement)) {
 							result = result.append(stack.pop());
 							if (stack.isEmpty())
 								break;
@@ -367,7 +366,7 @@ public class MyStack {
 		StringBuilder sb = new StringBuilder();
 		char[] array = exp.toCharArray();
 		int length = exp.length();
-		Stack stack = new Stack();
+		Stack<String> stack = new Stack<String>();
 		for (int index = length - 1; index >= 0; index--) {
 			String element = String.valueOf(array[index]);
 			if ("+".equals(element) || "-".equals(element) || "*".equals(element) || "/".equals(element)
@@ -399,16 +398,15 @@ public class MyStack {
 	// yet to check
 	// https://www.geeksforgeeks.org/expression-evaluation/
 	public static Integer evaluateInfixExpression(String input) {
-		Map<String, Integer> priorityMap = new HashMap();
+		Map<String, Integer> priorityMap = new HashMap<String, Integer>();
 		priorityMap.put("-", 1);
 		priorityMap.put("+", 2);
 		priorityMap.put("*", 3);
 		priorityMap.put("/", 4);
 		priorityMap.put("^", 5);
-		Stack stack = new Stack();
+		Stack<Integer> stack = new Stack<Integer>();
 		char[] array = input.toCharArray();
 		int length = array.length;
-		Integer result = 0;
 		int a = 0, b = 0;
 		for (int i = 0; i < length; i++) {
 			char element = array[i];
@@ -421,15 +419,15 @@ public class MyStack {
 				}
 				a = (int) stack.pop();
 				b = (int) stack.pop();
-				if ("+".equals(element)) {
+				if ('+' == element) {
 					stack.push(a + b);
-				} else if ("-".equals(element)) {
+				} else if ('-' == element) {
 					stack.push(b - a);
-				} else if ("*".equals(element)) {
+				} else if ('*' == element) {
 					stack.push(b * a);
-				} else if ("/".equals(element)) {
+				} else if ('/' == element) {
 					stack.push(b / a);
-				} else if ("^".equals(element)) {
+				} else if ('^' == element) {
 					stack.push(b ^ a);
 				}
 

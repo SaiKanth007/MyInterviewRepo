@@ -1,9 +1,12 @@
 package src;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +64,7 @@ public class MyTree {
 		tree1.root.left.right.left = new Node(9);
 		tree1.root.left.right.right = new Node(2);
 		tree1.root.left.right.left.right = new Node(10);
+		tree1.root.left.right.left.right.right = new Node(11);
 		tree1.root.right = new Node(7);
 		tree1.root.right.right = new Node(3);
 		tree1.root.right.left = new Node(1);
@@ -92,6 +96,9 @@ public class MyTree {
 
 		printDiagonalTraversalOfTree(tree1.root);
 
+		System.out.println("The depth wise traversal of the tree is:");
+		printTreeDepthWise(tree1.root);
+
 		// views
 		int depthCoveredTillNow = -1;
 		int currentDepth = 0;
@@ -117,18 +124,10 @@ public class MyTree {
 		System.out.println("The Height of the tree is: " + printHeightOfTree(tree1.root));
 		System.out.println();
 
-		System.out.println("The distance between the given nodes is ");
-		printDistanceBetweenTwoNodes(tree1.root, tree1.root.left.right.left.right);
-		System.out.println();
-
 		System.out.println("The ancestors of the the given node are: ");
 		printAncestorsOfNode(tree1.root, tree1.root.left.right.left.right);
 		System.out.println("The ancestors of the the given node without recursion are: ");
 		printAncestorsOfNodeWithoutRecursion(tree1.root, tree1.root.left.right.left.right);
-		System.out.println();
-
-		System.out.println("The common ancestors for the the given nodes are: ");
-		printCommonAncestorsOfNodes(tree1.root, tree1.root.left.right.left.right, new Node(10));
 		System.out.println();
 
 		System.out.println("The first common ancestor for the the given nodes is: ");
@@ -147,8 +146,9 @@ public class MyTree {
 		System.out.println("Trees are identical " + checkIfTreesAreMirrorImages(tree1.root, tree1.root));
 
 		System.out.println("Sum of all nodes in a tree are:" + findSumOfAllNodes(tree1.root));
-		System.out.println("Sum of all nodes along longest path in a tree are:"
-				+ findSumAlongLongestPath(tree1.root, new Storage()));
+		Storage sum = new Storage();
+		findSumAlongLongestPath(tree1.root, sum);
+		System.out.println("Sum of all nodes along longest path in a tree are:" + sum.value);
 
 		List<Node> nodes = new ArrayList();
 		printPathToNode(tree1.root, tree1.root.left.right.right, nodes);
@@ -467,6 +467,7 @@ public class MyTree {
 
 	}
 
+	// https://www.geeksforgeeks.org/print-binary-tree-vertical-order-set-2/
 	public static void printVerticalViewOfTheTree(Node root) {
 		if (root != null) {
 		}
@@ -536,6 +537,8 @@ public class MyTree {
 
 	// also try without recursion
 	// working
+	// same approach can be used for finding common ancestors of multiple nodes
+	// (s1.retainAll(s2))
 	public static void printAncestorsOfNodeWithoutRecursion(Node root, Node node) {
 		if (root != null) {
 			Map<Node, Node> childParentMap = new HashMap<Node, Node>();
@@ -561,30 +564,6 @@ public class MyTree {
 			}
 		}
 
-	}
-
-	// use the above approach to do it without recursion
-	public static boolean printCommonAncestorsOfNodes(Node root, Node firstRoot, Node secondRoot) {
-
-		if (root == null || firstRoot == null || secondRoot == null) {
-			return false;
-		} else {
-			if (root.data == firstRoot.data || root.data == secondRoot.data) {
-				return true;
-			}
-			boolean matchFoundOnRight = printCommonAncestorsOfNodes(root.right, firstRoot, secondRoot);
-			boolean matchFoundOnLeft = printCommonAncestorsOfNodes(root.left, firstRoot, secondRoot);
-			if (matchFoundOnRight && matchFoundOnLeft) {
-				System.out.println(root.data);
-				return true;
-			} else if (matchFoundOnRight) {
-				return printCommonAncestorsOfNodes(root.right, firstRoot, secondRoot);
-			} else if (matchFoundOnLeft) {
-				return printCommonAncestorsOfNodes(root.left, firstRoot, secondRoot);
-			} else {
-				return false;
-			}
-		}
 	}
 
 	// https://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/
@@ -646,6 +625,8 @@ public class MyTree {
 	// https://www.geeksforgeeks.org/sum-nodes-longest-path-root-leaf-node/
 	// check for other related questions in the recommended posts section
 	// working
+	// should check again
+	// check for sum along longest path and path with largest sum
 	public static int findSumAlongLongestPath(Node root, Storage sum) {
 		if (root == null)
 			return 0;
@@ -663,7 +644,7 @@ public class MyTree {
 		else
 			sum.value = sum.value + root.data + (leftHeight > rightHeight ? leftSum.value : rightSum.value);
 
-		return sum.value;
+		return 1 + Math.max(leftHeight, rightHeight);
 
 	}
 
@@ -695,7 +676,7 @@ public class MyTree {
 	// https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
 	// https://www.geeksforgeeks.org/sort-the-path-from-root-to-a-given-node-in-a-binary-tree/
 	public static void printNodesAtGivenDistanceFromAGivenNode(Node root, Node node, int distance) {
-		int distanceOfGiveNodeFromRoot = printDistanceBetweenTwoNodes(root, node);
+		int distanceOfGiveNodeFromRoot = printDistanceFromRoot(root, node);
 		Boolean nodePresentOnLeft = checkIfGivenNodeIsPresent(root.left, node);
 		if (distance < distanceOfGiveNodeFromRoot) {
 			// print nodes at distance of distanceOfGiveNodeFromRoot-distance from root in
@@ -722,9 +703,8 @@ public class MyTree {
 	}
 
 	// working
-	// will not work, if the parameters are interchanged or if both nodes are on
-	// either side of the tree
-	public static int printDistanceBetweenTwoNodes(Node root, Node node) {
+	// also check for distance between nodes
+	public static int printDistanceFromRoot(Node root, Node node) {
 		Storage distance = new Storage();
 		printDistanceOfGivenNodeFromRoot(root, node, distance);
 		return distance.value;
@@ -768,9 +748,7 @@ public class MyTree {
 	public static boolean checkIfGivenNodeIsPresent(Node root, Node node) {
 		if (root == null)
 			return false;
-		if (node == null)
-			return true;
-		if (node == root)
+		if (node == null || node == root)
 			return true;
 		return checkIfGivenNodeIsPresent(root.right, node) || checkIfGivenNodeIsPresent(root.left, node);
 	}
@@ -906,6 +884,39 @@ public class MyTree {
 		}
 		prev = root;
 		convertTreeToLinkedList(root.right);
+	}
+
+	// working
+	public static void printTreeDepthWise(Node root) {
+		if (root != null) {
+			Map<Integer, LinkedList<Integer>> depthMap = new HashMap<>();
+			printTreeDepthWise(root, depthMap);
+			depthMap = depthMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(
+					Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+			for (Map.Entry<Integer, LinkedList<Integer>> entry : depthMap.entrySet()) {
+				entry.getValue().stream().forEach(item -> System.out.print(item + " "));
+				System.out.println();
+			}
+		}
+	}
+
+	public static int printTreeDepthWise(Node root, Map<Integer, LinkedList<Integer>> depthMap) {
+		if (root == null)
+			return 0;
+		else {
+			int leftDepth = printTreeDepthWise(root.left, depthMap);
+			int rightDepth = printTreeDepthWise(root.right, depthMap);
+			int max = Math.max(leftDepth, rightDepth);
+			if (depthMap.containsKey(max + 1)) {
+				depthMap.get(max + 1).add(root.data);
+			} else {
+				LinkedList<Integer> nodesAtDepth = new LinkedList();
+				nodesAtDepth.add(root.data);
+				depthMap.put(max + 1, nodesAtDepth);
+			}
+			return max + 1;
+
+		}
 	}
 
 	/***

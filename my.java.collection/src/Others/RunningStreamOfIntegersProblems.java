@@ -1,11 +1,14 @@
 package src.Others;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 import src.Utilities.JavaUtility;
 
-public class MedianFromRunningStreamOfIntegers {
+public class RunningStreamOfIntegersProblems {
 
 	public static int[] leftArray = new int[100];
 	public static int leftArrayLength = 0;
@@ -33,6 +36,8 @@ public class MedianFromRunningStreamOfIntegers {
 			System.out.print(
 					nThGreatestInRunningStreamOfIntegers(minQueueForNthMax, runningStreamOfIntegers[i], 4) + " ");
 		}
+
+		findFirstNonRepeatingCharacter();
 
 	}
 
@@ -126,5 +131,26 @@ public class MedianFromRunningStreamOfIntegers {
 			minQueue.poll();
 		}
 		return (int) minQueue.peek();
+	}
+
+	// https://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
+	public static void findFirstNonRepeatingCharacter() {
+
+		boolean[] appearedAlready = new boolean[256];
+		String stream = "geeksforgeeksandgeeksquizfor";
+		// can also be done using a linked hashmap
+		List<Character> nodes = new LinkedList<>();
+		int length = stream.length();
+		for (int index = 0; index < length; index++) {
+			Character currentChar = stream.charAt(index);
+			if (appearedAlready[(int) currentChar]) {
+				nodes.remove(currentChar);
+			} else {
+				appearedAlready[(int) currentChar] = true;
+				nodes.add(currentChar);
+			}
+			if (!nodes.isEmpty())
+				System.out.println("The first repeatring character till " + index + " th element is" + nodes.get(0));
+		}
 	}
 }

@@ -19,7 +19,7 @@ class Testing {
 		String input = "011100";
 		System.out.println(findLengthOfLargestSubString(input, input.length()));
 		System.out.println(findLengthOfLargestSubString2(input, input.length()));
-
+        System.out.println("Integer.MAX_VALUE+1 is " + (Integer.MAX_VALUE+1));
 		System.out.println("The log value of the given number is:" + Math.log10(105));
 
 		int[] array = { 10, 2, 3, 14, 12 };
@@ -29,10 +29,13 @@ class Testing {
 		List<String> strings = new ArrayList();
 		strings.add("sai");
 		strings.add("kanth");
+		strings.add("Joey");
 		Iterator<String> it = strings.iterator();
 		while (it.hasNext()) {
 			if (it.next() == "sai") {
-				it.remove();
+				// strings.remove(1); // here if we try to remove/add it will throw exception
+				// in the beggining of the next iteration
+				it.remove(); // safe to do it
 				System.out.println("String removed");
 				System.out.println("String at length 0 is: " + strings.get(0));
 			}

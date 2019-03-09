@@ -79,7 +79,7 @@ public class MyArray {
 		System.out.println(
 				"Maximum value of contigious sub arrays is:" + findLargetSumContiguousArray(maxSumContigiousArray));
 
-		final int[] maxSumContigiousIncreasingArray = { -2, -3, 4, -1, -2, 1, 5, -3 };
+		final int[] maxSumContigiousIncreasingArray = { -2, -3, 4, -1, -2, 1, 5, -3, 8 };
 		System.out.println("Maximum value of increasing contigious sub arrays is:"
 				+ findLargetSumContiguousIncreasingArray(maxSumContigiousIncreasingArray));
 
@@ -114,6 +114,9 @@ public class MyArray {
 		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
 		System.out.println("The mimimum size of the array that is to be sorted is :"
 				+ minArrayLengthToMakeArraySorted(minArrayLengthToMakeArraySorted));
+
+		final int[] sortAlmostedSortedArray = { 2, 2, 2, 2, 0 };
+		sortAlmostedSortedArray(sortAlmostedSortedArray);
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -214,6 +217,7 @@ public class MyArray {
 	}
 
 	// other appraoch is to use minHeap and constructing the minheap for k elements
+	// https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
 	public static int findKthSmallestElement(int[] array, int kthSmallest) {
 		final int length = array.length;
 		int lowerIndex = 0;
@@ -234,17 +238,7 @@ public class MyArray {
 	// yet to be done
 	public static void findKthLargestElementUsingMaxHeap(int[] input, int kthSmallest) {
 		final int length = input.length;
-
-		// this logic is basically for constructing the heap, takes O(n/2 * log(N) time
-		// complexity)
-		for (int i = length / 2 - 1; i >= 0; i--) {
-			heapify(input, i, length);
-		}
-
-		for (int i = 0; i < kthSmallest; i++) {
-			JavaUtility.swap(input, 0, i);
-			heapify(input, 0, i);
-		}
+		//
 	}
 
 	// also do this, once heap sort is done
@@ -378,7 +372,7 @@ public class MyArray {
 	}
 
 	// https://www.geeksforgeeks.org/largest-sum-contiguous-increasing-subarray/
-	// Does not work if negative numbers are present
+	// working for negative numbers also need to check for more cases
 	public static Integer findLargetSumContiguousIncreasingArray(int[] array) {
 		int localSumStartIndex = 0;
 		int globalSumStartIndex = 0;
@@ -394,11 +388,22 @@ public class MyArray {
 				}
 				localSumStartIndex = i;
 				localSum = array[i];
-
 			} else {
 				localSum = localSum + array[i];
 			}
+
+			if (localSum < 0) {
+				localSum = 0;
+				localSumStartIndex++;
+			}
 		}
+
+		if (localSum > globalSum) {
+			globalSum = localSum;
+			globalSumStartIndex = localSumStartIndex;
+			gloablSumEndIndex = array.length - 1;
+		}
+
 		for (int i = globalSumStartIndex; i <= gloablSumEndIndex; i++) {
 			System.out.print(array[i] + " ");
 		}
@@ -629,6 +634,58 @@ public class MyArray {
 		}
 
 		return upperIndex - lowerIndex + 1;
+	}
+
+	// https://www.geeksforgeeks.org/maximum-product-subarray/
+	// contains both positive and negative integers, yet to do
+	public static int findMaxSubArray(int[] array) {
+		int length = array.length;
+		int maxTillNow = 1;
+		int minTillNow = 1;
+		int globalMax = 1;
+		for (int i = 0; i < length; i++) {
+			if (array[i] > 0) {
+				maxTillNow = maxTillNow * array[i];
+				minTillNow = Math.min(minTillNow * array[i], 1);
+			} else if (array[i] == 0) {
+				maxTillNow = 1;
+				minTillNow = 1;
+			} else {
+				int temp = maxTillNow;
+				maxTillNow = Math.max(minTillNow * array[i], 1);
+				minTillNow = temp * array[i];
+			}
+
+			if (maxTillNow > globalMax) {
+				globalMax = maxTillNow;
+			}
+		}
+		return 0;
+	}
+
+	// https://www.geeksforgeeks.org/sort-an-almost-sorted-array-where-only-two-elements-are-swapped/
+	// working
+	public static void sortAlmostedSortedArray(int[] array) {
+		int length = array.length;
+		int leftElementToBeSwapped = -1;
+		int rightElementToBeSwapped = -1;
+		for (int i = 0; i < length - 2; i++) {
+			// "=" check is to cover corner scenario's like [2,2,2,0]
+			if (array[i] >= array[i + 1]) {
+				leftElementToBeSwapped = i;
+				break;
+			}
+		}
+		for (int i = length - 1; i > 0; i--) {
+			if (array[i] <= array[i - 1]) {
+				rightElementToBeSwapped = i;
+				break;
+			}
+		}
+		System.out.println(
+				"Elements to be sorted are " + array[leftElementToBeSwapped] + " " + array[rightElementToBeSwapped]);
+		if (rightElementToBeSwapped != -1 && leftElementToBeSwapped != -1)
+			JavaUtility.swap(array, rightElementToBeSwapped, leftElementToBeSwapped);
 	}
 
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/

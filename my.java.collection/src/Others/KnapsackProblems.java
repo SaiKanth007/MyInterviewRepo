@@ -41,6 +41,8 @@ public class KnapsackProblems {
 	public static boolean checkSubSetWithGivenSum(int[] inputArray, int sum, int index) {
 		if (sum == 0)
 			return true;
+		if (index >= inputArray.length)
+			return false;
 		if (index < 0 && sum != 0)
 			return false;
 		if (inputArray[index] > sum)
@@ -58,6 +60,8 @@ public class KnapsackProblems {
 				return true;
 			return false;
 		}
+		if (index >= inputArray.length)
+			return false;
 		if ((count == 0 || index < 0) && sum != 0)
 			return false;
 
@@ -65,7 +69,6 @@ public class KnapsackProblems {
 			return checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
 		return checkSubSetWithGivenSumAndGivenCount(inputArray, sum - inputArray[index], index - 1, count - 1)
 				|| checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
-
 	}
 
 	// https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/SubsetSum.java

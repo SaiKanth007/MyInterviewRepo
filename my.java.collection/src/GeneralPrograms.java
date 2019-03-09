@@ -14,6 +14,8 @@ import src.Utilities.JavaUtility;
 
 import static java.util.Map.Entry.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -41,8 +43,9 @@ public class GeneralPrograms {
 		store.put(12, 124);
 		store.put(-1, 100);
 		// sort by value using streams
-		store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
-				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+		// store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
+		// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->
+		// e1, LinkedHashMap::new));
 
 		List<Map.Entry<Integer, Integer>> sets = new ArrayList(store.entrySet());
 
@@ -74,6 +77,8 @@ public class GeneralPrograms {
 				return o1.compareTo(o2);
 			}
 		});
+
+		Collections.sort(list, (e1, e2) -> e1.compareTo(e2));
 
 		// no method to remove char at a particular index, we have to manually
 		// split the string into before and after the char and merge it back
@@ -251,6 +256,20 @@ public class GeneralPrograms {
 
 	public static int choclateWrapperProblem(int money, int price, int wrapper) {
 		return 0;
+	}
+
+	public static void sumFile(String name) {
+
+		int total = 0;
+		try (BufferedReader in = new BufferedReader(new FileReader(name))) {
+			for (String s = in.readLine(); s != null; s = in.readLine()) {
+				total += Integer.parseInt(s);
+			}
+			System.out.println(total);
+			in.close();
+		} catch (Exception xc) {
+			xc.printStackTrace();
+		}
 	}
 
 	/**

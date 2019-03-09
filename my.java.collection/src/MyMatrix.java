@@ -26,6 +26,13 @@ public class MyMatrix {
 		// method(bitArray, bitArray.length);
 		findTransposeOfMatrix(mat, 4);
 		JavaUtility.printMatrix(mat, 4, 4);
+
+		int[][] matrixForDiagonalView = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+		printDiagonalViewOfMatrix(matrixForDiagonalView, 3, 3);
+
+		int[][] matrixForMaxOnes = { { 0, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 0 }, { 0, 1, 1, 1 } };
+		System.out.println("Maximum number of ones present in any row is: "
+				+ findRowWithMaximumNumberOfOnes(matrixForMaxOnes, 4, 4));
 	}
 
 	public static boolean findElementInRowAndColumnSortedMatrix(int[][] matrix, int length, int breadth, int key) {
@@ -131,6 +138,9 @@ public class MyMatrix {
 		}
 	}
 
+	// https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
+	// can be achieved by rear and front column swapping and then swappng the mirror
+	// elements
 	public static void rotateMatrixBy90() {
 
 	}
@@ -139,6 +149,44 @@ public class MyMatrix {
 	public static void findRectangleInMatrix(int[][] matrix) {
 
 	}
-	// matrix rotation by 90 degrees
+
+	// https://www.geeksforgeeks.org/find-row-number-binary-matrix-maximum-number-1s/
+	public static int findRowWithMaximumNumberOfOnes(int[][] matrix, int length, int breadth) {
+		int i = 0;
+		int j = breadth - 1;
+		int maxOnesSize = Integer.MIN_VALUE;
+		while (i < length && j >= 0) {
+			if (matrix[i][j] == 1)
+				j--;
+			else {
+				maxOnesSize = Math.max(maxOnesSize, breadth - j - 1);
+				i++;
+			}
+		}
+		return maxOnesSize;
+	}
+
+	// https://www.geeksforgeeks.org/print-matrix-diagonal-pattern/
+	// problem makes sense only for square matrix, so don't think of rectangular
+	// matrix and can be easily modified for diagonal view
+	public static void printDiagonalViewOfMatrix(int[][] matrix, int length, int breadth) {
+		int x = -1;
+		int y = -1;
+		for (int i = 0; i < length + breadth; i++) {
+			if (i < length) {
+				x = 0;
+				y = i;
+			} else {
+				x = i - length + 1;
+				y = length - 1;
+			}
+			for (int j = Math.max(length, breadth); j >= 0
+					&& JavaUtility.checkIfIndexAreValid(x, y, length, breadth); j--) {
+				System.out.print(matrix[x][y] + " ");
+				x++;
+				y--;
+			}
+		}
+	}
 	// https://www.geeksforgeeks.org/find-median-row-wise-sorted-matrix/
 }

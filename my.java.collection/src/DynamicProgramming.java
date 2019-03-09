@@ -27,7 +27,7 @@ public class DynamicProgramming {
 
 		System.out.println("The cost of minimum path matrix is:" + minCostpathInMatrix(minCostMatrix, 3, 3, 0, 0));
 
-		int[][] minStepsToReachEndOfMatrix = { { 0, 0, 1, 1, 1 }, { 1, 1, 1, 0, 1 }, { 1, 0, 0, 0, 0 },
+		int[][] minStepsToReachEndOfMatrix = { { 0, 0, 1, 1, 1 }, { 1, 1, 1, 0, 1 }, { 1, 0, 0, 0, 1 },
 				{ 1, 1, 1, 1, 1 } };
 		boolean[][] visited = new boolean[4][5];
 
@@ -41,12 +41,19 @@ public class DynamicProgramming {
 		int[] coinDenominations = { 86, 7, 43, 67, 6 };
 		System.out.println("Number of coins required for the given sum is:" + minCoinProblem(coinDenominations, 8777));
 
-		int[] maxSumOfNonAdjacentElements = { 1, 0, 3, 9, 2 };
+		int[] maxSumOfNonAdjacentElements = { 1, 0, 3, 9, 2, 10 };
 		System.out.println("The max sum of non adjancent elements is: "
 				+ maxSumOfNonAdjacentElements(maxSumOfNonAdjacentElements, maxSumOfNonAdjacentElements.length - 1));
 
 		int nthStair = 3;
 		System.out.println("No of ways reaching nth stair is: " + noOfWaysToReachGivenNumberOfSteps(nthStair));
+
+		int targetPositionToReach = 9;
+		System.out.println("Minimum no of steps to reach the target:" + infineteLineProblem(targetPositionToReach));
+
+		int[][] matrixForLargestRegion = { { 1, 1, 0, 0, 0 }, { 0, 1, 0, 0, 1 }, { 1, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 },
+				{ 1, 0, 1, 0, 1 } };
+		System.out.println("The length of the largest region is:" + findLargestRegion(matrixForLargestRegion, 5, 5));
 	}
 
 	// https://www.geeksforgeeks.org/gold-mine-problem/
@@ -69,155 +76,12 @@ public class DynamicProgramming {
 		return 0;
 	}
 
-	public static boolean checkSubSetWithGivenSum(int[] inputArray, int sum, int index) {
-		if (sum == 0)
-			return true;
-		if (index < 0 && sum != 0)
-			return false;
-		if (inputArray[index] > sum)
-			return checkSubSetWithGivenSum(inputArray, sum, index - 1);
-		return checkSubSetWithGivenSum(inputArray, sum - inputArray[index], index - 1)
-				|| checkSubSetWithGivenSum(inputArray, sum, index - 1);
-
-	}
-
-	// working
-	public static boolean checkSubSetWithGivenSumAndGivenCount(int[] inputArray, int sum, int index, int count) {
-		if (sum == 0) {
-			if (count == 0)
-				return true;
-			return false;
-		}
-		if ((count == 0 || index < 0) && sum != 0)
-			return false;
-
-		if (inputArray[index] > sum)
-			return checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
-		return checkSubSetWithGivenSumAndGivenCount(inputArray, sum - inputArray[index], index - 1, count - 1)
-				|| checkSubSetWithGivenSumAndGivenCount(inputArray, sum, index - 1, count);
-
-	}
-
-	// https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/SubsetSum.java
-	public static boolean checkSubSetWithGivenSumUsingMatrix(int[] inputArray, int sum, int index) {
-		boolean sumMatrix[][] = new boolean[inputArray.length + 1][sum + 1];
-		for (int i = 0; i <= inputArray.length; i++) {
-			sumMatrix[i][0] = true;
-		}
-		for (int i = 1; i <= inputArray.length; i++) {
-			for (int j = 1; j <= sum; j++) {
-				if (j - inputArray[i - 1] >= 0) {
-					sumMatrix[i][j] = sumMatrix[i - 1][j] || sumMatrix[i - 1][j - inputArray[i - 1]];
-				} else {
-					sumMatrix[i][j] = sumMatrix[i - 1][j];
-				}
-			}
-		}
-		return sumMatrix[inputArray.length][index];
-	}
-
-	// https://www.geeksforgeeks.org/maximum-size-subset-given-sum/
-	public static boolean checkSubSetWithGivenSum(int[] inputArray, int sum, int index, List<Integer> result) {
-		if (sum == 0) {
-			return true;
-		}
-		if (index < 0 && sum != 0)
-			return false;
-		if (inputArray[index] > sum) {
-			List<Integer> tempList = new ArrayList();
-			if (checkSubSetWithGivenSum(inputArray, sum, index - 1, tempList)) {
-				result.addAll(tempList);
-				return true;
-			}
-			return false;
-
-		} else {
-			List<Integer> firstList = new ArrayList();
-			List<Integer> secondList = new ArrayList();
-			Boolean firstResult = checkSubSetWithGivenSum(inputArray, sum - inputArray[index], index - 1, firstList);
-			Boolean secondResult = checkSubSetWithGivenSum(inputArray, sum, index - 1, secondList);
-
-			if (firstResult && secondResult) {
-				// uncomment this out if u do not want minimum numbers to get the required sum
-				if (firstList.size() < secondList.size()) {
-					result.addAll(firstList);
-					if (firstResult && inputArray[index] != 0) {
-						result.add(inputArray[index]);
-					}
-				} else {
-					result.addAll(secondList);
-				}
-			} else if (firstResult) {
-				result.addAll(firstList);
-				if (firstResult && inputArray[index] != 0) {
-					result.add(inputArray[index]);
-				}
-
-			} else if (secondResult) {
-				result.addAll(secondList);
-			}
-			return firstResult || secondResult;
-		}
-
-	}
-
-	// https://www.geeksforgeeks.org/maximum-size-subset-given-sum/
-	// returns sub set of given size for the given sum
-	public static boolean checkSubSetWithGivenSumWithCount(int[] inputArray, int sum, int index, List<Integer> result,
-			int count) {
-		if (sum == 0) {
-			if (count == 0)
-				return true;
-			return false;
-		}
-		if (count == 0 && sum != 0)
-			return false;
-		if (index < 0 && sum != 0)
-			return false;
-		if (inputArray[index] > sum) {
-			List<Integer> tempList = new ArrayList();
-			if (checkSubSetWithGivenSumWithCount(inputArray, sum, index - 1, tempList, count)) {
-				result.addAll(tempList);
-				return true;
-			}
-			return false;
-
-		} else {
-			List<Integer> firstList = new ArrayList();
-			List<Integer> secondList = new ArrayList();
-			Boolean firstResult = checkSubSetWithGivenSumWithCount(inputArray, sum - inputArray[index], index - 1,
-					firstList, count - 1);
-			Boolean secondResult = checkSubSetWithGivenSumWithCount(inputArray, sum, index - 1, secondList, count);
-
-			if (firstResult && secondResult) {
-				// uncomment this out if u do not want minimum numbers to get the required sum
-				if (firstList.size() < secondList.size()) {
-					result.addAll(firstList);
-					if (firstResult && inputArray[index] != 0) {
-						result.add(inputArray[index]);
-					}
-				} else {
-					result.addAll(secondList);
-				}
-			} else if (firstResult) {
-				result.addAll(firstList);
-				if (firstResult && inputArray[index] != 0) {
-					result.add(inputArray[index]);
-				}
-
-			} else if (secondResult) {
-				result.addAll(secondList);
-			}
-			return firstResult || secondResult;
-		}
-	}
-
 	// https://www.geeksforgeeks.org/puzzle-set-35-2-eggs-and-100-floors/
 	public static int solveEggFloorProblem(int noOfFloors, int noOfEggs) {
-		if (noOfEggs == 1 || noOfFloors == 0)
+		if (noOfEggs == 1)
 			return noOfFloors;
-		if (noOfFloors == 1)
-			return 1;
+		if (noOfFloors == 1 || noOfFloors == 0)
+			return noOfFloors;
 		int min = Integer.MAX_VALUE, localmin;
 		for (int i = 1; i < noOfFloors; i++) {
 			localmin = Math.max(solveEggFloorProblem(i - 1, noOfEggs - 1),
@@ -288,24 +152,28 @@ public class DynamicProgramming {
 	// also think of the matrix solution
 	public static int minStepsToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
 			boolean[][] visited) {
-		if (i == length - 1 && j == breadth - 1)
-			return 0;
-		if (JavaUtility.checkIfIndexAreValid(i, j, length, breadth) && grid[i][j] == 1 && !visited[i][j]) {
-			visited[i][j] = true;
-			int localSum = 0;
-			int actualSum = Integer.MAX_VALUE;
-			int[] xvalues = { 1, -1, 0, 0 };
-			int[] yvalues = { 0, 0, 1, -1 };
-			for (int l = 0; l < 4; l++) {
-				localSum = minStepsToReachEndOfMatrix(grid, length, breadth, i + xvalues[l], j + yvalues[l], visited);
-				if (localSum != Integer.MAX_VALUE && localSum < actualSum)
-					actualSum = localSum;
-			}
-			if (actualSum != Integer.MAX_VALUE)
-				return 1 + actualSum;
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth)) {
 			return Integer.MAX_VALUE;
 		} else {
-			return Integer.MAX_VALUE;
+			if (i == length - 1 && j == breadth - 1)
+				return 0;
+			if (grid[i][j] == 1 && !visited[i][j]) {
+				visited[i][j] = true;
+				int localSum = 0;
+				int actualSum = Integer.MAX_VALUE;
+				int[] xvalues = { 1, -1, 0, 0 };
+				int[] yvalues = { 0, 0, 1, -1 };
+				for (int l = 0; l < 4; l++) {
+					localSum = minStepsToReachEndOfMatrix(grid, length, breadth, i + xvalues[l], j + yvalues[l],
+							visited);
+					if (localSum != Integer.MAX_VALUE && localSum < actualSum)
+						actualSum = localSum;
+				}
+				return actualSum != Integer.MAX_VALUE ? 1 + actualSum : Integer.MAX_VALUE;
+			} else {
+				return Integer.MAX_VALUE;
+			}
+
 		}
 	}
 
@@ -319,11 +187,11 @@ public class DynamicProgramming {
 		int localSum = 0;
 		int actualSum = Integer.MAX_VALUE;
 		for (int l = 1; l <= array[currentIndex]; l++) {
-			localSum = 1 + minNoOfSteps(array, currentIndex + l, upperIndex);
+			localSum = minNoOfSteps(array, currentIndex + l, upperIndex);
 			if (localSum < actualSum)
 				actualSum = localSum;
 		}
-		return actualSum;
+		return localSum != Integer.MAX_VALUE ? localSum + 1 : actualSum;
 	}
 
 	// https://practice.geeksforgeeks.org/problems/word-boggle/0
@@ -340,7 +208,6 @@ public class DynamicProgramming {
 
 	// working
 	public static int minCoinProblem(int[] coinValues, int sum, Map<Integer, Integer> map) {
-
 		if (sum == 0)
 			return 0;
 		Integer localCoins = 0;
@@ -427,8 +294,59 @@ public class DynamicProgramming {
 
 	// https://www.geeksforgeeks.org/find-minimum-moves-reach-target-infinite-line/
 	// -- imp
-	public static void infineteLineProblem() {
+	public static int infineteLineProblem(int currentPost, int target, int step) {
+		if (currentPost == target)
+			return step;
+		if (Math.abs(currentPost) > Math.abs(target)) {
+			return Integer.MAX_VALUE;
+		}
+		int leftSteps = infineteLineProblem(currentPost - step - 1, target, step + 1);
+		int rightSteps = infineteLineProblem(currentPost + step + 1, target, step + 1);
+		return Math.min(leftSteps, rightSteps);
+	}
 
+	public static int infineteLineProblem(int target) {
+		// starting from origin and with prev steps =0;
+		return infineteLineProblem(0, target, 0);
+	}
+
+	// // https://www.geeksforgeeks.org/find-length-largest-region-boolean-matrix/
+	// slight variation of the above problem -
+	// https://www.geeksforgeeks.org/find-number-of-islands/
+	public static int findLargestRegion(int[][] matrix, int length, int breadth) {
+		int localMax = Integer.MIN_VALUE;
+		int globalMax = Integer.MIN_VALUE;
+		boolean visited[][];
+		for (int i = 0; i < length; i++) {
+			for (int j = 0; j < breadth; j++) {
+				visited = new boolean[length][breadth];
+				localMax = findLargestRegion(matrix, length, breadth, i, j, visited);
+				globalMax = Math.max(localMax, globalMax);
+			}
+		}
+		return globalMax;
+	}
+
+	public static int findLargestRegion(int[][] matrix, int length, int breadth, int i, int j, boolean[][] visited) {
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth)) {
+			return 0;
+		}
+		if (visited[i][j] || matrix[i][j] == 0) {
+			return 0;
+		}
+		visited[i][j] = true;
+		int sum = 1;
+		int[] xaxis = { -1, -1, -1, 0, 0, 1, 1, 1, };
+		int[] yaxis = { -1, 0, 1, -1, 1, -1, 0, 1 };
+		for (int index = 0; index < 8; index++) {
+			sum = sum + findLargestRegion(matrix, length, breadth, i + xaxis[index], j + yaxis[index], visited);
+		}
+		return sum;
+	}
+
+	// https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
+	public static boolean isRectangularMatrixPresent() {
+		return false;
 	}
 
 	/**
