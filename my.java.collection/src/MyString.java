@@ -70,6 +70,7 @@ public class MyString {
 	}
 
 	// other approach would be to use hashmap
+	// this assumes that the string is sorted
 	public static char getFirstNonRepeatingCharacter(String input) {
 		int length = input.length();
 		for (int i = 0; i < length; i++) {

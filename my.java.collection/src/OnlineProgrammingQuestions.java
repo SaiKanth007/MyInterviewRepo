@@ -112,7 +112,7 @@ public class OnlineProgrammingQuestions {
 
 	// https://mail.google.com/mail/u/0/#inbox/FMfcgxwBVqQBjmCsxFWlcVWnqhjRHbKq
 	// working
-	// this essentially boils down to printing combinations
+	// other approach - this essentially boils down to printing combinations
 	public static void getAllSubSets(int[] array, int index, List storage, Set<List<Integer>> resultSet) {
 
 		if (index < array.length) {

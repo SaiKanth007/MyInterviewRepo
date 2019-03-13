@@ -30,6 +30,7 @@ public class MyBinaryOperators {
 
 	// not working - go thorugh the below link for better approach
 	// https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
+	// use a bucker sort approach
 	public static void findRepeatingAndMissingNumber(int[] array) {
 		int result = 0;
 		final int length = array.length;

@@ -1,5 +1,8 @@
 package src.Others;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class PalindromicProblems {
 
 	public static void main(String[] args) {
@@ -17,6 +20,11 @@ public class PalindromicProblems {
 		String minInsertionsToFormPalindrome = "abcda";
 		System.out.println("Minimum number of insertions required are: " + minInsertionsToFormPalindrome(
 				minInsertionsToFormPalindrome, 0, minInsertionsToFormPalindrome.length() - 1));
+
+		String totalNumberOfPalindromicSubStrings = "abbaeae";
+		System.out.println(
+				"The total number of possible substrings are: " + totalNumberOfPalindromicSubStringsUsingRecursion(
+						totalNumberOfPalindromicSubStrings, 0, totalNumberOfPalindromicSubStrings.length() - 1));
 
 	}
 
@@ -104,8 +112,46 @@ public class PalindromicProblems {
 	}
 
 	// https://www.geeksforgeeks.org/count-palindrome-sub-strings-string/
+	// go through the solution for lesser time complexity later
 	public static int totalNumberOfPalindromicSubStrings(String input) {
-		return 0;
+		int length = input.length();
+		StringBuilder temp = new StringBuilder("");
+		Set<String> palindromicSubStrings = new HashSet<String>();
+		for (int i = 0; i < length; i++) {
+			for (int j = i + 2; j <= length; j++) {
+				temp = new StringBuilder("");
+				;
+				temp = temp.append(input.substring(i, j));
+				if (temp.toString().compareTo(temp.reverse().toString()) == 0) {
+					palindromicSubStrings.add(temp.toString());
+				}
+			}
+		}
+		System.out.println("The Palindromic sub strings are: ");
+		for (String subString : palindromicSubStrings) {
+			System.out.print(subString + " ");
+		}
+		return palindromicSubStrings.size();
+	}
+
+	// not working yet
+	// also try to implement this using matrix appraoch
+	public static int totalNumberOfPalindromicSubStringsUsingRecursion(String input, int l, int h) {
+		if (l == h)
+			return 0;
+		else if (h == l + 1 || h == l + 2) {
+			return input.charAt(l) == input.charAt(h) ? h - l + 1 : 0;
+		} else {
+			if (input.charAt(l) == input.charAt(h)) { // we should check for palindrome rather than just checking ends
+				return 1 + totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
+						+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
+						- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+			} else {
+				return totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
+						+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
+						- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+			}
+		}
 	}
 
 	public static int totalNumberOfPalindromsFromGivenCharacters(char[] input) {

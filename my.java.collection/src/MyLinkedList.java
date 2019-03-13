@@ -495,6 +495,7 @@ public class MyLinkedList {
 		return false;
 	}
 
+	// also check for the proof
 	public static Node findLoopNode(Node head) {
 		if (head == null || head.next == null) {
 			return null;
@@ -538,9 +539,8 @@ public class MyLinkedList {
 				first = first.next;
 				second = second.next.next;
 			}
-			final Node middle = first;
-			final Node middleNext = middle.next;
-			middle.next = null;
+			final Node middleNext = first.next;
+			first.next = null;
 			final Node firstResult = mergeSort(head);
 			final Node secondResult = mergeSort(middleNext);
 			return mergeTwoSortedLinkedLists(firstResult, secondResult);
@@ -549,6 +549,7 @@ public class MyLinkedList {
 	}
 
 	// working
+	// https://www.geeksforgeeks.org/rearrange-a-linked-list-such-that-all-even-and-odd-positioned-nodes-are-together/
 	public static Node groupOddAndEvenNodes(Node head) {
 		if (head == null || head.next == null)
 			return head;
@@ -567,7 +568,7 @@ public class MyLinkedList {
 	}
 
 	// https://www.geeksforgeeks.org/find-fractional-nk-th-node-linked-list/
-	// working
+	// working (n/k)th node
 	public static Node findFractionOfLinkedList(Node head, int k) {
 		if (k <= 0 || head == null)
 			return null;

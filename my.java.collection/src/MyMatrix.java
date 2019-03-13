@@ -1,7 +1,9 @@
 package src;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import src.Utilities.JavaUtility;
 
@@ -19,7 +21,8 @@ public class MyMatrix {
 		// printMatrixInSpiral(spiralMatrix, 3, 6);
 
 		int uniqueMatrix[][] = { { 0, 1, 0, 0, 1 }, { 1, 0, 1, 1, 0 }, { 0, 1, 0, 0, 1 }, { 1, 1, 1, 0, 0 } };
-		// printUniqueRowsInMatrix(uniqueMatrix, 4, 5);
+		System.out.println("Unique rows in the matrix are:");
+		printUniqueRowsInMatrix(uniqueMatrix, 4, 5);
 		long[] array = { 3, 4, 5 };
 		// System.out.println(solve(array, 3));
 		int[] bitArray = { 0, 0, 1, 1, 1, 0, 0, 0, 0 };
@@ -33,6 +36,9 @@ public class MyMatrix {
 		int[][] matrixForMaxOnes = { { 0, 0, 0, 1 }, { 0, 0, 0, 1 }, { 0, 0, 0, 0 }, { 0, 1, 1, 1 } };
 		System.out.println("Maximum number of ones present in any row is: "
 				+ findRowWithMaximumNumberOfOnes(matrixForMaxOnes, 4, 4));
+
+		int[][] matrixForRectangle = { { 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1 }, { 0, 0, 0, 1, 0 }, { 1, 0, 1, 0, 1 } };
+		System.out.println("There is a matrix with rectangle:" + findRectangleInMatrix(matrixForRectangle));
 	}
 
 	public static boolean findElementInRowAndColumnSortedMatrix(int[][] matrix, int length, int breadth, int key) {
@@ -87,24 +93,20 @@ public class MyMatrix {
 	// https://www.geeksforgeeks.org/print-unique-rows/
 	// think of other approaches as well
 	public static void printUniqueRowsInMatrix(int[][] matrix, int length, int breadth) {
-		Map<String, Integer> map = new HashMap();
+		Set<String> map = new HashSet();
 		StringBuilder temp = new StringBuilder("");
-		String value = "";
 		for (int i = 0; i < length; i++) {
 			temp = new StringBuilder("");
 			for (int j = 0; j < breadth; j++) {
 				temp = temp.append(matrix[i][j]);
 			}
-			value = temp.toString();
-			if (map.containsKey(value)) {
-				map.put(value, map.get(value) + 1);
-			} else {
-				map.put(value, 1);
-			}
+			if (!map.contains(temp.toString()))
+				map.add(temp.toString());
+			else
+				map.remove(temp.toString());
 		}
-		for (String key : map.keySet()) {
-			if (map.get(key) == 1)
-				System.out.println(key + " ");
+		for (String key : map) {
+			System.out.println(key + " ");
 		}
 	}
 
@@ -146,8 +148,41 @@ public class MyMatrix {
 	}
 
 	// https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
-	public static void findRectangleInMatrix(int[][] matrix) {
-
+	// working
+	public static boolean findRectangleInMatrix(int[][] matrix) {
+		int rows = matrix.length;
+		int columns = matrix[0].length;
+		Map<Integer, Set<Integer>> map = new HashMap<>();
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns - 1; j++) {
+				for (int k = j + 1; k < columns; k++) {
+					if (matrix[i][j] == 1 && matrix[i][k] == 1) {
+						if (map.containsKey(j) && map.get(j).contains(k)) {
+							System.out.println("The vertices are: " + i + " " + j + " " + k);
+							return true;
+						}
+						if (map.containsKey(k) && map.get(k).contains(j)) {
+							return true;
+						}
+						if (!map.containsKey(j)) {
+							Set<Integer> set = new HashSet<>();
+							set.add(k);
+							map.put(j, set);
+						} else {
+							map.get(j).add(k);
+						}
+						if (!map.containsKey(k)) {
+							Set<Integer> set = new HashSet<>();
+							set.add(j);
+							map.put(k, set);
+						} else {
+							map.get(k).add(j);
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	// https://www.geeksforgeeks.org/find-row-number-binary-matrix-maximum-number-1s/
@@ -188,5 +223,23 @@ public class MyMatrix {
 			}
 		}
 	}
+
 	// https://www.geeksforgeeks.org/find-median-row-wise-sorted-matrix/
+	public static int medianInRowWiseSortedMatrix(int[][] matrix, int rows, int columns) {
+		int min = Integer.MAX_VALUE;
+		int max = Integer.MIN_VALUE;
+		for (int i = 0; i < rows; i++) {
+			min = Math.min(min, matrix[i][0]);
+			max = Math.max(max, matrix[i][columns - 1]);
+		}
+		int mid = min + (max-min)/2;
+		int medIndex = -1;
+		for(int i=0;i<rows;i++) {
+			medIndex = MyArray.binarySearch(matrix[0], 0, rows-1, mid);
+			if(medIndex==-1) {
+				
+			}
+		}
+		return 0;
+	}
 }

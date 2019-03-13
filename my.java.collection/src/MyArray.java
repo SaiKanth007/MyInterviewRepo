@@ -117,6 +117,9 @@ public class MyArray {
 
 		final int[] sortAlmostedSortedArray = { 2, 2, 2, 2, 0 };
 		sortAlmostedSortedArray(sortAlmostedSortedArray);
+
+		final int[] stocksValue = { 50, 100, 230, 321, 123, 111, 300, 500	 };
+		System.out.println("The maximum profit from the stock sale is:" + stockSellProblem(stocksValue));
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -705,6 +708,34 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
 	public static void printMaxInSlidingWindow() {
 
+	}
+
+	// https://www.geeksforgeeks.org/stock-buy-sell/
+	// working
+	public static int stockSellProblem(int[] stocks) {
+		int length = stocks.length;
+		int buy = -1;
+		int sell = -1;
+		Integer profit = 0;
+		if (length == 0 || length == 1)
+			return 0;
+		else {
+			int i = 0;
+			while (i < length - 1) {
+				while (i < length - 1 && stocks[i + 1] <= stocks[i]) {
+					i++;
+				}
+				if (i == length - 1)
+					break;
+				buy = i++;
+				while (i < length && stocks[i] >= stocks[i - 1]) {
+					i++;
+				}
+				sell = i - 1;
+				profit = profit + stocks[sell] - stocks[buy];
+			}
+		}
+		return profit;
 	}
 	// array rotation
 	// stocks buy
