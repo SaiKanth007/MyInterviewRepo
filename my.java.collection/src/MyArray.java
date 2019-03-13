@@ -60,10 +60,11 @@ public class MyArray {
 		System.out.println("The index of the search is: "
 				+ binarySearch(arrayForBinarySearch, 0, arrayForBinarySearch.length - 1, 2));
 
-		final int[] arrayForBinarySearchForRepeated = { 0, 5, -1, -2, 6, -1 };
+		final int[] arrayForBinarySearchForRepeated = { 0, 5, -1, -2, 6, -1, -10 };
 		selectionSort(arrayForBinarySearchForRepeated);
-		System.out.println("The index of the search is: " + binarySearchWithRepeatedElements(
-				arrayForBinarySearchForRepeated, 0, arrayForBinarySearchForRepeated.length - 1, -1));
+		System.out
+				.println("The index of the search in sorted and repated arary is: " + binarySearchWithRepeatedElements(
+						arrayForBinarySearchForRepeated, 0, arrayForBinarySearchForRepeated.length - 1, -1));
 
 		final int[] arrayForprintElementsWithGivenSum = { 0, 5, -1, -2, 6 };
 		System.out.println("The Elements with the given sum are :");
@@ -96,6 +97,12 @@ public class MyArray {
 		final int[] arrayForRotatedBinarySearch = { 30, 40, 50, 10, 20 };
 		binarySearchInSortedAndRotatedArray(arrayForRotatedBinarySearch, 0, arrayForRotatedBinarySearch.length - 1, 30);
 
+		final int[] arrayForSortedIfNegativeMadePositive = { 10, -20, 20, -20, 20, 30, 30, -30, -40, -50, -60, 70, 90 };
+		System.out
+				.println("The index for a given key in the array that will be sorted when negatives made positive is : "
+						+ getSearchIndex(arrayForSortedIfNegativeMadePositive, 0,
+								arrayForSortedIfNegativeMadePositive.length - 1, 20));
+
 		final int[] arrivalTimes = { 900, 940, 950, 1100, 1500, 1800 };
 		final int[] deptTimes = { 910, 1200, 1120, 1130, 1900, 2000 };
 		System.out.println("Total no of platforms required are:" + minNumberOfPlatforms(arrivalTimes, deptTimes));
@@ -118,8 +125,18 @@ public class MyArray {
 		final int[] sortAlmostedSortedArray = { 2, 2, 2, 2, 0 };
 		sortAlmostedSortedArray(sortAlmostedSortedArray);
 
-		final int[] stocksValue = { 50, 100, 230, 321, 123, 111, 300, 500	 };
+		final int[] stocksValue = { 50, 100, 230, 321, 123, 111, 300, 500 };
 		System.out.println("The maximum profit from the stock sale is:" + stockSellProblem(stocksValue));
+
+		int[] sortedArray1 = { 1, 12, 15, 26, 38 };
+		int[] sortedArray2 = { 2, 13, 17, 30, 45 };
+		System.out.println(
+				"Median of the sorted arrays is" + medianOfTwoSortedArraysOfSameLength(sortedArray1, sortedArray2));
+
+		int[] arrayForCountSubArrays = { 10, 2, -2, -20 };
+		System.out.println("Number of Sub Sequence is:"
+				+ findSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, -20));
+
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -154,6 +171,9 @@ public class MyArray {
 		}
 	}
 
+	// https://www.geeksforgeeks.org/merge-sort-with-o1-extra-space-merge-and-on-lg-n-time/
+	// other approach would be shifting the array, but it will time complexity would
+	// be O(n^2)
 	public static void merge(int[] inputArray, int lowerIndex, int midIndex, int upperIndex) {
 		if (lowerIndex < upperIndex) {
 			final int[] result = new int[upperIndex - lowerIndex + 1];
@@ -284,11 +304,10 @@ public class MyArray {
 			if (inputArray[midIndex] == searchKey) {
 				return midIndex;
 			}
-			final int index = binarySearch(inputArray, lowerIndex, midIndex - 1, searchKey);
-			if (index == -1) {
+			if (searchKey < inputArray[midIndex])
+				return binarySearch(inputArray, lowerIndex, midIndex - 1, searchKey);
+			else
 				return binarySearch(inputArray, midIndex + 1, upperIndex, searchKey);
-			}
-			return index;
 		}
 		return -1;
 	}
@@ -303,11 +322,11 @@ public class MyArray {
 				}
 				return midIndex;
 			}
-			final int index = binarySearchWithRepeatedElements(inputArray, lowerIndex, midIndex - 1, searchKey);
-			if (index == -1) {
+			if (searchKey < inputArray[midIndex]) {
+				return binarySearchWithRepeatedElements(inputArray, lowerIndex, midIndex - 1, searchKey);
+			} else {
 				return binarySearchWithRepeatedElements(inputArray, midIndex + 1, upperIndex, searchKey);
 			}
-			return index;
 		}
 		return -1;
 	}
@@ -736,6 +755,110 @@ public class MyArray {
 			}
 		}
 		return profit;
+	}
+
+	public static int getSearchIndex(int[] array, int lowerIndex, int upperIndex, int key) {
+		if (lowerIndex > upperIndex) {
+			return -1;
+		} else {
+			int mid = (upperIndex + lowerIndex) / 2;
+			if (array[mid] == key) {
+				if (mid > 0 && Math.abs(array[mid - 1]) == key) {
+					int index = getSearchIndex(array, lowerIndex, mid - 1, key);
+					if (index != -1)
+						return index;
+					return mid;
+				}
+				return mid;
+			} else {
+				// this logic will almost lead to O(N) time complexity, so think of better
+				// solution
+				int index = getSearchIndex(array, lowerIndex, mid - 1, key);
+				if (index == -1) {
+					return getSearchIndex(array, mid + 1, upperIndex, key);
+				}
+				return index;
+
+			}
+		}
+	}
+
+	// https://www.geeksforgeeks.org/median-of-two-sorted-arrays/
+	public static double medianOfTwoSortedArraysOfSameLength(int[] array1, int[] array2) {
+		int length = array1.length;
+		if (length == 0)
+			return 0;
+		else if (length == 1)
+			return (array1[0] + array2[0]) / 2;
+		else if (length == 2)
+			return (Math.max(array1[0], array2[0]) + Math.min(array1[1], array2[1])) / 2;
+		else {
+			int size = array1.length;
+			int low1 = 0, low2 = 0, high2 = size - 1, high1 = size - 1;
+			while (size > 2) {
+
+				int m1 = findMedian(low1, high1);
+				int m2 = findMedian(low2, high2);
+
+				double median1 = 0.0;
+				double median2 = 0.0;
+				if ((high1 - low1 + 1) % 2 == 0) {
+					median1 = (array1[m1] + array1[m1 + 1]) / 2.0;
+					median2 = (array2[m1] + array2[m1 + 1]) / 2.0;
+				} else {
+					median1 = array1[m1];
+					median2 = array2[m2];
+				}
+				if (median1 == median2) {
+					return median1;
+				}
+
+				else if (median1 > median2) {
+					size = size / 2;
+					high1 = m1;
+					low2 = m2;
+				} else {
+					size = size / 2;
+					low1 = m1;
+					high2 = m2;
+				}
+
+			}
+			return (Math.max(array1[low1], array2[low2]) + Math.min(array1[high1], array2[high2])) / 2.0;
+
+		}
+	}
+
+	public static int findMedian(int low, int high) {
+		int median = (low + high) / 2;
+		return median;
+	}
+
+	// https://www.geeksforgeeks.org/k-th-element-two-sorted-arrays/
+	public static int kthElementInTwoSortedArrays() {
+		return -1;
+	}
+
+	// https://www.geeksforgeeks.org/number-subarrays-sum-exactly-equal-k/
+	// v.v.imp
+	static int findSubarraySum(int arr[], int n, int sum) {
+		HashMap<Integer, Integer> prevSum = new HashMap<>();
+		int res = 0;
+		int currsum = 0;
+		for (int i = 0; i < n; i++) {
+			currsum += arr[i];
+			if (currsum == sum)
+				res++;
+			// search for a sum if removed from the currentsum can given us the required sum
+			if (prevSum.containsKey(currsum - sum))
+				res += prevSum.get(currsum - sum);
+			Integer count = prevSum.get(currsum);
+			if (count == null)
+				prevSum.put(currsum, 1);
+			else
+				prevSum.put(currsum, count + 1);
+		}
+		return res;
 	}
 	// array rotation
 	// stocks buy

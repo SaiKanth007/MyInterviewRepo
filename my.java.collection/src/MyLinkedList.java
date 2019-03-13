@@ -22,6 +22,8 @@ public class MyLinkedList {
 
 		int data;
 
+		Node arb;
+
 		public Node(int pData) {
 			this.data = pData;
 			next = null;
@@ -150,6 +152,13 @@ public class MyLinkedList {
 		final MyLinkedList findFractionOfLinkedList = JavaUtility.prepareLinkedListForGivenData("2,7,9,3,5");
 		System.out.println(
 				"n/kth node of the given list is: " + findFractionOfLinkedList(findFractionOfLinkedList.head, 3).data);
+
+		final MyLinkedList cloneLLWithNextAndArbitaryPointer = JavaUtility.prepareLinkedListForGivenData("1,2,3,4,5");
+		Node root = cloneLLWithNextAndArbitaryPointer.head;
+		root.arb = root.next.next;
+		root.next.arb = root;
+		root.next.next.arb = root.next.next.next.next;
+		cloneLLWithNextAndArbitaryPointer(root);
 	}
 
 	public Node reverseLL(Node pRoot) {
@@ -398,6 +407,7 @@ public class MyLinkedList {
 	}
 
 	// https://www.geeksforgeeks.org/length-longest-palindrome-list-linked-list-using-o1-extra-space/
+	// v.v.vimp
 	public int findLargestPolindrome(Node head) {
 		final Node start = this.head;
 		if (start == null || start.next == null) {
@@ -589,12 +599,48 @@ public class MyLinkedList {
 		return slow;
 	}
 
+	// https://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
+	// v.v.vimp
+	// one approach would be find middle node make it as root and Recursively do
+	// same for left half and right half
 	public static void LLToBST(Node head) {
 	}
 
 	// https://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/
-	public static void cloneLLWithNextAndArbitaryPointer() {
+	// working fine
+	public static Node cloneLLWithNextAndArbitaryPointer(Node root) {
+		if (root == null)
+			return null;
+		else {
+			Node head = root;
 
+			while (root != null) {
+				Node temp = root.next;
+				root.next = new Node(root.data);
+				root.next.next = temp;
+				root = temp;
+			}
+			root = head;
+			Node newHead = head.next;
+			Node newRoot = newHead;
+			while (root != null) {
+				if (root.arb != null)
+					root.next.arb = root.arb.next;
+				root = root.next.next;
+			}
+			root = head;
+
+			while (root != null) {
+				root.next = root.next.next;
+				if (newRoot.next != null)
+					newRoot.next = newRoot.next.next;
+				root = root.next;
+				newRoot = newRoot.next;
+
+			}
+			return newHead;
+
+		}
 	}
 
 }

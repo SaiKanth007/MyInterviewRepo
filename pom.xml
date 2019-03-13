@@ -39,6 +39,19 @@
 			<version>1.12</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>22.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javatuples</groupId>
+			<artifactId>javatuples</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -52,30 +65,30 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>exec-maven-plugin</artifactId>
-    <executions>
-        <execution>
-            <id>run-benchmarks</id>
-            <phase>integration-test</phase>
-            <goals>
-                <goal>exec</goal>
-            </goals>
-            <configuration>
-                <classpathScope>test</classpathScope>
-                <executable>java</executable>
-                <arguments>
-                    <argument>-classpath</argument>
-                    <classpath />
-                    <argument>org.openjdk.jmh.Main</argument>
-                    <argument>.*</argument>
-                </arguments>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>run-benchmarks</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<classpathScope>test</classpathScope>
+							<executable>java</executable>
+							<arguments>
+								<argument>-classpath</argument>
+								<classpath />
+								<argument>org.openjdk.jmh.Main</argument>
+								<argument>.*</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 </project>

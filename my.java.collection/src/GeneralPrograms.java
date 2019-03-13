@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.javatuples.Pair;
+
 import src.Utilities.JavaUtility;
 
 import static java.util.Map.Entry.*;
@@ -42,6 +44,8 @@ public class GeneralPrograms {
 		store.put(123, 12);
 		store.put(12, 124);
 		store.put(-1, 100);
+
+		Collections.unmodifiableMap(store);
 		// sort by value using streams
 		// store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
 		// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->
@@ -170,6 +174,7 @@ public class GeneralPrograms {
 	public static int getLuckyPerson(int totalNoOfPersons, int k) {
 		if (totalNoOfPersons == 1)
 			return 0;
+		//or may be we can change k to k%totalNoOfPersons
 		if (k > totalNoOfPersons)
 			return -1;
 		else
@@ -270,6 +275,18 @@ public class GeneralPrograms {
 		} catch (Exception xc) {
 			xc.printStackTrace();
 		}
+	}
+
+	// https://www.geeksforgeeks.org/count-ways-express-number-sum-consecutive-numbers/
+	public static int findNoSolutionsWithGivenSum(int n) {
+		return 0;
+	}
+
+	// https://howtodoinjava.com/java/basics/java-tuples/
+	// https://www.geeksforgeeks.org/pair-class-in-java-tuples/
+	public static void tuppleExample() {
+		Pair<Integer, String> pair = new Pair<Integer, String>(Integer.valueOf(1), "GeeksforGeeks");
+
 	}
 
 	/**

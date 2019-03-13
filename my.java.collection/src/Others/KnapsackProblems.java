@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+//think of scenario of negative numbers as well
 public class KnapsackProblems {
 
 	public static void main(String[] args) {
@@ -35,6 +36,10 @@ public class KnapsackProblems {
 		for (Integer value : result) {
 			System.out.print(value + " ");
 		}
+
+		int[] arrayForCountSubArrays = { 10, 2, -2, -20 };
+		System.out.println("Number of Sub Sequence is:"
+				+ countNoOfSetsWithGivenSum(arrayForCountSubArrays, -20, arrayForCountSubArrays.length - 1));
 	}
 
 	// exponential time complextity
@@ -187,4 +192,29 @@ public class KnapsackProblems {
 		}
 	}
 
+	// works fine for all positives, has to check for negative numbers as well
+	public static int countNoOfSetsWithGivenSum(int[] inputArray, int sum, int index) {
+		if (index < 0)
+			return 0;
+		if (sum == 0) {
+			return 1;
+			// return 1 + countNoOfSetsWithGivenSum(inputArray, sum, index - 1);
+		}
+
+		if (index == 0)
+			if (sum != inputArray[index])
+				return 0;
+			else
+				return 1;
+
+		Integer a = countNoOfSetsWithGivenSum(inputArray, sum, index - 1);
+		Integer b = countNoOfSetsWithGivenSum(inputArray, sum - inputArray[index], index - 1);
+		System.out.println("For index" + index + " and sum " + sum + " values are	 " + a + " " + b);
+		return a + b;
+	}
+
+}
+
+class Count {
+	Integer value = 0;
 }

@@ -60,14 +60,17 @@ class CustomHashMap<K, V> {
 
 			while (current != null) { // we have reached last entry of bucket.
 				if (current.key.equals(newKey)) {
+					// current.value = data; --> we can just add this single line instead of the if
+					// else conditions,
+					// but check why this was done so
 					if (previous == null) { // node has to be insert on first of bucket.
 						newEntry.next = current.next;
 						table[hash] = newEntry;
-						return;
+						return; // current has to be deleted before returning
 					} else {
 						newEntry.next = current.next;
 						previous.next = newEntry;
-						return;
+						return; // current has to be deleted before returning
 					}
 				}
 				previous = current;

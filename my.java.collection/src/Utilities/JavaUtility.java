@@ -12,8 +12,9 @@ import src.Others.SingleTon;
 public class JavaUtility {
 
 	public static void main(String[] args) {
-		System.out.println(System.getProperty("os.arch").indexOf("64") != -1);
+		System.out.println(System.getProperty("os.arch"));
 
+		Penny[] objectList = new Penny[4];
 		SingleTon s1 = SingleTon.getSingleTon();
 		SingleTon s2 = SingleTon.getSingleTon();
 		if (s1 == s2)
@@ -161,6 +162,15 @@ public class JavaUtility {
 		String ValuestringLowerCase = Values.MEDIUM.asLowerCase();
 	}
 
+	public static void printBooleanMatrix(boolean[][] matrix, int rowSize, int columnSize) {
+		for (int i = 0; i < rowSize; i++) {
+			for (int j = 0; j < columnSize; j++) {
+				System.out.print(matrix[i][j] + " ");
+			}
+			System.out.println();
+		}
+	}
+
 }
 
 // http://tutorials.jenkov.com/java/enums.html#enum-fields
@@ -204,5 +214,4 @@ enum Values {
 			// System.out.println(minCoinProblem(array, sum));
 		}
 	}
-
 }

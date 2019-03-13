@@ -3,16 +3,17 @@ package src.Others;
 import java.util.HashSet;
 import java.util.Set;
 
+//Go through this class again, have many issues
 public class PalindromicProblems {
 
 	public static void main(String[] args) {
-		String stringForlongestPalindromicSubString = "forgeeksskeegfor";
+		String stringForlongestPalindromicSubString = "fodfvof";
 		System.out.println("The longest possible palindromic substring length is: " + longestPalindromicSubStringLength(
 				stringForlongestPalindromicSubString, 0, stringForlongestPalindromicSubString.length() - 1));
 		System.out.println("The longest possible palindromic substring is: " + longestPalindromicSubString(
 				stringForlongestPalindromicSubString, 0, stringForlongestPalindromicSubString.length() - 1));
 
-		String stringForlongestPalindromicSubSequence = "GEEKSFORGEEKS";
+		String stringForlongestPalindromicSubSequence = "forgeeksskeegofr";
 		System.out.println("The longest possible palindromic sub sequence length is: "
 				+ longestPalindromicSubSequenceLength(stringForlongestPalindromicSubSequence, 0,
 						stringForlongestPalindromicSubSequence.length() - 1));
@@ -20,6 +21,10 @@ public class PalindromicProblems {
 		String minInsertionsToFormPalindrome = "abcda";
 		System.out.println("Minimum number of insertions required are: " + minInsertionsToFormPalindrome(
 				minInsertionsToFormPalindrome, 0, minInsertionsToFormPalindrome.length() - 1));
+
+		String minDeletionsToFormPalindrome = "geek";
+		System.out.println("Minimum number of deletions required are: " + minNoOfDeletionToFormPalindrome(
+				minDeletionsToFormPalindrome, 0, minDeletionsToFormPalindrome.length() - 1));
 
 		String totalNumberOfPalindromicSubStrings = "abbaeae";
 		System.out.println(
@@ -36,7 +41,7 @@ public class PalindromicProblems {
 		return 0;
 	}
 
-	// working
+	// not working, just go for matrix approach
 	// https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
 	public static int longestPalindromicSubStringLength(String input, int l, int h) {
 		if (l <= h) {
@@ -182,5 +187,26 @@ public class PalindromicProblems {
 	// go through thoroughly
 	public static int minInsertionsToFormPalindromeWithouRecursion(String input, int low, int high) {
 		return 0;
+	}
+
+	// https://www.geeksforgeeks.org/minimum-number-deletions-make-string-palindrome-set-2/
+	public static int minNoOfDeletionToFormPalindrome(String input, int low, int high) {
+		if (low <= high) {
+			if (low == high)
+				return 0;
+			else if (low + 1 == high) {
+				if (input.charAt(low) == input.charAt(high)) {
+					return 0;
+				} else {
+					return 1;
+				}
+			} else {
+				int firstResult = minNoOfDeletionToFormPalindrome(input, low + 1, high);
+				int secondResult = minNoOfDeletionToFormPalindrome(input, low, high - 1);
+				return 1 + Math.min(firstResult, secondResult);
+			}
+
+		}
+		return Integer.MAX_VALUE;
 	}
 }

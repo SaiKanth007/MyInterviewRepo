@@ -9,7 +9,7 @@ public class Tesing {
 	public static void main(String[] args) {
 		// stackOverFlowMethod(); // causes stack over flow error
 		// remove all characters other than alphabets from the given string
-		System.out.println("Sai".replaceAll("[^a-bA-Z]", ""));
+		System.out.println("Sai".replaceAll("[^a-zA-Z]", ""));
 
 		System.out.println("Hello World");
 		String string = "string";
@@ -46,8 +46,8 @@ public class Tesing {
 	}
 
 	public static void outOfMemoryMethod() {
-		int index = (70000 * 70000);
-		// int[] array = new int[index];
+		
+		 int[] array = new int[Integer.MAX_VALUE];
 	}
 
 	// https://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/

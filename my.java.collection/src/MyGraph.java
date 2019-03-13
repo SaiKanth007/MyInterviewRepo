@@ -73,6 +73,16 @@ public class MyGraph {
 		System.out.println(
 				"Cycle is present in the undirected graph:" + undirectedGraph.isCyclePresentForUnDirectedGraph());
 
+		MyGraph hamiltonianGraph = new MyGraph(5);
+		hamiltonianGraph.addTwoSideEdge(0, 1);
+		hamiltonianGraph.addTwoSideEdge(1, 2);
+		hamiltonianGraph.addTwoSideEdge(1, 3);
+		hamiltonianGraph.addTwoSideEdge(2, 4);
+		hamiltonianGraph.addTwoSideEdge(4, 3);
+		hamiltonianGraph.addTwoSideEdge(3, 0);
+		visited = new boolean[hamiltonianGraph.noOfVertices];
+		Count count = new Count();
+		System.out.println("Given graph is hamiltonian" + hamiltonianGraph.hamiltonianCycle(0, visited, count, -1));
 	}
 
 	public void BFS(Integer startVertex) {
@@ -233,9 +243,41 @@ public class MyGraph {
 
 	}
 
+	// https://www.geeksforgeeks.org/hamiltonian-cycle-backtracking-6/
+	// working
+	public boolean hamiltonianCycle(Integer startVertex, boolean[] visited, Count count, Integer parent) {
+		if (startVertex >= this.noOfVertices)
+			return false;
+		else {
+			visited[startVertex] = true;
+			count.value++;
+			LinkedList<Integer> adjList = adjacencyMatrix[startVertex];
+			if (Objects.nonNull(adjList))
+				for (Integer vertex : adjList) {
+					if (!visited[vertex]) {
+						Count newCount = new Count();
+						newCount.value = count.value;
+						if (hamiltonianCycle(vertex, visited, newCount, startVertex)) {
+							return true;
+						}
+					} else if (vertex != parent) {
+						if (count.value == this.noOfVertices)
+							return true;
+					}
+				}
+			return false;
+		}
+
+	}
+
 	// yet to do
+	// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/
 	public void primsAlgorithm() {
 
 	}
 
+}
+
+class Count {
+	Integer value = 0;
 }

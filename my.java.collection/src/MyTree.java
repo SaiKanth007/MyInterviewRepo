@@ -120,6 +120,9 @@ public class MyTree {
 		System.out.println("The perimeter of the tree is:");
 		printPerimeterOfTheTree(tree1.root);
 
+		System.out.println("Distance Between Two Nodes is : " + findDistanceBetweenTwoNode(tree1.root,
+				tree1.root.left.right.left.right, tree1.root.left.right.right));
+
 		// distance
 		System.out.println("The Height of the tree is: " + printHeightOfTree(tree1.root));
 		System.out.println();
@@ -187,7 +190,6 @@ public class MyTree {
 		Node result2 = getTreeFromPostorderAndInOrder(postOrderArray, inorderArray, 0, postOrderArray.length - 1, 0,
 				inorderArray.length - 1);
 		postorderTraversal(result2);
-
 	}
 
 	public static void inorderTraversal(Node root) {
@@ -521,6 +523,27 @@ public class MyTree {
 
 	}
 
+	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	public static int maxPathSumInBinaryTree(Node root) {
+		Storage count = new Storage();
+		maxPathSumInBinaryTree(root, count);
+		return count.value;
+	}
+
+	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	public static int maxPathSumInBinaryTree(Node root, Storage count) {
+		if (root == null)
+			return 0;
+		int l = maxPathSumInBinaryTree(root.left, count);
+		int r = maxPathSumInBinaryTree(root.right, count);
+		// if this root is inlucde in the total path, then we can only take
+		// either right or left of this child root and hence recMax
+		int recMax = Math.max(Math.max(l, r) + root.data, root.data);
+		int localMax = Math.max(recMax, l + r + root.data);
+		count.value = Math.max(count.value, localMax);
+		return recMax;
+	}
+
 	public static boolean printAncestorsOfNode(Node root, Node node) {
 		if (root != null) {
 			if (root == node) {
@@ -676,6 +699,8 @@ public class MyTree {
 	// https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/
 	// https://www.geeksforgeeks.org/sort-the-path-from-root-to-a-given-node-in-a-binary-tree/
 	public static void printNodesAtGivenDistanceFromAGivenNode(Node root, Node node, int distance) {
+		// both the below things can be done if we can built a map with nodes and their
+		// depths, nodes and their sides (left or right to root)
 		int distanceOfGiveNodeFromRoot = printDistanceFromRoot(root, node);
 		Boolean nodePresentOnLeft = checkIfGivenNodeIsPresent(root.left, node);
 		if (distance < distanceOfGiveNodeFromRoot) {
@@ -917,6 +942,17 @@ public class MyTree {
 			return max + 1;
 
 		}
+	}
+
+	// working
+	// can be done hy traversing the tree only once as well
+	// https://www.geeksforgeeks.org/find-distance-between-two-nodes-of-a-binary-tree/
+	public static int findDistanceBetweenTwoNode(Node root, Node first, Node second) {
+		Node LCA = printFirstCommonAncestorOfNodes(root, first, second);
+		if (LCA != null) {
+			return printDistanceFromRoot(LCA, first) + printDistanceFromRoot(LCA, second);
+		}
+		return 0;
 	}
 
 	/***

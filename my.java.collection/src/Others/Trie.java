@@ -97,7 +97,7 @@ public class Trie {
 				current = node.nodes[(int) input.charAt(i) - 97];
 				if (current != null && current.content == input.charAt(i)) {
 					result = result.append(current.content);
-					input = input.concat(String.valueOf(current.content));
+					// input = input.concat(String.valueOf(current.content));
 					node = current;
 				} else {
 					return;

@@ -11,9 +11,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import src.Utilities.*;
 
+//https://www.youtube.com/watch?v=KIQ6fZ4XRKs&list=PLF9tovyahfL020hGgLIsRMZY4bfSLCFUa
 public class MyString {
 
 	public static void main(String[] args) {
@@ -54,19 +56,22 @@ public class MyString {
 		System.out.println("Lexographically largest subsequence is:"
 				+ lexoGraphicallyLargestSubSequence(stringForlexoGraphicallyLargestSubSequence));
 
-		System.out.println("Minimum no of splits is:" + printMinimumSplits("111011100110101100101", 0));
+		System.out.println("Minimum no of splits is:" + printMinimumSplits("10001", 0));
 		System.out.println("Print the lexographical order of the array");
 		String[] array = { "33123", "15", "1", "0", "54215", "21", "12" };
 
 		lexoGraphicalOrderOfString(Arrays.asList(array));
 
-		String lexographicallyFirstPalindromeString = "Apple";
+		String lexographicallyFirstPalindromeString = "aba";
 		System.out.println("Lexographically first palindrome of the given strings is:"
 				+ lexographicallyFirstPalindrome(lexographicallyFirstPalindromeString));
 
 		String firstNonRepeatingCharacter = "iijjkkllmm";
 		System.out.println(
 				"The first non repeating character is: " + getFirstNonRepeatingCharacter(firstNonRepeatingCharacter));
+
+		System.out.println("The reverse of the given string is:" + reveseString("abcde"));
+
 	}
 
 	// other approach would be to use hashmap
@@ -101,10 +106,10 @@ public class MyString {
 			j = i;
 			while (j != 0) {
 				quotient = j % 2;
-				j = j / 2;
 				if (quotient != 0) {
 					resultString = resultString.append(inputArray[count]);
 				}
+				j = j / 2;
 				count++;
 			}
 			System.out.println(resultString.toString());
@@ -250,7 +255,7 @@ public class MyString {
 	}
 
 	// https://www.geeksforgeeks.org/lexicographically-largest-sub-sequence-of-the-given-string/
-	// working
+	// working (GO through it later)
 	public static String lexoGraphicallyLargestSubSequence(String input) {
 		char[] inputArray = input.toCharArray();
 		int length = inputArray.length;
@@ -279,7 +284,11 @@ public class MyString {
 			for (Integer i = 1; i > 0 && i < Integer.MAX_VALUE; i = i * 5) {
 				power5BinaryMap.put(Integer.toBinaryString(i), "1");
 			}
+			// have to account for all these cases
 			power5BinaryMap.put("01", "1");
+			power5BinaryMap.put("001", "1");
+			power5BinaryMap.put("0001", "1");
+
 			if (startIndex == input.length() - 1) {
 				if (input.charAt(input.length() - 1) == '1') {
 					return 1;
@@ -343,9 +352,10 @@ public class MyString {
 
 	}
 
-	// https://www.geeksforgeeks.org/largest-palindromic-number-permuting-digits/
+	// https://www.geeksforgeeks.org/lexicographically-first-palindromic-string/
 	public static String lexographicallyFirstPalindrome(String input) {
-		Map<Integer, Integer> freqMap = new LinkedHashMap<>();
+		// or use a char array of size 256 instead of tree map
+		Map<Integer, Integer> freqMap = new TreeMap<>();
 		boolean isPalindoromePossible = checkIfPalindromePossible(input, freqMap);
 		if (!isPalindoromePossible) {
 			return "Palindrome Not Possible";
@@ -399,9 +409,9 @@ public class MyString {
 		}
 
 		if (length % 2 == 0) {
-			if (oddCount == 0)
-				return true;
-			return false;
+			if (oddCount > 0)
+				return false;
+			return true;
 		} else {
 			if (oddCount != 1)
 				return false;
@@ -425,6 +435,15 @@ public class MyString {
 
 	public static void dictionaryProblemWithDiffOrder() {
 
+	}
+
+	public static String reveseString(String input) {
+		char[] inputArray = input.toCharArray();
+		int length = inputArray.length;
+		for (int i = 0; i < length / 2; i++) {
+			JavaUtility.swap(inputArray, i, length - i - 1);
+		}
+		return new String(inputArray);
 	}
 
 	/***

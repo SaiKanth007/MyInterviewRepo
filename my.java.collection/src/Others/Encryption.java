@@ -10,7 +10,7 @@ import java.security.SecureRandom;
 //https://howtodoinjava.com/security/how-to-generate-secure-password-hash-md5-sha-pbkdf2-bcrypt-examples/
 //https://www.geeksforgeeks.org/sha-256-hash-in-java/
 //https://www.baeldung.com/sha-256-hashing-java
-public class Security {
+public class Encryption {
 	public static void main(String[] args) throws NoSuchAlgorithmException, NoSuchProviderException {
 
 		String passwordToHash = "password";

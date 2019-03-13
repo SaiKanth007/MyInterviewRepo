@@ -48,6 +48,8 @@ public class MyStack {
 		String minimumNumberFromGivenSeq = "DIDI";
 		System.out.println(minimumNumberFromGivenSeq(minimumNumberFromGivenSeq));
 
+		int[][] celebrityMatrix = { { 0, 0, 1, 0 }, { 0, 0, 1, 0 }, { 0, 0, 0, 0 }, { 0, 0, 1, 0 } };
+		System.out.println("The celebrity person is: " + celebrityProblem(celebrityMatrix));
 	}
 
 	// https://www.geeksforgeeks.org/reverse-stack-without-using-extra-space/ - read
@@ -486,6 +488,38 @@ public class MyStack {
 		return new String(result);
 	}
 
+	// https://www.geeksforgeeks.org/design-a-stack-that-supports-getmin-in-o1-time-and-o1-extra-space/
+	public static int getMinimumElementFromStack() {
+		return 0;
+	}
+
+	// https://www.geeksforgeeks.org/the-celebrity-problem/
+	public static int celebrityProblem(int[][] input) {
+		int length = input[0].length;
+		Stack<Integer> stack = new Stack<Integer>();
+
+		for (int i = 0; i < length; i++) {
+			stack.push(i);
+		}
+
+		while (stack.size() > 1) {
+			int a = stack.pop();
+			int b = stack.pop();
+			if (input[a][b] == 1) {
+				stack.push(b);
+			} else {
+				stack.push(a);
+			}
+		}
+
+		int a = stack.pop();
+		for (int i = 0; i < length; i++) {
+			if (i != a && (input[i][a] == 0 || input[a][i] == 1))
+				return -1;
+		}
+		return a;
+	}
+
 	// postfix -> prefix = postfix -> infix + infix -> prefix
 
 	// Things to do
@@ -497,6 +531,8 @@ public class MyStack {
 	 * 1. Tower of Hanoi 2. Celebrity problem 3. Infix to Prefix 4. Reverse stack
 	 * without extra space and also sorting using two stacks 5. reverse a number
 	 * using stack
+	 * 
+	 * 4. Multiple Stack using single Array
 	 */
 
 }

@@ -91,7 +91,8 @@ public class MyMatrix {
 	}
 
 	// https://www.geeksforgeeks.org/print-unique-rows/
-	// think of other approaches as well
+	// think of other approaches as well, like inserting rows in a tree and if path
+	// is already present
 	public static void printUniqueRowsInMatrix(int[][] matrix, int length, int breadth) {
 		Set<String> map = new HashSet();
 		StringBuilder temp = new StringBuilder("");
@@ -232,12 +233,12 @@ public class MyMatrix {
 			min = Math.min(min, matrix[i][0]);
 			max = Math.max(max, matrix[i][columns - 1]);
 		}
-		int mid = min + (max-min)/2;
+		int mid = min + (max - min) / 2;
 		int medIndex = -1;
-		for(int i=0;i<rows;i++) {
-			medIndex = MyArray.binarySearch(matrix[0], 0, rows-1, mid);
-			if(medIndex==-1) {
-				
+		for (int i = 0; i < rows; i++) {
+			medIndex = MyArray.binarySearch(matrix[0], 0, rows - 1, mid);
+			if (medIndex == -1) {
+
 			}
 		}
 		return 0;

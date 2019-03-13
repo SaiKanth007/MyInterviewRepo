@@ -15,7 +15,7 @@ public class SingleTon {
 		if (singleTon == null) {
 			synchronized (SingleTon.class) {
 				if (singleTon == null)
-					return new SingleTon();
+					singleTon = new SingleTon();
 			}
 		}
 		return singleTon;

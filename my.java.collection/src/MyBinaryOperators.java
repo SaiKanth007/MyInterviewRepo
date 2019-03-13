@@ -26,6 +26,10 @@ public class MyBinaryOperators {
 
 		System.out.println("The sum of given two numbers is: " + findSumOfTwoNumbersWithoutUsingAddOperator(41, 4));
 
+		int[] arrayForMultipleRepeatingNumbers = { 10, 1, 2, 3, 5, 4, 9, 8, 5, 6, 4 };
+		System.out.println("One of the multiple repeating numbers is:"
+				+ findOneOfMultipleRepeatingNumber(arrayForMultipleRepeatingNumbers));
+
 	}
 
 	// not working - go thorugh the below link for better approach
@@ -51,6 +55,7 @@ public class MyBinaryOperators {
 
 	}
 
+	// working
 	public static int findMissingNumber(int[] array) {
 		int result = 0;
 		final int length = array.length;
@@ -83,16 +88,18 @@ public class MyBinaryOperators {
 	}
 
 	// https://www.geeksforgeeks.org/find-one-multiple-repeating-elements-read-array/
+	// working
 	public static int findOneOfMultipleRepeatingNumber(int[] array) {
-		int result = 0;
-		final int length = array.length;
-		for (int index = 0; index < length; index++) {
-			result = result ^ index;
+		int maxElement = array.length + 1;
+		int length = array.length;
+		for (int i = 0; i < length; i++) {
+			array[array[i] % maxElement] = array[array[i] % maxElement] + maxElement;
 		}
-		for (int index = 0; index < length; index++) {
-			result = result ^ array[index];
+		for (int i = length - 1; i > 0; i--) {
+			if (array[i] / maxElement > 1)
+				return i;
 		}
-		return result;
+		return -1;
 	}
 
 	// working
@@ -112,14 +119,8 @@ public class MyBinaryOperators {
 		return actualSum.reverse().toString();
 	}
 
-	// https://www.geeksforgeeks.org/find-the-two-repeating-elements-in-a-given-array/
-	public static void findTwoRepeatingNumbers(int[] array) {
-
-	}
-
-	// https://www.geeksforgeeks.org/find-two-non-repeating-elements-in-an-array-of-repeating-elements/
-	public static void findTwoNonRepeatingElementsInArrayOfRepatingElements() {
-
+	public static int findNextPowerOfTwo(int number) {
+		return -1;
 	}
 
 	// https://www.geeksforgeeks.org/find-two-non-repeating-elements-in-an-array-of-repeating-elements/

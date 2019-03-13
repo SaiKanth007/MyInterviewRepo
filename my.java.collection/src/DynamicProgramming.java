@@ -30,16 +30,28 @@ public class DynamicProgramming {
 		int[][] minStepsToReachEndOfMatrix = { { 0, 0, 1, 1, 1 }, { 1, 1, 1, 0, 1 }, { 1, 0, 0, 0, 1 },
 				{ 1, 1, 1, 1, 1 } };
 		boolean[][] visited = new boolean[4][5];
+		boolean[][] solution = new boolean[4][5];
+		System.out.println("There exists a path:" + checkIfPathExists(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited));
 
+		visited = new boolean[4][5];
 		System.out.println("Minimum steps to reach the end of the matrix:"
 				+ minStepsToReachEndOfMatrix(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited));
 
+		visited = new boolean[4][5];
+		solution[1][2] = true;
+		System.out.println("Minimum steps to reach the end of the matrix:"
+				+ minStepsPathToReachEndOfMatrix(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited, solution));
+
+		JavaUtility.printBooleanMatrix(solution, 4, 5);
 		int[] arrayForMinSteps = { 1, 3, 5, 8, 9, 2, 6, 7, 6, 8, 9 };
 		System.out.println("Number of steps to reach the end of the array");
 		System.out.println(minNoOfSteps(arrayForMinSteps, 0, arrayForMinSteps.length - 1));
 
 		int[] coinDenominations = { 86, 7, 43, 67, 6 };
 		System.out.println("Number of coins required for the given sum is:" + minCoinProblem(coinDenominations, 8777));
+
+		int[] points = { 3, 5, 10 };
+		System.out.println("Number of ways to reach given sum are: " + noOfWaysToReachGivenSum(points, 20));
 
 		int[] maxSumOfNonAdjacentElements = { 1, 0, 3, 9, 2, 10 };
 		System.out.println("The max sum of non adjancent elements is: "
@@ -54,6 +66,10 @@ public class DynamicProgramming {
 		int[][] matrixForLargestRegion = { { 1, 1, 0, 0, 0 }, { 0, 1, 0, 0, 1 }, { 1, 0, 0, 1, 1 }, { 0, 0, 0, 0, 0 },
 				{ 1, 0, 1, 0, 1 } };
 		System.out.println("The length of the largest region is:" + findLargestRegion(matrixForLargestRegion, 5, 5));
+
+		int[] ratingArrayForCandies = { 2, 4, 2, 6, 1, 7, 8, 9, 2, 1 };
+		System.out.println("Minimum number of candies required are: " + minNoOfCandies(ratingArrayForCandies));
+
 	}
 
 	// https://www.geeksforgeeks.org/gold-mine-problem/
@@ -150,31 +166,93 @@ public class DynamicProgramming {
 	}
 
 	// also think of the matrix solution
+	public static boolean checkIfPathExists(int[][] grid, int length, int breadth, int i, int j, boolean[][] visited) {
+		if (i == length - 1 && j == breadth - 1) {
+			return true;
+		}
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth) || grid[i][j] == 0 || visited[i][j]) {
+			return false;
+		}
+		visited[i][j] = true;
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		int nextXValue = -1;
+		int nextYValue = -1;
+		for (int l = 0; l < 4; l++) {
+			nextXValue = i + xvalues[l];
+			nextYValue = j + yvalues[l];
+			if (checkIfPathExists(grid, length, breadth, nextXValue, nextYValue, visited))
+				return true;
+		}
+		return false;
+	}
+
+	// also think of the matrix solution
 	public static int minStepsToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
 			boolean[][] visited) {
-		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth)) {
-			return Integer.MAX_VALUE;
-		} else {
-			if (i == length - 1 && j == breadth - 1)
-				return 0;
-			if (grid[i][j] == 1 && !visited[i][j]) {
-				visited[i][j] = true;
-				int localSum = 0;
-				int actualSum = Integer.MAX_VALUE;
-				int[] xvalues = { 1, -1, 0, 0 };
-				int[] yvalues = { 0, 0, 1, -1 };
-				for (int l = 0; l < 4; l++) {
-					localSum = minStepsToReachEndOfMatrix(grid, length, breadth, i + xvalues[l], j + yvalues[l],
-							visited);
-					if (localSum != Integer.MAX_VALUE && localSum < actualSum)
-						actualSum = localSum;
-				}
-				return actualSum != Integer.MAX_VALUE ? 1 + actualSum : Integer.MAX_VALUE;
-			} else {
-				return Integer.MAX_VALUE;
-			}
-
+		if (i == length - 1 && j == breadth - 1) {
+			return 0;
 		}
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth) || grid[i][j] == 0 || visited[i][j]) {
+			return Integer.MAX_VALUE;
+		}
+		visited[i][j] = true;
+		int localSum = 0;
+		int actualSum = Integer.MAX_VALUE;
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		int nextXValue = -1;
+		int nextYValue = -1;
+		for (int l = 0; l < 4; l++) {
+			nextXValue = i + xvalues[l];
+			nextYValue = j + yvalues[l];
+			localSum = minStepsToReachEndOfMatrix(grid, length, breadth, nextXValue, nextYValue, visited);
+			if (localSum != Integer.MAX_VALUE && localSum < actualSum) {
+				actualSum = localSum;
+			}
+		}
+		return actualSum != Integer.MAX_VALUE ? 1 + actualSum : Integer.MAX_VALUE;
+	}
+
+	// also think of the matrix solution
+	public static int minStepsPathToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
+			boolean[][] visited, boolean[][] solution) {
+		if (i == 1 && j == 1) {
+			System.out.println("I am here");
+		}
+		if (i == length - 1 && j == breadth - 1) {
+			return 0;
+		}
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth) || grid[i][j] == 0 || visited[i][j]) {
+			return Integer.MAX_VALUE;
+		}
+		visited[i][j] = true;
+		int localSum = 0;
+		int actualSum = Integer.MAX_VALUE;
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		int nextXValue = -1;
+		int nextYValue = -1;
+
+		for (int l = 0; l < 4; l++) {
+			nextXValue = i + xvalues[l];
+			nextYValue = j + yvalues[l];
+			if (JavaUtility.checkIfIndexAreValid(nextXValue, nextYValue, length, breadth)
+					&& grid[nextXValue][nextYValue] == 1 && !visited[nextXValue][nextYValue]) {
+				if (!solution[nextXValue][nextYValue]) {
+					solution[nextXValue][nextYValue] = true;
+				}
+				localSum = minStepsPathToReachEndOfMatrix(grid, length, breadth, nextXValue, nextYValue, visited,
+						solution);
+				if (localSum != Integer.MAX_VALUE && localSum < actualSum) {
+					actualSum = localSum;
+				} else {
+
+					solution[nextXValue][nextYValue] = false;
+				}
+			}
+		}
+		return actualSum != Integer.MAX_VALUE ? 1 + actualSum : Integer.MAX_VALUE;
 	}
 
 	// do this for sure --
@@ -194,16 +272,10 @@ public class DynamicProgramming {
 		return localSum != Integer.MAX_VALUE ? localSum + 1 : actualSum;
 	}
 
-	// https://practice.geeksforgeeks.org/problems/word-boggle/0
-	public static int noOfWordsFromDictionary(int[][] boggle, String[] words) {
-		return 0;
-	}
-
 	public static int minCoinProblem(int[] coinValues, int sum) {
 		Arrays.sort(coinValues);
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 		return minCoinProblem(coinValues, sum, map);
-		// return minCoinProblem(coinValues, coinValues.length - 1, sum);
 	}
 
 	// working
@@ -228,6 +300,43 @@ public class DynamicProgramming {
 		globalCount = globalCount == Integer.MAX_VALUE ? globalCount : globalCount + 1;
 		map.put(sum, globalCount);
 		return globalCount;
+	}
+
+	// https://www.geeksforgeeks.org/count-number-ways-reach-given-score-game/
+	public static int noOfWaysToReachGivenSum(int[] points, int sum) {
+		int[] array = new int[sum + 1];
+		int length = points.length;
+		array[0] = 1;
+		for (int i = 0; i < length; i++) {
+			for (int j = points[i]; j <= sum; j++) {
+				array[j] = array[j] + array[j - points[i]];
+			}
+		}
+		return array[sum];
+	}
+
+	// https://www.geeksforgeeks.org/count-ways-reach-nth-stair-using-step-1-2-3/
+	// assume a scenario where possible steps can be an array list and difference
+	// between steps is very large
+	// try to print those possible paths also - imp
+	public static int noOfWaysToReachGivenNumberOfSteps(int totalSteps) {
+		if (totalSteps == 0)
+			return 0;
+		else if (totalSteps == 1)
+			return 1;
+		else if (totalSteps == 2)
+			return 2;
+		else if (totalSteps == 3)
+			return 4;
+		else
+			return noOfWaysToReachGivenNumberOfSteps(totalSteps - 1) + noOfWaysToReachGivenNumberOfSteps(totalSteps - 2)
+					+ noOfWaysToReachGivenNumberOfSteps(totalSteps - 3);
+
+	}
+
+	// https://practice.geeksforgeeks.org/problems/word-boggle/0
+	public static int noOfWordsFromDictionary(int[][] boggle, String[] words) {
+		return 0;
 	}
 
 	public static int minNoStepsForKnightToReachDestination() {
@@ -260,23 +369,6 @@ public class DynamicProgramming {
 			System.out.println("Move disk from: " + from + " to " + to);
 			towerOfHanoi(n - 1, aux, to, from);
 		}
-	}
-
-	// https://www.geeksforgeeks.org/count-ways-reach-nth-stair-using-step-1-2-3/
-	// try to print those possible paths also - imp
-	public static int noOfWaysToReachGivenNumberOfSteps(int totalSteps) {
-		if (totalSteps == 0)
-			return 0;
-		else if (totalSteps == 1)
-			return 1;
-		else if (totalSteps == 2)
-			return 2;
-		else if (totalSteps == 3)
-			return 4;
-		else
-			return noOfWaysToReachGivenNumberOfSteps(totalSteps - 1) + noOfWaysToReachGivenNumberOfSteps(totalSteps - 2)
-					+ noOfWaysToReachGivenNumberOfSteps(totalSteps - 3);
-
 	}
 
 	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
@@ -347,6 +439,49 @@ public class DynamicProgramming {
 	// https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
 	public static boolean isRectangularMatrixPresent() {
 		return false;
+	}
+
+	// https://www.hackerrank.com/challenges/candies/problem
+	// working
+	public static int minNoOfCandies(int[] ratings) {
+		int length = ratings.length;
+		int[] candies = new int[length];
+		for (int i = 0; i < length; i++) {
+			candies[i] = 1;
+		}
+		for (int i = 1; i < length; i++) {
+			if (ratings[i] > ratings[i - 1])
+				candies[i] = candies[i - 1] + 1;
+		}
+
+		for (int i = length - 2; i >= 0; i--) {
+			if (ratings[i] > ratings[i + 1] && candies[i] <= candies[i + 1])
+				candies[i] = candies[i + 1] + 1;
+		}
+		int totalCandies = 0;
+		for (int i = 0; i < length; i++) {
+			totalCandies = totalCandies + candies[i];
+		}
+		return totalCandies;
+	}
+
+	// https://www.geeksforgeeks.org/paper-cut-minimum-number-squares-set-2/
+	public static void minNoOfSqaures() {
+
+	}
+
+	// https://www.geeksforgeeks.org/count-number-ways-tile-floor-size-n-x-m-using-1-x-m-size-tiles/
+	public static int noOfTiles(int n, int m) {
+		int[] tiles = new int[n + 1];
+		for (int i = 1; i <= n; i++) {
+			if (n < m)
+				tiles[i] = 1;
+			else if (n > m)
+				tiles[i] = tiles[i - 1] + tiles[i - m];
+			else
+				tiles[i] = 2;
+		}
+		return tiles[n];
 	}
 
 	/**

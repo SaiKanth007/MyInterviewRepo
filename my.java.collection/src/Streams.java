@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import junit.framework.Assert;
@@ -16,7 +17,7 @@ import src.Utilities.Employee;
 // https://github.com/Baeldung/stackify/blob/master/core-java/src/test/java/com/stackify/stream/EmployeeTest.java
 // removeIf, filter, allMatch, anyMatch, noneMatch, map, forEach, sorted, toArray, skip, limit, Collectors.joining(", ")
 /**
- * Things to read 1. Infinite streams 2. Parallel Streams
+ * Things to read 1. Infinite streams 2. Streams
  *
  */
 public class Streams {
@@ -31,6 +32,9 @@ public class Streams {
 		// On Arrays.asList returning a fixed-size list
 		List<Employee> empList = Arrays.asList(array);
 		List<Employee> empList2 = Arrays.asList(array);
+
+		IntStream.range(0, empList.size()).filter(index -> index % 2 != 0).mapToObj(index -> empList2.get(index))
+				.forEach(user -> System.out.println(user.getName()));
 
 		empList.stream();
 		Stream.of(array[0], array[1], array[2]);
@@ -50,6 +54,8 @@ public class Streams {
 				return o2.getRank().compareTo(o1.getRank());
 			}
 		}).collect(Collectors.toList());
+
+		empList.stream().sorted((e1, e2) -> e1.getId().compareTo(e2.getId())).collect(Collectors.toList());
 		final List<String> empIds = empList.stream().map(Employee::getId).collect(Collectors.toList());
 		empIds.stream();
 
@@ -91,6 +97,7 @@ public class Streams {
 		newEmpList.stream().map(Employee::getName).forEach(System.out::println);
 
 		// Using parallel stream
+		// when to use parallel streams ??
 		List<Employee> empParallelList = Arrays.asList(array);
 		List<Employee> empSeqList = Arrays.asList(array);
 		long start = System.currentTimeMillis();
@@ -151,6 +158,7 @@ public class Streams {
 		testList.stream().forEach(System.out::print);
 		System.out.println();
 		testList.parallelStream().forEach(System.out::print);
+
 	}
 
 }
