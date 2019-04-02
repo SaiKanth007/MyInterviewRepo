@@ -150,7 +150,7 @@ public class MyTree {
 
 		System.out.println("Sum of all nodes in a tree are:" + findSumOfAllNodes(tree1.root));
 		Storage sum = new Storage();
-		findSumAlongLongestPath(tree1.root, sum);
+		findSumAlongLongestPathFromRoot(tree1.root, sum);
 		System.out.println("Sum of all nodes along longest path in a tree are:" + sum.value);
 
 		List<Node> nodes = new ArrayList();
@@ -510,6 +510,7 @@ public class MyTree {
 
 	// https://www.geeksforgeeks.org/diameter-of-a-binary-tree/
 	// change the height to a custom object, it should work
+	// think of scenario where diameter is not through the root
 	public static int printDiameterOfTreeOptimized(Node root, HeightWrapper height) {
 		if (root != null) {
 			HeightWrapper lh = new HeightWrapper();
@@ -524,6 +525,7 @@ public class MyTree {
 	}
 
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	// path with maximum sum, path can start and end at any node
 	public static int maxPathSumInBinaryTree(Node root) {
 		Storage count = new Storage();
 		maxPathSumInBinaryTree(root, count);
@@ -531,6 +533,7 @@ public class MyTree {
 	}
 
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	// read it later thoroughly
 	public static int maxPathSumInBinaryTree(Node root, Storage count) {
 		if (root == null)
 			return 0;
@@ -650,7 +653,7 @@ public class MyTree {
 	// working
 	// should check again
 	// check for sum along longest path and path with largest sum
-	public static int findSumAlongLongestPath(Node root, Storage sum) {
+	public static int findSumAlongLongestPathFromRoot(Node root, Storage sum) {
 		if (root == null)
 			return 0;
 		if (root.left == null && root.right == null) {
@@ -660,8 +663,8 @@ public class MyTree {
 		Storage leftSum = new Storage();
 		Storage rightSum = new Storage();
 
-		int leftHeight = findSumAlongLongestPath(root.left, leftSum);
-		int rightHeight = findSumAlongLongestPath(root.right, rightSum);
+		int leftHeight = findSumAlongLongestPathFromRoot(root.left, leftSum);
+		int rightHeight = findSumAlongLongestPathFromRoot(root.right, rightSum);
 		if (leftHeight == rightHeight)
 			sum.value = sum.value + root.data + (leftSum.value > rightSum.value ? leftSum.value : rightSum.value);
 		else

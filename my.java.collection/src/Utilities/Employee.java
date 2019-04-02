@@ -11,7 +11,16 @@ public class Employee implements Serializable {
 
 	String name;
 	String id;
+	public Double getSalary() {
+		return Salary;
+	}
+
+	public void setSalary(Double salary) {
+		Salary = salary;
+	}
+
 	Integer rank;
+	Double Salary;
 
 	public String getName() {
 		return name;

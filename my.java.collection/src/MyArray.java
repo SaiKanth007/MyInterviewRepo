@@ -48,6 +48,11 @@ public class MyArray {
 		quickSort(arrayForQuickSort, 0, arrayForQuickSort.length - 1);
 		JavaUtility.printAfterSorting(arrayForQuickSort, "quick");
 
+		final int[] arrayForCoutingSort = { 1, 4, 1, 2, 7, 5, 2 };
+		JavaUtility.printBeforeSorting(arrayForCoutingSort);
+		CountingSort(arrayForCoutingSort);
+		JavaUtility.printAfterSorting(arrayForCoutingSort, "Couting Sort");
+
 		final int[] arrayForKthLargestElement = { 12, 5, 787, 1, 23 };
 		System.out.println("The array for kth smallest element is: ");
 		JavaUtility.print(arrayForKthLargestElement);
@@ -111,14 +116,15 @@ public class MyArray {
 		System.out.println("Finding the index for which left elements are smaller and right elemnents are larger: "
 				+ findElementWithGivenCriteria(arrayForRightGreaterandLeftlesser));
 
-		final int[] largestSubArrayWithEqualNumberOfOnesAndZeros = { 1, 0, 0, 0, 0, 1, 1 };
+		// { 1, 0, 0, 0, 0, 1, 1 };
+		final int[] largestSubArrayWithEqualNumberOfOnesAndZeros = { 1, 0, 1, 1, 0, 0, 1 };
 		System.out.println("The size of the largest sub array with equal numners of ones and zeros is: "
 				+ maxLen(largestSubArrayWithEqualNumberOfOnesAndZeros));
 
 		final int[] arrayOfWater = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
 		System.out.println("The amount of water stored is: " + findAmountOfWater(arrayOfWater));
 
-		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
+		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 31, 35, 50, 60 };
 		System.out.println("The mimimum size of the array that is to be sorted is :"
 				+ minArrayLengthToMakeArraySorted(minArrayLengthToMakeArraySorted));
 
@@ -133,9 +139,9 @@ public class MyArray {
 		System.out.println(
 				"Median of the sorted arrays is" + medianOfTwoSortedArraysOfSameLength(sortedArray1, sortedArray2));
 
-		int[] arrayForCountSubArrays = { 10, 2, -2, -20 };
+		int[] arrayForCountSubArrays = { 9, 4, 20, 3 };
 		System.out.println("Number of Sub Sequence is:"
-				+ findSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, -20));
+				+ findSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33));
 
 	}
 
@@ -236,6 +242,15 @@ public class MyArray {
 				j--;
 			}
 			array[j + 1] = key;
+		}
+	}
+
+	// https://www.geeksforgeeks.org/counting-sort/
+	public static void CountingSort(int[] array) {
+		int length = array.length;
+		int[] count = new int[length];
+		for(int i=0;i<length;i++) {
+			count[array[i]%length]++;	
 		}
 	}
 
@@ -555,6 +570,7 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
 	// similary we can print the sub array
 	// v.v.v imp
+	// check for example 1,0,1,1,0 for better understanding
 	static int maxLen(int arr[]) {
 		// Creates an empty hashMap hM
 		final int n = arr.length;
@@ -624,6 +640,7 @@ public class MyArray {
 
 	// https://www.geeksforgeeks.org/minimum-length-unsorted-subarray-sorting-which-makes-the-complete-array-sorted/
 	// working
+	// { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
 	public static int minArrayLengthToMakeArraySorted(int[] array) {
 
 		final int length = array.length;
@@ -704,10 +721,11 @@ public class MyArray {
 				break;
 			}
 		}
-		System.out.println(
-				"Elements to be sorted are " + array[leftElementToBeSwapped] + " " + array[rightElementToBeSwapped]);
-		if (rightElementToBeSwapped != -1 && leftElementToBeSwapped != -1)
+		if (rightElementToBeSwapped != -1 && leftElementToBeSwapped != -1) {
+			System.out.println("Elements to be sorted are " + array[leftElementToBeSwapped] + " "
+					+ array[rightElementToBeSwapped]);
 			JavaUtility.swap(array, rightElementToBeSwapped, leftElementToBeSwapped);
+		}
 	}
 
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
@@ -841,6 +859,7 @@ public class MyArray {
 
 	// https://www.geeksforgeeks.org/number-subarrays-sum-exactly-equal-k/
 	// v.v.imp
+	// https://auth.geeksforgeeks.org/user/nik1996/articles
 	static int findSubarraySum(int arr[], int n, int sum) {
 		HashMap<Integer, Integer> prevSum = new HashMap<>();
 		int res = 0;
@@ -859,6 +878,11 @@ public class MyArray {
 				prevSum.put(currsum, count + 1);
 		}
 		return res;
+	}
+
+	// https://www.careercup.com/question?id=5698133541519360
+	public static void method(int[] array) {
+
 	}
 	// array rotation
 	// stocks buy

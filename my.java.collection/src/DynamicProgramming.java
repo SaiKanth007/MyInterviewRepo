@@ -32,6 +32,10 @@ public class DynamicProgramming {
 		boolean[][] visited = new boolean[4][5];
 		boolean[][] solution = new boolean[4][5];
 		System.out.println("There exists a path:" + checkIfPathExists(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited));
+		visited = new boolean[4][5];
+		Count count = new Count();
+		noOfPossiblePaths(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited, count);
+		System.out.println("No of possible paths are:" + count.value);
 
 		visited = new boolean[4][5];
 		System.out.println("Minimum steps to reach the end of the matrix:"
@@ -166,6 +170,7 @@ public class DynamicProgramming {
 	}
 
 	// also think of the matrix solution
+	// DFS
 	public static boolean checkIfPathExists(int[][] grid, int length, int breadth, int i, int j, boolean[][] visited) {
 		if (i == length - 1 && j == breadth - 1) {
 			return true;
@@ -188,6 +193,33 @@ public class DynamicProgramming {
 	}
 
 	// also think of the matrix solution
+	// working, best to use DFS
+	public static boolean noOfPossiblePaths(int[][] grid, int length, int breadth, int i, int j, boolean[][] visited,
+			Count count) {
+		if (i == length - 1 && j == breadth - 1) {
+			count.value++;
+			return true;
+		}
+		if (!JavaUtility.checkIfIndexAreValid(i, j, length, breadth) || grid[i][j] == 0 || visited[i][j]) {
+			return false;
+		}
+		visited[i][j] = true;
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		int nextXValue = -1;
+		int nextYValue = -1;
+		boolean pathFound = false;
+		for (int l = 0; l < 4; l++) {
+			nextXValue = i + xvalues[l];
+			nextYValue = j + yvalues[l];
+			if (noOfPossiblePaths(grid, length, breadth, nextXValue, nextYValue, visited, count))
+				pathFound = true;
+		}
+		return pathFound == true ? pathFound : false;
+	}
+
+	// also think of the matrix solution
+	// this is a DFS approach which is not best, try to use BFS
 	public static int minStepsToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
 			boolean[][] visited) {
 		if (i == length - 1 && j == breadth - 1) {
@@ -369,11 +401,6 @@ public class DynamicProgramming {
 			System.out.println("Move disk from: " + from + " to " + to);
 			towerOfHanoi(n - 1, aux, to, from);
 		}
-	}
-
-	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
-	public static void printPermutations() {
-
 	}
 
 	public static void fibonacciNumbers() {

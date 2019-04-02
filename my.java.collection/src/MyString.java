@@ -24,6 +24,8 @@ public class MyString {
 
 		System.out.println("The combinations of the given string are:");
 		printCombinations(stringForCombinations);
+		System.out.println("The combinations of the given string using recursion are:");
+		printCombinationsRecursive(stringForCombinations.toCharArray(), 0, "");
 		final Set<String> stringStore = new LinkedHashSet();
 		// printPermutations(stringForPermutations.toCharArray(), 0,
 		// stringForPermutations.length() - 1);
@@ -119,8 +121,26 @@ public class MyString {
 		}
 	}
 
+	// https://www.geeksforgeeks.org/print-sums-subsets-given-set/
+	// working
+	public static void printCombinationsRecursive(char[] array, int index, String result) {
+		// Print current subset
+		if (index >= array.length) {
+			System.out.println(result + " ");
+			return;
+		}
+
+		// Subset including arr[l]
+		printCombinationsRecursive(array, index + 1, result + array[index]);
+
+		// Subset excluding arr[l]
+		printCombinationsRecursive(array, index + 1, result);
+	}
+
 	// doesn't scale for large strings
 	// https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
+	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
+
 	public static void printPermutations(char[] inputArray, int lowerIndex, int upperIndex) {
 
 		if (lowerIndex == upperIndex) {
@@ -355,7 +375,7 @@ public class MyString {
 	// https://www.geeksforgeeks.org/lexicographically-first-palindromic-string/
 	public static String lexographicallyFirstPalindrome(String input) {
 		// or use a char array of size 256 instead of tree map
-		Map<Integer, Integer> freqMap = new TreeMap<>();
+		Map<Character, Integer> freqMap = new TreeMap<>();
 		boolean isPalindoromePossible = checkIfPalindromePossible(input, freqMap);
 		if (!isPalindoromePossible) {
 			return "Palindrome Not Possible";
@@ -364,9 +384,9 @@ public class MyString {
 			String rear = "";
 			String front = "";
 			char inputChar;
-			for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+			for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 				if (entry.getValue() % 2 == 0) {
-					inputChar = (char) entry.getKey().intValue();
+					inputChar = entry.getKey();
 					String temp = "";
 					for (int index = 0; index < entry.getValue() / 2; index++) {
 						temp = temp + inputChar;
@@ -380,21 +400,21 @@ public class MyString {
 
 	}
 
-	public static String getOddString(Map<Integer, Integer> freqMap) {
+	public static String getOddString(Map<Character, Integer> freqMap) {
 		String result = "";
-		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+		for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 			if (entry.getValue() % 2 != 0) {
-				result = result + (char) entry.getKey().intValue();
+				result = result + entry.getKey();
 			}
 		}
 		return result;
 	}
 
-	public static boolean checkIfPalindromePossible(String input, Map<Integer, Integer> freqMap) {
+	public static boolean checkIfPalindromePossible(String input, Map<Character, Integer> freqMap) {
 		int length = input.length();
-		int currentChar = 0;
+		char currentChar = 0;
 		for (int index = 0; index < length; index++) {
-			currentChar = (int) input.charAt(index);
+			currentChar = input.charAt(index);
 			if (freqMap.containsKey(currentChar)) {
 				freqMap.put(currentChar, 1 + freqMap.get(currentChar));
 			} else {
@@ -402,7 +422,7 @@ public class MyString {
 			}
 		}
 		int oddCount = 0;
-		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+		for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 			if (entry.getValue() % 2 != 0) {
 				oddCount++;
 			}
@@ -421,6 +441,10 @@ public class MyString {
 
 	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
 	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
+
+	}
+	
+	public void nextHighestPalindromeOfString(String number) {
 
 	}
 
@@ -444,6 +468,13 @@ public class MyString {
 			JavaUtility.swap(inputArray, i, length - i - 1);
 		}
 		return new String(inputArray);
+	}
+
+	// v.v.v.imp -
+	// https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
+	public static void minLengthContainingPattern() {
+
 	}
 
 	/***

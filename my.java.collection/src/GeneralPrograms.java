@@ -47,9 +47,8 @@ public class GeneralPrograms {
 
 		Collections.unmodifiableMap(store);
 		// sort by value using streams
-		// store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
-		// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->
-		// e1, LinkedHashMap::new));
+		store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
 		List<Map.Entry<Integer, Integer>> sets = new ArrayList(store.entrySet());
 
@@ -174,7 +173,7 @@ public class GeneralPrograms {
 	public static int getLuckyPerson(int totalNoOfPersons, int k) {
 		if (totalNoOfPersons == 1)
 			return 0;
-		//or may be we can change k to k%totalNoOfPersons
+		// or may be we can change k to k%totalNoOfPersons
 		if (k > totalNoOfPersons)
 			return -1;
 		else
@@ -288,6 +287,65 @@ public class GeneralPrograms {
 		Pair<Integer, String> pair = new Pair<Integer, String>(Integer.valueOf(1), "GeeksforGeeks");
 
 	}
+
+	// https://www.youtube.com/watch?v=9R6b_JevYao
+	public static void kClosestPointsToCentre() {
+
+	}
+
+	public static void fillNumbersSideBySide() {
+		int n = 3;
+		int freq = 4;
+		int arraySize = n * freq;
+		int[] groupNumbersArray = new int[arraySize];
+		int count = 0;
+		for (int i = 1; i <= n; i++) {
+			for (int j = 0; j < freq; j++) {
+				groupNumbersArray[count] = i;
+				count++;
+			}
+		}
+		fillNumbersSideBySide(groupNumbersArray, n, freq);
+		for (int i = 0; i < arraySize; i++)
+			System.out.print(groupNumbersArray[i] + " ");
+
+	}
+
+	public static void fillNumbersSideBySide(int a[], int n, int k) {
+		int temp = n * k - n;
+		int size = n * k;
+		int count = n - 1;
+		for (int i = size - 2; i >= temp; i--) {
+			a[i] = a[count * k - 1];
+			count--;
+		}
+		for (int i = 0; i < temp; i++) {
+			a[i] = a[temp + (i % n)];
+		}
+		System.out.println("Sai");
+	}
+	
+	/**
+	  *  Link for the question http://www.geeksforgeeks.org/check-if-array-elements-are-consecutive/
+	  **/
+	  public static boolean checkIfElementsAreConsecutive(int inputArray[]) {
+	    int length = inputArray.length;
+	    int max = inputArray[0], min = inputArray[0];
+	    for (int i = 0; i < length; i++) {
+	      if (inputArray[i] < min)
+	        min = inputArray[i];
+	      if (inputArray[i] > max)
+	        max = inputArray[i];
+	    }
+	    if (max - min + 1 != length)
+	      return false;
+	    else
+	      for (int i = 0; i < length; i++) {
+	        if (!(max - inputArray[i] <= length))
+	          return false;
+	      }
+	    return true;
+	  }
 
 	/**
 	 * length of maximum sub array with equal ones and zeros

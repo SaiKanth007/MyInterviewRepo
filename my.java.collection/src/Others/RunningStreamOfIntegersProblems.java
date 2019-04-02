@@ -1,13 +1,24 @@
 package src.Others;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 import src.Utilities.JavaUtility;
 
+/**
+ * 1. If the two elements have same priority, priority queue doesn't gaurantee
+ * the order of insertion while doing a heapify 2. If an element priority is
+ * modified, priority queue will not be aware of it and hence we have to remove
+ * the element and add it with new priority for priority queue to run the
+ * heapify function or other solution is to have a timestamp and add a custom
+ * comparator to consider timestamp if the priorites are equal
+ * 
+ * @author sai_kanth
+ *
+ */
 public class RunningStreamOfIntegersProblems {
 
 	public static int[] leftArray = new int[100];
@@ -37,8 +48,25 @@ public class RunningStreamOfIntegersProblems {
 					nThGreatestInRunningStreamOfIntegers(minQueueForNthMax, runningStreamOfIntegers[i], 4) + " ");
 		}
 
+		KthMostRepeatedWordFromRunningStreamOfWords();
 		findFirstNonRepeatingCharacter();
 
+	}
+
+	public static void KthMostRepeatedWordFromRunningStreamOfWords() {
+		String input = "If you like Geeks for Geeks and would like to contribute \n"
+				+ "here is your chance You can write article and mail your article to contribute at \n"
+				+ "geeksforgeeks org See your article appearing on the Geeks for Geeks main page and help \n"
+				+ "thousands of other Geeks";
+		String[] inputArray = input.split(" ");
+		int length = inputArray.length;
+		PriorityQueue<StringWithFreq> minQueueForKMostFreqWords = new PriorityQueue<StringWithFreq>(
+				(s1, s2) -> s1.getFrequency().compareTo(s2.getFrequency()));
+		Map<String, StringWithFreq> stringMap = new HashMap<String, StringWithFreq>();
+		for (int i = 0; i < length; i++) {
+			String result = kMostFreqWords(minQueueForKMostFreqWords, stringMap, inputArray[i], 3);
+			System.out.println("Kth Most Freq Word is: " + result);
+		}
 	}
 
 	// working
@@ -133,6 +161,28 @@ public class RunningStreamOfIntegersProblems {
 		return (int) minQueue.peek();
 	}
 
+	// using hashmap will not scale since words can be huge, we should better go for
+	// Trie
+	// Not Working, yet to do
+	public static String kMostFreqWords(PriorityQueue<StringWithFreq> minQueue,
+			Map<String, StringWithFreq> stringFreqMap, String input, int n) {
+		if (stringFreqMap.containsKey(input)) {
+			StringWithFreq newStringWithFreq = new StringWithFreq(input, 1 + stringFreqMap.get(input).getFrequency());
+			minQueue.remove(stringFreqMap.get(input));
+			minQueue.add(newStringWithFreq);
+		} else {
+			StringWithFreq stringFrqObject = new StringWithFreq(input, 1);
+			stringFreqMap.put(input, stringFrqObject);
+			minQueue.add(stringFrqObject);
+		}
+		if (minQueue.size() < n)
+			return "";
+		else if (minQueue.size() > n) {
+			minQueue.poll();
+		}
+		return minQueue.peek().getInput();
+	}
+
 	// https://www.geeksforgeeks.org/find-first-non-repeating-character-stream-characters/
 	public static void findFirstNonRepeatingCharacter() {
 
@@ -153,4 +203,32 @@ public class RunningStreamOfIntegersProblems {
 				System.out.println("The first repeatring character till " + index + " th element is" + nodes.get(0));
 		}
 	}
+}
+
+class StringWithFreq {
+	String input;
+
+	public StringWithFreq(String input, Integer frequency) {
+		super();
+		this.input = input;
+		this.frequency = frequency;
+	}
+
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	public Integer getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(Integer frequency) {
+		this.frequency = frequency;
+	}
+
+	Integer frequency;
 }
