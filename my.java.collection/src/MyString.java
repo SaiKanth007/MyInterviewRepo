@@ -24,6 +24,8 @@ public class MyString {
 
 		System.out.println("The combinations of the given string are:");
 		printCombinations(stringForCombinations);
+		System.out.println("The combinations of the given string using recursion are:");
+		printCombinationsRecursive(stringForCombinations.toCharArray(), 0, "");
 		final Set<String> stringStore = new LinkedHashSet();
 		// printPermutations(stringForPermutations.toCharArray(), 0,
 		// stringForPermutations.length() - 1);
@@ -117,6 +119,22 @@ public class MyString {
 			count = 0;
 
 		}
+	}
+
+	// https://www.geeksforgeeks.org/print-sums-subsets-given-set/
+	// working
+	public static void printCombinationsRecursive(char[] array, int index, String result) {
+		// Print current subset
+		if (index >= array.length) {
+			System.out.println(result + " ");
+			return;
+		}
+
+		// Subset including arr[l]
+		printCombinationsRecursive(array, index + 1, result + array[index]);
+
+		// Subset excluding arr[l]
+		printCombinationsRecursive(array, index + 1, result);
 	}
 
 	// doesn't scale for large strings
@@ -444,6 +462,13 @@ public class MyString {
 			JavaUtility.swap(inputArray, i, length - i - 1);
 		}
 		return new String(inputArray);
+	}
+
+	// v.v.v.imp -
+	// https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
+	public static void minLengthContainingPattern() {
+
 	}
 
 	/***

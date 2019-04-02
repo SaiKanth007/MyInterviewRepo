@@ -47,9 +47,8 @@ public class GeneralPrograms {
 
 		Collections.unmodifiableMap(store);
 		// sort by value using streams
-		// store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
-		// .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) ->
-		// e1, LinkedHashMap::new));
+		store = store.entrySet().stream().sorted(Map.Entry.comparingByValue())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
 		List<Map.Entry<Integer, Integer>> sets = new ArrayList(store.entrySet());
 
@@ -174,7 +173,7 @@ public class GeneralPrograms {
 	public static int getLuckyPerson(int totalNoOfPersons, int k) {
 		if (totalNoOfPersons == 1)
 			return 0;
-		//or may be we can change k to k%totalNoOfPersons
+		// or may be we can change k to k%totalNoOfPersons
 		if (k > totalNoOfPersons)
 			return -1;
 		else
@@ -286,6 +285,11 @@ public class GeneralPrograms {
 	// https://www.geeksforgeeks.org/pair-class-in-java-tuples/
 	public static void tuppleExample() {
 		Pair<Integer, String> pair = new Pair<Integer, String>(Integer.valueOf(1), "GeeksforGeeks");
+
+	}
+
+	// https://www.youtube.com/watch?v=9R6b_JevYao
+	public static void kClosestPointsToCentre() {
 
 	}
 
