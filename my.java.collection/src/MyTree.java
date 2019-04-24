@@ -3,18 +3,14 @@ package src;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 //https://stackoverflow.com/questions/9560600/java-no-enclosing-instance-of-type-foo-is-accessible
@@ -463,17 +459,50 @@ public class MyTree {
 		}
 	}
 
-	public static void printBottomViewOfTheTree(Node root) {
-		if (root != null) {
-		}
-
-	}
-
 	// https://www.geeksforgeeks.org/print-binary-tree-vertical-order-set-2/
 	public static void printVerticalViewOfTheTree(Node root) {
 		if (root != null) {
 		}
 
+	}
+
+	// working
+	public static void printBottomViewOfTheTree(Node root) {
+		if (root != null) {
+			int height = printHeightOfTree(root);
+			Map<Integer, LinkedList<Node>> nodeDepthMap = new LinkedHashMap<>();
+			Map<Integer, Integer> utilityMap = new HashMap();
+			for (int i = height; i > 0; i--) {
+				printBottomViewOfTheTreeUtility(root, i, i, nodeDepthMap, utilityMap, 0);
+			}
+			System.out.println("The bottom view of the tree is:");
+			Set<Integer> sortedKeySet = nodeDepthMap.keySet().stream().sorted().collect(Collectors.toSet());
+			for (Integer depth : sortedKeySet) {
+				nodeDepthMap.get(depth).stream().forEach(node -> System.out.print(node.data + " "));
+			}
+		}
+	}
+
+	public static void printBottomViewOfTheTreeUtility(Node root, int height, int actualHeight,
+			Map<Integer, LinkedList<Node>> nodeDepthMap, Map<Integer, Integer> utilityMap, int width) {
+		if (root != null) {
+			if (height == 1) {
+				if (!utilityMap.containsKey(width)) {
+					utilityMap.put(width, actualHeight);
+					nodeDepthMap.put(width, new LinkedList<Node>());
+					nodeDepthMap.get(width).add(root);
+					// this condition is because unvisited nodes in the same level and same widht
+					// has to be covered
+				} else if (utilityMap.get(width) == actualHeight) {
+					nodeDepthMap.get(width).add(root);
+				}
+			} else {
+				printBottomViewOfTheTreeUtility(root.left, height - 1, actualHeight, nodeDepthMap, utilityMap,
+						width - 1);
+				printBottomViewOfTheTreeUtility(root.right, height - 1, actualHeight, nodeDepthMap, utilityMap,
+						width + 1);
+			}
+		}
 	}
 
 	// working
@@ -628,6 +657,8 @@ public class MyTree {
 
 	}
 
+	// https://leetcode.com/problems/symmetric-tree/solution/
+	// other approach would be to use two queue, to do level order processing
 	public static boolean checkIfTreesAreMirrorImages(Node firstRoot, Node secondRoot) {
 		if (firstRoot == null && secondRoot != null)
 			return false;
@@ -672,6 +703,16 @@ public class MyTree {
 
 		return 1 + Math.max(leftHeight, rightHeight);
 
+	}
+
+	public static boolean checkIfPathExistFromRootWithGivenSum(Node root, int sum) {
+
+		if (root == null)
+			return false;
+		if (root.left == null && root.right == null)
+			return root.data == sum;
+		return checkIfPathExistFromRootWithGivenSum(root.left, sum - root.data)
+				|| checkIfPathExistFromRootWithGivenSum(root.right, sum - root.data);
 	}
 
 	// working
@@ -815,6 +856,7 @@ public class MyTree {
 	}
 
 	// working
+	// we can use prev as parameter as well
 	public boolean checkIfGivenTreeIsBST(Node root) {
 		if (root != null) {
 			Boolean leftBST = checkIfGivenTreeIsBST(root.left);
@@ -959,8 +1001,7 @@ public class MyTree {
 	}
 
 	/***
-	 * 1. Bottom view of the tree tree to linkedlist two nodes of a BST are swapped,
-	 * 2. find out the them
+	 * 1. two nodes of a BST are swapped, 2. find out the them
 	 * https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 	 * 
 	 * 3. Find kth smallest element in BST 4. connect nodes at same level using

@@ -49,6 +49,20 @@ public class JavaUtility {
 		}
 		return true;
 	}
+	
+	public static boolean checkIfIndexAreValid(int[][] matrix, int i, int j) {
+		int breadth = matrix[0].length;
+		int length = matrix.length;
+		if (i >= length || j >= breadth || i < 0 || j < 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean checkIfIndexAreValidForMatrix(int i, int j, int length, int breadth, int[][] grid,
+			boolean[][] visited) {
+		return checkIfIndexAreValid(i, j, length, breadth) && grid[i][j] == 1 && !visited[i][j];
+	}
 
 	public static void printMatrix(int[][] matrix, int rowSize, int columnSize) {
 		for (int i = 0; i < rowSize; i++) {

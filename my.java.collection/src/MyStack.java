@@ -1,15 +1,12 @@
 package src;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
 //https://www.geeksforgeeks.org/stack-data-structure/
+//any question related to balancing of expresison try to use stacks
 public class MyStack {
 
 	public static void main(String[] args) {
@@ -23,7 +20,7 @@ public class MyStack {
 		System.out.println(inputStack);
 		System.out.println(checkForBalanceParanthesis(""));
 
-		int[] printNextGreatestElement = { 13, 7, 24, 6, 12 };
+		int[] printNextGreatestElement = { 13, 7, 6, 12 };
 		printNextGreatestElement(printNextGreatestElement);
 
 		int[] ReplaceElementWithGreatestElementonRight = { 13, 50, 6, 12, 24 };
@@ -129,95 +126,82 @@ public class MyStack {
 
 	}
 
+	// //
 	// https://stackoverflow.com/questions/21626439/how-to-implement-the-java-comparable-interface
-	static class IndexValue implements Comparable<IndexValue> {
-		public int getIndex() {
-			return index;
-		}
-
-		public void setIndex(int index) {
-			this.index = index;
-		}
-
-		public int getValue() {
-			return value;
-		}
-
-		public void setValue(int value) {
-			this.value = value;
-		}
-
-		public int getNextGreatest() {
-			return nextGreatest;
-		}
-
-		public void setNextGreatest(int nextGreatest) {
-			this.nextGreatest = nextGreatest;
-		}
-
-		int index;
-		int value;
-		int nextGreatest;
-
-		public IndexValue(int index, int value) {
-			this.index = index;
-			this.value = value;
-		}
-
-		public int compareTo(IndexValue o) {
-			// TODO Auto-generated method stub
-			return o.getIndex() > this.index ? 1 : -1;
-
-		}
-	}
+	// static class IndexValue implements Comparable<IndexValue> {
+	// public int getIndex() {
+	// return index;
+	// }
+	//
+	// public void setIndex(int index) {
+	// this.index = index;
+	// }
+	//
+	// public int getValue() {
+	// return value;
+	// }
+	//
+	// public void setValue(int value) {
+	// this.value = value;
+	// }
+	//
+	// public int getNextGreatest() {
+	// return nextGreatest;
+	// }
+	//
+	// public void setNextGreatest(int nextGreatest) {
+	// this.nextGreatest = nextGreatest;
+	// }
+	//
+	// int index;
+	// int value;
+	// int nextGreatest;
+	//
+	// public IndexValue(int index, int value) {
+	// this.index = index;
+	// this.value = value;
+	// }
+	//
+	// public int compareTo(IndexValue o) {
+	// // TODO Auto-generated method stub
+	// return o.getIndex() > this.index ? 1 : -1;
+	//
+	// }
+	// }
 
 	// https://www.geeksforgeeks.org/next-greater-element/
 	// https://www.geeksforgeeks.org/find-next-smaller-next-greater-array/
 	// [4, 5, 2, 25},
 	// working (also we can try using queue for maintaining order)
 	public static void printNextGreatestElement(int[] input) {
-		Stack<IndexValue> stack = new Stack<IndexValue>();
-		List<IndexValue> result = new ArrayList<IndexValue>();
+		Stack<Integer> stack = new Stack<Integer>();
 
 		// creating the comparator on the fly using Java8,
 		// compare - compares first object with second object - to have comparision on
 		// diff fields as per need
 		// compareTo - compare the current object with the specified object - to provide
 		// natural ordering for objects
-		Comparator<IndexValue> cnomp = Comparator.comparing(IndexValue::getIndex);
 
-		stack.push(new IndexValue(0, input[0]));
-		int next = -1;
 		int length = input.length;
-		for (int i = 1; i < input.length; i++) {
-			next = input[i];
-			if (!stack.isEmpty()) {
-				while (stack.peek().getValue() < next) {
-					stack.peek().setNextGreatest(next);
-					result.add(stack.pop());
-					if (stack.isEmpty() == true)
-						break;
-				}
-			}
-			stack.push(new IndexValue(i, next));
-		}
-		while (!stack.isEmpty()) {
-			stack.peek().setNextGreatest(-1);
-
-			result.add(stack.pop());
-		}
-		Collections.sort(result);
+		stack.push(length - 1);
 		int[] NGE = new int[length];
 		NGE[length - 1] = -1;
-		int j = 0;
 		for (int i = length - 2; i >= 0; i--) {
-			for (j = i + 1; j < length && input[j] < input[i]; j++)
-				;
-			if (j == length)
+			if (!stack.isEmpty()) {
+				while (!stack.isEmpty() && input[stack.peek()] <= input[i]) {
+					stack.pop();
+				}
+				if (stack.isEmpty()) {
+					NGE[i] = -1;
+				} else {
+					NGE[i] = input[stack.peek()];
+				}
+			} else {
 				NGE[i] = -1;
-			else
-				NGE[i] = input[j];
+			}
+			stack.push(i);
 		}
+
 		System.out.println();
 		for (int i = 0; i < length; i++) {
 			System.out.print(input[i] + " ");

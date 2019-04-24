@@ -16,6 +16,15 @@ import java.util.TreeMap;
 import src.Utilities.*;
 
 //https://www.youtube.com/watch?v=KIQ6fZ4XRKs&list=PLF9tovyahfL020hGgLIsRMZY4bfSLCFUa
+/**
+ * Given two strings A and B, find the longest common prefix. Given two strings
+ * A and B, what's the longest prefix of A which is suffix of B. Given a list of
+ * strings, find number of unique prefixes of all the strings. Given a list of
+ * string, find the longest common substring of all strings.
+ * 
+ * @author sai_kanth
+ *
+ */
 public class MyString {
 
 	public static void main(String[] args) {
@@ -443,7 +452,7 @@ public class MyString {
 	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
 
 	}
-	
+
 	public void nextHighestPalindromeOfString(String number) {
 
 	}
@@ -475,6 +484,12 @@ public class MyString {
 	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
 	public static void minLengthContainingPattern() {
 
+	}
+
+	// https://code.dennyzhang.com/next-closest-time
+	// v.v.v.imp
+	public static String nextClosestTime() {
+		return "";
 	}
 
 	/***

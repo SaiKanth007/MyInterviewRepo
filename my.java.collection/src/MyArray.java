@@ -7,9 +7,7 @@ import java.util.Map;
 import src.Utilities.JavaUtility;;
 
 /*
- * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2018. // This software
- * and documentation contain confidential and // proprietary information owned by UnitedHealth Group Corporation. //
- * Unauthorized use and distribution are prohibited. //***********************************************
+ * When to use which sorting algorithm - https://stackoverflow.com/questions/1933759/when-is-each-sorting-algorithm-used
  */
 
 /**
@@ -139,10 +137,14 @@ public class MyArray {
 		System.out.println(
 				"Median of the sorted arrays is" + medianOfTwoSortedArraysOfSameLength(sortedArray1, sortedArray2));
 
-		int[] arrayForCountSubArrays = { 9, 4, 20, 3 };
+		int[] arrayForCountSubArrays = { 9, 4, 20, 3, 10, 5 };
 		System.out.println("Number of Sub Sequence is:"
-				+ findSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33));
+				+ findNoOfSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33));
+		findSubarrayWithGivenSum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33);
 
+		int[] arrayToFindMinNoOfSwaps = { 4, 3, 2, -1 };
+		System.out.println("Minimum no of swaps required to sort the array is:"
+				+ minNoOfSwapsRequiredToSortArray(arrayToFindMinNoOfSwaps));
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -246,12 +248,24 @@ public class MyArray {
 	}
 
 	// https://www.geeksforgeeks.org/counting-sort/
+	// does not work for negative numbers so think once, go through this later
+	// thoroughly
 	public static void CountingSort(int[] array) {
 		int length = array.length;
-		int[] count = new int[length];
-		for(int i=0;i<length;i++) {
-			count[array[i]%length]++;	
+		int[] count = new int[256];
+		int[] output = new int[length];
+		for (int i = 0; i < length; i++) {
+			count[array[i]]++;
 		}
+		for (int i = 1; i < 256; i++)
+			count[i] += count[i - 1];
+
+		for (int i = length - 1; i >= 0; i--) {
+			output[count[array[i]] - 1] = array[i];
+			--count[array[i]];
+		}
+		for (int i = 0; i < length; ++i)
+			array[i] = output[i];
 	}
 
 	// other appraoch is to use minHeap and constructing the minheap for k elements
@@ -860,7 +874,7 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/number-subarrays-sum-exactly-equal-k/
 	// v.v.imp
 	// https://auth.geeksforgeeks.org/user/nik1996/articles
-	static int findSubarraySum(int arr[], int n, int sum) {
+	static int findNoOfSubarraySum(int arr[], int n, int sum) {
 		HashMap<Integer, Integer> prevSum = new HashMap<>();
 		int res = 0;
 		int currsum = 0;
@@ -880,14 +894,63 @@ public class MyArray {
 		return res;
 	}
 
+	// https://algorithms.tutorialhorizon.com/in-an-array-find-the-subarray-with-sum-to-a-given-value/
+	// working, also for finding no of subarrays with the given sum
+	static void findSubarrayWithGivenSum(int arr[], int n, int sum) {
+		int currSum = 0;
+		int start = 0;
+		for (int i = 0; i < n; i++) {
+			if (currSum < sum)
+				currSum = currSum + arr[i];
+			else if (currSum == sum) {
+				System.out.println("The subarray for the given sum starts from " + start + " and ends at " + (i - 1));
+				// we can remove this break statement and reduce the currSum by arr[start++] to
+				// find out all possible subArrays
+				break;
+			} else {
+				while (currSum > sum)
+					currSum = currSum - arr[start++];
+			}
+		}
+	}
+
 	// https://www.careercup.com/question?id=5698133541519360
 	public static void method(int[] array) {
 
 	}
+
+	// https://www.geeksforgeeks.org/minimum-number-swaps-required-sort-array/
+	// https://stackoverflow.com/questions/15152322/compute-the-minimal-number-of-swaps-to-order-a-sequence/15152602#15152602
+	// think of scenario's with negative members as well
+	public static int minNoOfSwapsRequiredToSortArray(int[] array) {
+		int length = array.length;
+		Map<Integer, Integer> valueIndicesMap = new HashMap<Integer, Integer>();
+		for (int i = 0; i < length; i++) {
+			valueIndicesMap.put(array[i], i);
+		}
+		Arrays.sort(array);
+		for (int i = 0; i < length; i++) {
+			array[i] = valueIndicesMap.get(array[i]);
+		}
+		int noOfSwaps = 0;
+		for (int i = 0; i < length; i++) {
+			if (i == array[i])
+				continue;
+			else {
+				JavaUtility.swap(array, i, array[i]);
+				noOfSwaps++;
+			}
+		}
+		return noOfSwaps;
+	}
+
+	// think of priority queue whenever we come across k nearest elements
+	public static void printNClosestKumbersToN(int[] array, int n, int k) {
+
+	}
 	// array rotation
-	// stocks buy
-	// max incresing sub sequence
 	// finding square root
-	// next smallest polindrome
+	// next smallest palindrome
+	// merge k sorted arrays
 
 }

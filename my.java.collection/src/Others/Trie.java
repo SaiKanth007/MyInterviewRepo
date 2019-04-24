@@ -1,6 +1,21 @@
 package src.Others;
 
 //https://www.geeksforgeeks.org/print-valid-words-possible-using-characters-array/
+/**
+ * Think of infix search as well names = ['rahul', 'rohit', 'varun', 'mohit']
+ * search_string = 'r' --> expected_search_result = ['rahul', 'rohit', 'varun']
+ * search_string = 'ra' --> expected_search_result = ['rahul'] search_string =
+ * 'hit' --> expected_search_result = ['rohit', 'mohit']
+ * 
+ * Size of Trie - Complexity In a way, yes, O(n**m) is a correct boundary too.
+ * It's just pretty useless in most cases. For example, w = 200 words with an
+ * average length of m = 100 in an alphabet size of n = 50 would result in
+ * O(50**100), woo, doesn't fit in the universe! ...while the other boundary
+ * would be O(200*100).
+ * 
+ * @author sai_kanth
+ *
+ */
 public class Trie {
 
 	TrieNode root;
@@ -85,6 +100,8 @@ public class Trie {
 	// auto suggestion //working
 	// try now printing only the top 10 words
 	// https://www.geeksforgeeks.org/auto-complete-feature-using-trie/
+	// https://www.youtube.com/watch?v=us0qySiUsGU - getting suggestions from
+	// multiple Trie's in case of huge data
 	public static void printAllRelatedStrings(TrieNode node, String input) {
 		if (node == null)
 			return;

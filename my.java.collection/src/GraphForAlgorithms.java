@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 //Spanning Tree: a Tree that includes all the vertexes
-//Minimum Spanning Tree: a Tree that includes all the vertexes with minimum possible weights
-//Two possible algorithms are: Prims, Kruskals
+//Minimum Spanning Tree: a Tree that includes all the vertexes with minimum sum of weights
+//Two possible algorithms are: Prims, Kruskals (yet to do)
 //https://www.hackerearth.com/practice/algorithms/graphs/minimum-spanning-tree/tutorial/
 //Dijkstra's and Bellmanford (works for negative as well) are two algorithms used for finding the shortest distance between any two nodes
 public class GraphForAlgorithms {
@@ -122,6 +122,8 @@ public class GraphForAlgorithms {
 		Arrays.fill(minWeightsGraph, Integer.MAX_VALUE);
 		boolean[] visitedArray = new boolean[graph.noOfVertices];
 		graph.finMinDistanceForAllVerticesFromGivenVertexUsingBFS(0, visitedArray, minWeightsGraph);
+		// we cannot assume this would be the minimum spanning tree, we have consider
+		// running this method from all vertices and then check for minimum spannig tree
 		minimumDistance(minWeightsGraph);
 	}
 

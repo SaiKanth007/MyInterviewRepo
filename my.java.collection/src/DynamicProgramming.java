@@ -3,8 +3,10 @@ package src;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import src.Utilities.JavaUtility;
 
@@ -40,6 +42,10 @@ public class DynamicProgramming {
 		visited = new boolean[4][5];
 		System.out.println("Minimum steps to reach the end of the matrix:"
 				+ minStepsToReachEndOfMatrix(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited));
+
+		visited = new boolean[4][5];
+		System.out.println("Minimum steps to reach the end of the matrix Using BFS:"
+				+ minStepsToReachEndOfMatrixUsingBFS(minStepsToReachEndOfMatrix, 4, 5, 1, 2, visited));
 
 		visited = new boolean[4][5];
 		solution[1][2] = true;
@@ -113,6 +119,8 @@ public class DynamicProgramming {
 
 	// also check the below link for O(NlogN) solution in below link
 	// https://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
+	// another application is connecting bridges -
+	// https://www.geeksforgeeks.org/dynamic-programming-building-bridges/
 	public static int longestIncreasingSubSequence(int[] array) {
 		int length = array.length;
 		if (length <= 1)
@@ -246,12 +254,44 @@ public class DynamicProgramming {
 		return actualSum != Integer.MAX_VALUE ? 1 + actualSum : Integer.MAX_VALUE;
 	}
 
+	// working
+	public static int minStepsToReachEndOfMatrixUsingBFS(int[][] grid, int length, int breadth, int i, int j,
+			boolean[][] visited) {
+		if (i == length - 1 && j == breadth - 1) {
+			return 0;
+		}
+		if (!JavaUtility.checkIfIndexAreValidForMatrix(i, j, length, breadth, grid, visited)) {
+			return Integer.MAX_VALUE;
+		}
+		visited[i][j] = true;
+		Queue<Coordinate> points = new LinkedList<Coordinate>();
+		points.add(new Coordinate(i, j, 0));
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		Coordinate currentPoint = null;
+		int nextXValue = -1;
+		int nextYValue = -1;
+		int nextDistance = -1;
+		while (!points.isEmpty()) {
+			currentPoint = points.poll();
+			for (int l = 0; l < 4; l++) {
+				if (currentPoint.x == length - 1 && currentPoint.y == breadth - 1) {
+					return currentPoint.lengthOfPathTillThisPoint;
+				}
+				nextXValue = currentPoint.x + xvalues[l];
+				nextYValue = currentPoint.y + yvalues[l];
+				nextDistance = currentPoint.lengthOfPathTillThisPoint + 1;
+				if (JavaUtility.checkIfIndexAreValidForMatrix(nextXValue, nextYValue, length, breadth, grid, visited)) {
+					points.add(new Coordinate(nextXValue, nextYValue, nextDistance));
+				}
+			}
+		}
+		return Integer.MAX_VALUE;
+	}
+
 	// also think of the matrix solution
 	public static int minStepsPathToReachEndOfMatrix(int[][] grid, int length, int breadth, int i, int j,
 			boolean[][] visited, boolean[][] solution) {
-		if (i == 1 && j == 1) {
-			System.out.println("I am here");
-		}
 		if (i == length - 1 && j == breadth - 1) {
 			return 0;
 		}
@@ -279,7 +319,6 @@ public class DynamicProgramming {
 				if (localSum != Integer.MAX_VALUE && localSum < actualSum) {
 					actualSum = localSum;
 				} else {
-
 					solution[nextXValue][nextYValue] = false;
 				}
 			}
@@ -525,4 +564,23 @@ public class DynamicProgramming {
 	 * https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChangingMinimumCoin.java
 	 * https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/
 	 */
+
 }
+
+class Coordinate {
+	int x;
+	int y;
+	int lengthOfPathTillThisPoint;
+
+	public Coordinate(int x, int y, int lengthOfPathTillThisPoint) {
+		this.x = x;
+		this.y = y;
+		this.lengthOfPathTillThisPoint = lengthOfPathTillThisPoint;
+	}
+}
+
+/**
+ * https://leetcode.com/discuss/interview-experience/188224/Google-Software-Engineer-Interview-Experience
+ * pinball game board = [ . . . \ . ] [ . \ . / . ] ball_pos = (0,0), ball_dir =
+ * (0,1) exit_pos = (0,1), exit_dir = (-1,0)
+ **/

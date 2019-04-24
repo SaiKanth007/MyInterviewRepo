@@ -7,6 +7,10 @@ import java.util.Queue;
 //djikstra's algorithm, Prims algorithm, minimum spanning tree
 //https://stackoverflow.com/questions/2218322/what-is-better-adjacency-lists-or-adjacency-matrices-for-graph-problems-in-c
 //bellman ford - https://www.youtube.com/watch?v=FtN3BYH2Zes
+
+// A graph can be a tree if 
+//i) its a connected graph (use BFS or DFS from one vertex and check if all vertices can be covered)
+//ii) There are no cycles present
 public class MyGraph {
 	int noOfVertices;
 	LinkedList<Integer>[] adjacencyMatrix;

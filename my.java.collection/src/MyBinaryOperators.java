@@ -2,14 +2,6 @@ package src;
 
 import org.apache.commons.lang3.StringUtils;
 
-/*
- * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2019. // This software
- * and documentation contain confidential and // proprietary information owned by UnitedHealth Group Corporation. //
- * Unauthorized use and distribution are prohibited. //***********************************************
- */
-
-/**
- */
 // https://www.geeksforgeeks.org/bitwise-algorithms/
 // https://www.geeksforgeeks.org/bitwise-hacks-for-competitive-programming/
 // vvv imp

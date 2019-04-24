@@ -16,6 +16,13 @@ class Testing implements Serializable {
 
 		// think of converting byte to integer
 		testPriorityQueue();
+		// if(null==2) not allowed
+
+		int fourBytesIJustRead = -234;
+		// ((long) x) & 0xffffffffL --> same as function
+		long unsignedValue = Integer.toUnsignedLong(-234);
+		System.out.println("Unsinged values is" + unsignedValue);
+
 		new Parent();
 		new Child();
 		new Child();

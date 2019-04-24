@@ -37,7 +37,8 @@ public class PalindromicProblems {
 		return 0;
 	}
 
-	public static int printPalindromicNumbersLessThanTheGivenNumber() {
+	// https://www.geeksforgeeks.org/given-a-number-find-next-smallest-palindrome-larger-than-this-number/
+	public static int printNextLargestPalindromicNumber() {
 		return 0;
 	}
 
