@@ -19,6 +19,9 @@ public class MyMatrix {
 		matrixMultiplication(mat1, mat2, 2, 2);
 		int spiralMatrix[][] = { { 1, 2, 3, 4, 5, 6 }, { 7, 8, 9, 10, 11, 12 }, { 13, 14, 15, 16, 17, 18 } };
 		// printMatrixInSpiral(spiralMatrix, 3, 6);
+		int breadth = spiralMatrix.length;
+		int length = spiralMatrix[0].length;
+		System.out.println("Length and breadth are:" + breadth + length);
 
 		int uniqueMatrix[][] = { { 0, 1, 0, 0, 1 }, { 1, 0, 1, 1, 0 }, { 0, 1, 0, 0, 1 }, { 1, 1, 1, 0, 0 } };
 		System.out.println("Unique rows in the matrix are:");
@@ -39,6 +42,13 @@ public class MyMatrix {
 
 		int[][] matrixForRectangle = { { 1, 0, 0, 1, 0 }, { 0, 0, 1, 0, 1 }, { 0, 0, 0, 1, 0 }, { 1, 0, 1, 0, 1 } };
 		System.out.println("There is a matrix with rectangle:" + findRectangleInMatrix(matrixForRectangle));
+
+		int[][] updateMatrix = { { 1, 0, 1, 1, 0, 0, 1, 0, 0, 1 }, { 0, 1, 1, 0, 1, 0, 1, 0, 1, 1 },
+				{ 0, 0, 1, 0, 1, 0, 0, 1, 0, 0 }, { 1, 0, 1, 0, 1, 1, 1, 1, 1, 1 }, { 0, 1, 0, 1, 1, 0, 0, 0, 0, 1 },
+				{ 0, 0, 1, 0, 1, 1, 1, 0, 1, 0 }, { 0, 1, 0, 1, 0, 1, 0, 0, 1, 1 }, { 1, 0, 0, 0, 1, 1, 1, 1, 0, 1 },
+				{ 1, 1, 1, 1, 1, 1, 1, 0, 1, 0 }, { 1, 1, 1, 1, 0, 1, 0, 0, 1, 1 } };
+		updateMatrix(updateMatrix);
+
 	}
 
 	public static boolean findElementInRowAndColumnSortedMatrix(int[][] matrix, int length, int breadth, int key) {
@@ -242,5 +252,59 @@ public class MyMatrix {
 			}
 		}
 		return 0;
+	}
+
+	// for working solution - look at my submissions -
+	// https://leetcode.com/problems/01-matrix/submissions/
+	public static int[][] updateMatrix(int[][] matrix) {
+
+		int length = matrix.length;
+		int breadth = matrix[0].length;
+		int[][] result = new int[length][breadth];
+		int[] xvalues = { 1, -1, 0, 0 };
+		int[] yvalues = { 0, 0, 1, -1 };
+		int nextXValue = -1;
+		int nextYValue = -1;
+		boolean adjacentZeroFound = false;
+
+		for (int x = 0; x < length; x++) {
+			if (x == 9)
+				System.out.println("break");
+			for (int y = 0; y < breadth; y++) {
+				if (matrix[x][y] == 0)
+					result[x][y] = 0;
+				else {
+					for (int k = 0; k < 4; k++) {
+						nextXValue = x + xvalues[k];
+						nextYValue = y + yvalues[k];
+						if (JavaUtility.checkIfIndexAreValid(matrix, nextXValue, nextYValue)
+								&& matrix[nextXValue][nextYValue] == 0) {
+							adjacentZeroFound = true;
+							break;
+						}
+					}
+					if (adjacentZeroFound) {
+						result[x][y] = 1;
+						adjacentZeroFound = false;
+					} else {
+						int min = Integer.MAX_VALUE;
+						for (int k = 0; k < 4; k++) {
+							nextXValue = x + xvalues[k];
+							nextYValue = y + yvalues[k];
+							if (JavaUtility.checkIfIndexAreValid(matrix, nextXValue, nextYValue)) {
+								min = Math.min(min, result[nextXValue][nextYValue]);
+							}
+							matrix[x][y] = min;
+						}
+
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	public static boolean searchInRowWiseAndColumnWiseSortedMatrix() {
+		return true;
 	}
 }

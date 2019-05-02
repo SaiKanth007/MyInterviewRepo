@@ -6,6 +6,11 @@ import java.util.Queue;
 
 //djikstra's algorithm, Prims algorithm, minimum spanning tree
 //https://stackoverflow.com/questions/2218322/what-is-better-adjacency-lists-or-adjacency-matrices-for-graph-problems-in-c
+//bellman ford - https://www.youtube.com/watch?v=FtN3BYH2Zes
+
+// A graph can be a tree if 
+//i) its a connected graph (use BFS or DFS from one vertex and check if all vertices can be covered)
+//ii) There are no cycles present
 public class MyGraph {
 	int noOfVertices;
 	LinkedList<Integer>[] adjacencyMatrix;
@@ -196,6 +201,9 @@ public class MyGraph {
 
 	}
 
+	// Time complexity of DFS or BFS is O(E+V) (and not O(V) which we think, read
+	// the link for the reason)
+	// https://www.quora.com/What-is-the-time-complexity-of-Breadth-First-Search-Traversal-of-a-graph
 	public void DFS(Integer startVertex, boolean[] visited) {
 		if (startVertex >= this.noOfVertices) {
 			return;

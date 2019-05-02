@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ import src.Utilities.Employee;
 
 // https://stackify.com/streams-guide-java-8/
 // https://github.com/Baeldung/stackify/blob/master/core-java/src/test/java/com/stackify/stream/EmployeeTest.java
-// removeIf, filter, allMatch, anyMatch, noneMatch, map, forEach, sorted, toArray, skip, limit, Collectors.joining(", ")
+// removeIf, filter, allMatch, anyMatch, noneMatch, map, forEach, sorted, toArray, skip, limit, distinct, parallel stream,Collectors.joining(", ")
 /**
  * Things to read 1. Infinite streams 2. Streams
  *
@@ -32,12 +33,37 @@ public class Streams {
 		// On Arrays.asList returning a fixed-size list
 		List<Employee> empList = Arrays.asList(array);
 		List<Employee> empList2 = Arrays.asList(array);
-
-		IntStream.range(0, empList.size()).filter(index -> index % 2 != 0).mapToObj(index -> empList2.get(index))
-				.forEach(user -> System.out.println(user.getName()));
-
-		empList.stream();
 		Stream.of(array[0], array[1], array[2]);
+		Arrays.asList(array).stream();
+
+		/**
+		 * All Stream functions at one place
+		 */
+		IntStream.range(0, empList.size()).filter(index -> index % 2 != 0).mapToObj(index -> empList2.get(index))
+				.skip(2).limit(2).forEach(user -> System.out.println(user.getName()));
+		// removeIf is used on collections and not on streams
+		empList2.removeIf(emp -> "JK".equals(emp.getName()));
+		// returnts boolean values
+		empList2.stream().allMatch(emp -> emp.getId().equals("Sai"));
+		empList2.stream().anyMatch(emp -> emp.getId().equals("Sai"));
+		empList2.stream().noneMatch(emp -> emp.getId().equals("Sai"));
+		// joining can only be used on strings
+		empList2.stream().map(Employee::getId).collect(Collectors.joining(", ")).toString();
+		// findFirst always used in conjuction with filter
+		empList2.stream().distinct().sorted().parallel().filter(emp -> emp.getId().equals("Sai")).findFirst();
+		empList2.parallelStream().toArray(Employee[]::new);
+		List<List<Employee>> globalempList = Arrays.asList(empList, empList);
+		List<Employee> globalempLis = globalempList.stream().flatMap(list -> list.stream())
+				.collect(Collectors.toList());
+		// https://www.mkyong.com/java8/java-8-collectors-groupingby-and-mapping-example/
+		Map<Integer, List<Employee>> groupByPriceMap = globalempLis.stream()
+				.collect(Collectors.groupingBy(Employee::getRank));
+		Map<Integer, Set<String>> groupByPriceMapSet = globalempLis.stream().collect(
+				Collectors.groupingBy(Employee::getRank, Collectors.mapping(Employee::getName, Collectors.toSet())));
+		Map<String, Long> counting = globalempLis.stream()
+				.collect(Collectors.groupingBy(Employee::getName, Collectors.counting()));
+		Map<String, Double> sum = globalempLis.stream()
+				.collect(Collectors.groupingBy(Employee::getName, Collectors.summingDouble(Employee::getSalary)));
 
 		System.out.println();
 		empList.stream().distinct().collect(Collectors.toList());

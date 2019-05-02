@@ -1,5 +1,7 @@
 package src.Others;
 
+//https://stackoverflow.com/questions/41780133/making-below-lru-cache-to-work-in-multithreading-enviorement-in-java
+// we can also use LinkedHashMap approach, but if we use then to make the map synchronized we have to use Collections.synchronize(map), which will lock down the complete map for updates unlike the concurrent hashmap which locks only part of the moa
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

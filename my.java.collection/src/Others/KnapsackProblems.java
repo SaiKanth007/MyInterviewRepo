@@ -5,15 +5,16 @@ import java.util.Arrays;
 import java.util.List;
 
 //think of scenario of negative numbers as well
+// think of knapsack with repeated elements as well
 public class KnapsackProblems {
 
 	public static void main(String[] args) {
 
-		int[] subSetWithSum = { 1, 3, 2, 44, 56 };
+		int[] subSetWithSum = { 1, 4, 2, 3, 6 };
 		System.out.println("There exists a subset with the given sum :"
-				+ checkSubSetWithGivenSum(subSetWithSum, 100, subSetWithSum.length - 1));
+				+ checkSubSetWithGivenSum(subSetWithSum, 10, subSetWithSum.length - 1));
 		System.out.println("There exists a subset with the given sum :"
-				+ checkSubSetWithGivenSumUsingMatrix(subSetWithSum, 100, subSetWithSum.length - 1));
+				+ checkSubSetWithGivenSumUsingMatrix(subSetWithSum, 10, subSetWithSum.length - 1));
 
 		int[] printSubSetWithSum = { 4, 8, 1, 4, 2, 1, 7 };
 		List<Integer> result = new ArrayList();
@@ -43,6 +44,7 @@ public class KnapsackProblems {
 	}
 
 	// exponential time complextity
+	// https://www.geeksforgeeks.org/subset-sum-problem-osum-space/
 	public static boolean checkSubSetWithGivenSum(int[] inputArray, int sum, int index) {
 		if (sum == 0)
 			return true;
@@ -92,6 +94,27 @@ public class KnapsackProblems {
 				}
 			}
 		}
+
+		// we can use this matrix and now find out the elements that are included in the
+		// result
+		// https://stackoverflow.com/questions/7489398/how-to-find-which-elements-are-in-the-bag-using-knapsack-algorithm-and-not-onl
+		// only if this condition true, we mean that there is a set with the given sum
+
+		// working, but we need to think of the solution for printing minimum number of
+		// elements required to print the sum
+		if (sumMatrix[inputArray.length][index]) {
+			int j = sum;
+			int i = inputArray.length;
+			while (i > 0 && j > 0) {
+				if (j - inputArray[i - 1] >= 0) {
+					if (sumMatrix[i - 1][j - inputArray[i - 1]])
+						System.out.println(inputArray[i - 1] + " is included");
+					j = j - inputArray[i - 1];
+				}
+				i = i - 1;
+			}
+		}
+
 		return sumMatrix[inputArray.length][index];
 	}
 
@@ -211,6 +234,11 @@ public class KnapsackProblems {
 		Integer b = countNoOfSetsWithGivenSum(inputArray, sum - inputArray[index], index - 1);
 		System.out.println("For index" + index + " and sum " + sum + " values are	 " + a + " " + b);
 		return a + b;
+	}
+
+	// https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/
+	public static void knapsackWithWieghtAndValues() {
+
 	}
 
 }

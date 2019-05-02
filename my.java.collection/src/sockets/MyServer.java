@@ -1,7 +1,4 @@
 /*
- * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2019. // This software
- * and documentation contain confidential and // proprietary information owned by UnitedHealth Group Corporation. //
- * Unauthorized use and distribution are prohibited. //***********************************************
  */
 
 package src.sockets;

@@ -6,18 +6,31 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import src.Utilities.*;
+import src.Utilities.JavaUtility;
 
-//https://www.youtube.com/watch?v=KIQ6fZ4XRKs&list=PLF9tovyahfL020hGgLIsRMZY4bfSLCFUa
+// https://www.youtube.com/watch?v=KIQ6fZ4XRKs&list=PLF9tovyahfL020hGgLIsRMZY4bfSLCFUa
+/**
+ * Given two strings A and B, find the longest common prefix. Given two strings
+ * A and B, what's the longest prefix of A which is suffix of B. Given a list of
+ * strings, find number of unique prefixes of all the strings. Given a list of
+ * string, find the longest common substring of all strings.
+ *
+ * @author sai_kanth
+ *
+ */
 public class MyString {
 
+	/***
+	 * Google Interview links
+	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-hyderabad/
+	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
+	 */
 	public static void main(String[] args) {
 		final String stringForPermutations = "abc";
 		final String stringForCombinations = "abc";
@@ -139,6 +152,8 @@ public class MyString {
 
 	// doesn't scale for large strings
 	// https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
+	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
+
 	public static void printPermutations(char[] inputArray, int lowerIndex, int upperIndex) {
 
 		if (lowerIndex == upperIndex) {
@@ -222,6 +237,12 @@ public class MyString {
 
 	// https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/
 	public static void findFirstNonRepeatingCharacter() {
+
+	}
+
+	// https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/
+	// -- v.v.imp
+	public static void largestSubStringWithNoRepatingCharacters() {
 
 	}
 
@@ -373,7 +394,7 @@ public class MyString {
 	// https://www.geeksforgeeks.org/lexicographically-first-palindromic-string/
 	public static String lexographicallyFirstPalindrome(String input) {
 		// or use a char array of size 256 instead of tree map
-		Map<Integer, Integer> freqMap = new TreeMap<>();
+		Map<Character, Integer> freqMap = new TreeMap<>();
 		boolean isPalindoromePossible = checkIfPalindromePossible(input, freqMap);
 		if (!isPalindoromePossible) {
 			return "Palindrome Not Possible";
@@ -382,9 +403,9 @@ public class MyString {
 			String rear = "";
 			String front = "";
 			char inputChar;
-			for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+			for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 				if (entry.getValue() % 2 == 0) {
-					inputChar = (char) entry.getKey().intValue();
+					inputChar = entry.getKey();
 					String temp = "";
 					for (int index = 0; index < entry.getValue() / 2; index++) {
 						temp = temp + inputChar;
@@ -398,21 +419,21 @@ public class MyString {
 
 	}
 
-	public static String getOddString(Map<Integer, Integer> freqMap) {
+	public static String getOddString(Map<Character, Integer> freqMap) {
 		String result = "";
-		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+		for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 			if (entry.getValue() % 2 != 0) {
-				result = result + (char) entry.getKey().intValue();
+				result = result + entry.getKey();
 			}
 		}
 		return result;
 	}
 
-	public static boolean checkIfPalindromePossible(String input, Map<Integer, Integer> freqMap) {
+	public static boolean checkIfPalindromePossible(String input, Map<Character, Integer> freqMap) {
 		int length = input.length();
-		int currentChar = 0;
+		char currentChar = 0;
 		for (int index = 0; index < length; index++) {
-			currentChar = (int) input.charAt(index);
+			currentChar = input.charAt(index);
 			if (freqMap.containsKey(currentChar)) {
 				freqMap.put(currentChar, 1 + freqMap.get(currentChar));
 			} else {
@@ -420,7 +441,7 @@ public class MyString {
 			}
 		}
 		int oddCount = 0;
-		for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+		for (Map.Entry<Character, Integer> entry : freqMap.entrySet()) {
 			if (entry.getValue() % 2 != 0) {
 				oddCount++;
 			}
@@ -439,6 +460,10 @@ public class MyString {
 
 	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
 	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
+
+	}
+
+	public void nextHighestPalindromeOfString(String number) {
 
 	}
 
@@ -468,6 +493,17 @@ public class MyString {
 	// https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
 	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
 	public static void minLengthContainingPattern() {
+
+	}
+
+	// https://code.dennyzhang.com/next-closest-time
+	// v.v.v.imp
+	public static String nextClosestTime() {
+		return "";
+	}
+
+	// https://leetcode.com/problems/edit-distance/
+	public static void editDistanceToMatchWords() {
 
 	}
 

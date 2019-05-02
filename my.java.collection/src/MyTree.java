@@ -3,18 +3,14 @@ package src;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 //https://stackoverflow.com/questions/9560600/java-no-enclosing-instance-of-type-foo-is-accessible
@@ -150,7 +146,7 @@ public class MyTree {
 
 		System.out.println("Sum of all nodes in a tree are:" + findSumOfAllNodes(tree1.root));
 		Storage sum = new Storage();
-		findSumAlongLongestPath(tree1.root, sum);
+		findSumAlongLongestPathFromRoot(tree1.root, sum);
 		System.out.println("Sum of all nodes along longest path in a tree are:" + sum.value);
 
 		List<Node> nodes = new ArrayList();
@@ -165,9 +161,11 @@ public class MyTree {
 		findTriplet(tree1.root, null, 16);
 
 		MyTree bst = new MyTree();
-		bst.root = new Node(3);
+		bst.root = new Node(5);
 		bst.root.left = new Node(1);
-		bst.root.right = new Node(5);
+		bst.root.right = new Node(4);
+		bst.root.right.left = new Node(3);
+		bst.root.right.right = new Node(6);
 		bst.prev = null;
 		System.out.println("Given tree is a BST: " + bst.checkIfGivenTreeIsBST(bst.root));
 
@@ -463,17 +461,50 @@ public class MyTree {
 		}
 	}
 
-	public static void printBottomViewOfTheTree(Node root) {
-		if (root != null) {
-		}
-
-	}
-
 	// https://www.geeksforgeeks.org/print-binary-tree-vertical-order-set-2/
 	public static void printVerticalViewOfTheTree(Node root) {
 		if (root != null) {
 		}
 
+	}
+
+	// working
+	public static void printBottomViewOfTheTree(Node root) {
+		if (root != null) {
+			int height = printHeightOfTree(root);
+			Map<Integer, LinkedList<Node>> nodeDepthMap = new LinkedHashMap<>();
+			Map<Integer, Integer> utilityMap = new HashMap();
+			for (int i = height; i > 0; i--) {
+				printBottomViewOfTheTreeUtility(root, i, i, nodeDepthMap, utilityMap, 0);
+			}
+			System.out.println("The bottom view of the tree is:");
+			Set<Integer> sortedKeySet = nodeDepthMap.keySet().stream().sorted().collect(Collectors.toSet());
+			for (Integer depth : sortedKeySet) {
+				nodeDepthMap.get(depth).stream().forEach(node -> System.out.print(node.data + " "));
+			}
+		}
+	}
+
+	public static void printBottomViewOfTheTreeUtility(Node root, int height, int actualHeight,
+			Map<Integer, LinkedList<Node>> nodeDepthMap, Map<Integer, Integer> utilityMap, int width) {
+		if (root != null) {
+			if (height == 1) {
+				if (!utilityMap.containsKey(width)) {
+					utilityMap.put(width, actualHeight);
+					nodeDepthMap.put(width, new LinkedList<Node>());
+					nodeDepthMap.get(width).add(root);
+					// this condition is because unvisited nodes in the same level and same widht
+					// has to be covered
+				} else if (utilityMap.get(width) == actualHeight) {
+					nodeDepthMap.get(width).add(root);
+				}
+			} else {
+				printBottomViewOfTheTreeUtility(root.left, height - 1, actualHeight, nodeDepthMap, utilityMap,
+						width - 1);
+				printBottomViewOfTheTreeUtility(root.right, height - 1, actualHeight, nodeDepthMap, utilityMap,
+						width + 1);
+			}
+		}
 	}
 
 	// working
@@ -510,6 +541,7 @@ public class MyTree {
 
 	// https://www.geeksforgeeks.org/diameter-of-a-binary-tree/
 	// change the height to a custom object, it should work
+	// think of scenario where diameter is not through the root
 	public static int printDiameterOfTreeOptimized(Node root, HeightWrapper height) {
 		if (root != null) {
 			HeightWrapper lh = new HeightWrapper();
@@ -524,6 +556,7 @@ public class MyTree {
 	}
 
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	// path with maximum sum, path can start and end at any node
 	public static int maxPathSumInBinaryTree(Node root) {
 		Storage count = new Storage();
 		maxPathSumInBinaryTree(root, count);
@@ -531,6 +564,7 @@ public class MyTree {
 	}
 
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
+	// read it later thoroughly
 	public static int maxPathSumInBinaryTree(Node root, Storage count) {
 		if (root == null)
 			return 0;
@@ -625,6 +659,8 @@ public class MyTree {
 
 	}
 
+	// https://leetcode.com/problems/symmetric-tree/solution/
+	// other approach would be to use two queue, to do level order processing
 	public static boolean checkIfTreesAreMirrorImages(Node firstRoot, Node secondRoot) {
 		if (firstRoot == null && secondRoot != null)
 			return false;
@@ -650,7 +686,7 @@ public class MyTree {
 	// working
 	// should check again
 	// check for sum along longest path and path with largest sum
-	public static int findSumAlongLongestPath(Node root, Storage sum) {
+	public static int findSumAlongLongestPathFromRoot(Node root, Storage sum) {
 		if (root == null)
 			return 0;
 		if (root.left == null && root.right == null) {
@@ -660,8 +696,8 @@ public class MyTree {
 		Storage leftSum = new Storage();
 		Storage rightSum = new Storage();
 
-		int leftHeight = findSumAlongLongestPath(root.left, leftSum);
-		int rightHeight = findSumAlongLongestPath(root.right, rightSum);
+		int leftHeight = findSumAlongLongestPathFromRoot(root.left, leftSum);
+		int rightHeight = findSumAlongLongestPathFromRoot(root.right, rightSum);
 		if (leftHeight == rightHeight)
 			sum.value = sum.value + root.data + (leftSum.value > rightSum.value ? leftSum.value : rightSum.value);
 		else
@@ -669,6 +705,16 @@ public class MyTree {
 
 		return 1 + Math.max(leftHeight, rightHeight);
 
+	}
+
+	public static boolean checkIfPathExistFromRootWithGivenSum(Node root, int sum) {
+
+		if (root == null)
+			return false;
+		if (root.left == null && root.right == null)
+			return root.data == sum;
+		return checkIfPathExistFromRootWithGivenSum(root.left, sum - root.data)
+				|| checkIfPathExistFromRootWithGivenSum(root.right, sum - root.data);
 	}
 
 	// working
@@ -812,19 +858,21 @@ public class MyTree {
 	}
 
 	// working
+	// we can use prev as parameter as well
+	//https://leetcode.com/problems/validate-binary-search-tree/solution/
 	public boolean checkIfGivenTreeIsBST(Node root) {
-		if (root != null) {
-			Boolean leftBST = checkIfGivenTreeIsBST(root.left);
-			if (leftBST) {
-				if (prev != null && prev.data > root.data) {
-					return false;
-				}
-				prev = root;
-				return checkIfGivenTreeIsBST(root.right);
-			}
-			return false;
+		if (root == null) {
+			return true;
 		}
-		return true;
+		Boolean leftBST = checkIfGivenTreeIsBST(root.left);
+		if (leftBST) {
+			if (prev != null && prev.data >= root.data) {
+				return false;
+			}
+			prev = root;
+			return checkIfGivenTreeIsBST(root.right);
+		}
+		return false;
 	}
 
 	// https://www.geeksforgeeks.org/find-all-possible-trees-with-given-inorder-traversal/
@@ -956,8 +1004,7 @@ public class MyTree {
 	}
 
 	/***
-	 * 1. Bottom view of the tree tree to linkedlist two nodes of a BST are swapped,
-	 * 2. find out the them
+	 * 1. two nodes of a BST are swapped, 2. find out the them
 	 * https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
 	 * 
 	 * 3. Find kth smallest element in BST 4. connect nodes at same level using

@@ -7,9 +7,7 @@ import java.util.Map;
 import src.Utilities.JavaUtility;;
 
 /*
- * //*********************************************** // Copyright UNITEDHEALTH GROUP CORPORATION 2018. // This software
- * and documentation contain confidential and // proprietary information owned by UnitedHealth Group Corporation. //
- * Unauthorized use and distribution are prohibited. //***********************************************
+ * When to use which sorting algorithm - https://stackoverflow.com/questions/1933759/when-is-each-sorting-algorithm-used
  */
 
 /**
@@ -47,6 +45,11 @@ public class MyArray {
 		JavaUtility.printBeforeSorting(arrayForQuickSort);
 		quickSort(arrayForQuickSort, 0, arrayForQuickSort.length - 1);
 		JavaUtility.printAfterSorting(arrayForQuickSort, "quick");
+
+		final int[] arrayForCoutingSort = { 1, 4, 1, 2, 7, 5, 2 };
+		JavaUtility.printBeforeSorting(arrayForCoutingSort);
+		CountingSort(arrayForCoutingSort);
+		JavaUtility.printAfterSorting(arrayForCoutingSort, "Couting Sort");
 
 		final int[] arrayForKthLargestElement = { 12, 5, 787, 1, 23 };
 		System.out.println("The array for kth smallest element is: ");
@@ -111,14 +114,15 @@ public class MyArray {
 		System.out.println("Finding the index for which left elements are smaller and right elemnents are larger: "
 				+ findElementWithGivenCriteria(arrayForRightGreaterandLeftlesser));
 
-		final int[] largestSubArrayWithEqualNumberOfOnesAndZeros = { 1, 0, 0, 0, 0, 1, 1 };
+		// { 1, 0, 0, 0, 0, 1, 1 };
+		final int[] largestSubArrayWithEqualNumberOfOnesAndZeros = { 1, 0, 1, 1, 0, 0, 1 };
 		System.out.println("The size of the largest sub array with equal numners of ones and zeros is: "
 				+ maxLen(largestSubArrayWithEqualNumberOfOnesAndZeros));
 
 		final int[] arrayOfWater = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
 		System.out.println("The amount of water stored is: " + findAmountOfWater(arrayOfWater));
 
-		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
+		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 31, 35, 50, 60 };
 		System.out.println("The mimimum size of the array that is to be sorted is :"
 				+ minArrayLengthToMakeArraySorted(minArrayLengthToMakeArraySorted));
 
@@ -133,9 +137,28 @@ public class MyArray {
 		System.out.println(
 				"Median of the sorted arrays is" + medianOfTwoSortedArraysOfSameLength(sortedArray1, sortedArray2));
 
-		int[] arrayForCountSubArrays = { 10, 2, -2, -20 };
+		int[] arrayForCountSubArrays = { 9, 4, 20, 3, 10, 5 };
 		System.out.println("Number of Sub Sequence is:"
-				+ findSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, -20));
+				+ findNoOfSubarraySum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33));
+		findSubarrayWithGivenSum(arrayForCountSubArrays, arrayForCountSubArrays.length, 33);
+
+		int[] arrayToFindMinNoOfSwaps = { 4, 3, 2, -1 };
+		System.out.println("Minimum no of swaps required to sort the array is:"
+				+ minNoOfSwapsRequiredToSortArray(arrayToFindMinNoOfSwaps));
+
+		int[] arrayOneForMedian = { 1, 3 };
+		int[] arrayTwoForMedian = { 2 };
+		System.out.println("The median of the two sorted arrays is:"
+				+ findMedianOfTwoSortedArrays(arrayOneForMedian, arrayTwoForMedian));
+		int[] findMaxSubArray = { -2, -3, -5, -2, -40 };
+		System.out.println("Max product sub array is:" + findMaxSubArray(findMaxSubArray));
+
+		int[] binarySearchToFindNearestElementLowerThanOrEqualToKey = { 1, 2, 4, 6, 6, 8, 9, 25, 36 };
+		System.out.println("The index of the nearest element to the given key is:"
+				+ binarySearchToFindNearestElementLowerThanOrEqualToKey(
+						binarySearchToFindNearestElementLowerThanOrEqualToKey, 0,
+						binarySearchToFindNearestElementLowerThanOrEqualToKey.length - 1, 26));
+		;
 
 	}
 
@@ -239,6 +262,27 @@ public class MyArray {
 		}
 	}
 
+	// https://www.geeksforgeeks.org/counting-sort/
+	// does not work for negative numbers so think once, go through this later
+	// thoroughly
+	public static void CountingSort(int[] array) {
+		int length = array.length;
+		int[] count = new int[256];
+		int[] output = new int[length];
+		for (int i = 0; i < length; i++) {
+			count[array[i]]++;
+		}
+		for (int i = 1; i < 256; i++)
+			count[i] += count[i - 1];
+
+		for (int i = length - 1; i >= 0; i--) {
+			output[count[array[i]] - 1] = array[i];
+			--count[array[i]];
+		}
+		for (int i = 0; i < length; ++i)
+			array[i] = output[i];
+	}
+
 	// other appraoch is to use minHeap and constructing the minheap for k elements
 	// https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
 	public static int findKthSmallestElement(int[] array, int kthSmallest) {
@@ -310,6 +354,42 @@ public class MyArray {
 				return binarySearch(inputArray, midIndex + 1, upperIndex, searchKey);
 		}
 		return -1;
+	}
+
+	// not yet implemented
+	public static int binarySearchToFindNearestElementLowerThanOrEqualToKey(int[] inputArray, int lowerIndex,
+			int upperIndex, int searchKey) {
+		if (lowerIndex <= upperIndex) {
+			if (searchKey >= inputArray[upperIndex])
+				return upperIndex;
+			else if (searchKey <= inputArray[lowerIndex])
+				return lowerIndex;
+			final int midIndex = (lowerIndex + upperIndex) / 2;
+			if (inputArray[midIndex] == searchKey) {
+				return midIndex;
+			} else if (midIndex > lowerIndex && inputArray[midIndex] > searchKey
+					&& inputArray[midIndex - 1] < searchKey) {
+				// instead of returning this, we have to find out which one to return
+				return midIndex - 1;
+			} else if (midIndex < upperIndex && inputArray[midIndex] < searchKey
+					&& inputArray[midIndex + 1] > searchKey) {
+				return midIndex + 1;
+			}
+			if (searchKey < inputArray[midIndex])
+				return binarySearchToFindNearestElementLowerThanOrEqualToKey(inputArray, lowerIndex, midIndex - 1,
+						searchKey);
+			else
+				return binarySearchToFindNearestElementLowerThanOrEqualToKey(inputArray, midIndex + 1, upperIndex,
+						searchKey);
+		}
+		return -1;
+	}
+
+	// https://leetcode.com/problems/find-k-closest-elements/
+	// https://leetcode.com/problems/k-closest-points-to-origin/ - k closest points
+	// to origin
+	public static void findKClosestNumbersToaGivenElement() {
+
 	}
 
 	public static int binarySearchWithRepeatedElements(int[] inputArray, int lowerIndex, int upperIndex,
@@ -555,6 +635,7 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/
 	// similary we can print the sub array
 	// v.v.v imp
+	// check for example 1,0,1,1,0 for better understanding
 	static int maxLen(int arr[]) {
 		// Creates an empty hashMap hM
 		final int n = arr.length;
@@ -599,6 +680,7 @@ public class MyArray {
 
 	// rain water problem
 	// https://www.geeksforgeeks.org/trapping-rain-water/
+	// in two dimension - https://leetcode.com/problems/trapping-rain-water-ii/
 	public static int findAmountOfWater(int[] array) {
 		final int length = array.length;
 		final int[] leftMax = new int[length];
@@ -624,6 +706,7 @@ public class MyArray {
 
 	// https://www.geeksforgeeks.org/minimum-length-unsorted-subarray-sorting-which-makes-the-complete-array-sorted/
 	// working
+	// { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
 	public static int minArrayLengthToMakeArraySorted(int[] array) {
 
 		final int length = array.length;
@@ -659,30 +742,40 @@ public class MyArray {
 	}
 
 	// https://www.geeksforgeeks.org/maximum-product-subarray/
-	// contains both positive and negative integers, yet to do
+	// https://leetcode.com/problems/maximum-product-subarray/submissions/ - go
+	// through this thoroughly
 	public static int findMaxSubArray(int[] array) {
 		int length = array.length;
-		int maxTillNow = 1;
-		int minTillNow = 1;
-		int globalMax = 1;
+		int maxTillNow = 0;
+		int minTillNow = 0;
+		int globalMax = Integer.MIN_VALUE;
 		for (int i = 0; i < length; i++) {
 			if (array[i] > 0) {
+				maxTillNow = maxTillNow == 0 ? 1 : maxTillNow;
+				minTillNow = minTillNow == 0 ? 1 : minTillNow;
+
 				maxTillNow = maxTillNow * array[i];
 				minTillNow = Math.min(minTillNow * array[i], 1);
 			} else if (array[i] == 0) {
-				maxTillNow = 1;
-				minTillNow = 1;
+				maxTillNow = 0;
+				minTillNow = 0;
 			} else {
 				int temp = maxTillNow;
-				maxTillNow = Math.max(minTillNow * array[i], 1);
-				minTillNow = temp * array[i];
+				if (minTillNow != 0)
+					maxTillNow = Math.max(minTillNow * array[i], 1);
+				else
+					maxTillNow = 0;
+				if (temp != 0)
+					minTillNow = temp * array[i];
+				else
+					minTillNow = array[i];
 			}
 
 			if (maxTillNow > globalMax) {
 				globalMax = maxTillNow;
 			}
 		}
-		return 0;
+		return globalMax;
 	}
 
 	// https://www.geeksforgeeks.org/sort-an-almost-sorted-array-where-only-two-elements-are-swapped/
@@ -704,13 +797,16 @@ public class MyArray {
 				break;
 			}
 		}
-		System.out.println(
-				"Elements to be sorted are " + array[leftElementToBeSwapped] + " " + array[rightElementToBeSwapped]);
-		if (rightElementToBeSwapped != -1 && leftElementToBeSwapped != -1)
+		if (rightElementToBeSwapped != -1 && leftElementToBeSwapped != -1) {
+			System.out.println("Elements to be sorted are " + array[leftElementToBeSwapped] + " "
+					+ array[rightElementToBeSwapped]);
 			JavaUtility.swap(array, rightElementToBeSwapped, leftElementToBeSwapped);
+		}
 	}
 
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
+	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k-using-stack-in-on-time/
+	// https://java2blog.com/sliding-window-maximum-java/
 	public static void slidingWindowMaximum() {
 
 	}
@@ -829,6 +925,38 @@ public class MyArray {
 		}
 	}
 
+	// https://www.youtube.com/watch?v=LPFhl65R7ww
+	// working as well
+	public static int findMedianOfTwoSortedArrays(int[] nums1, int[] nums2) {
+		int size1 = nums1.length;
+		int size2 = nums2.length;
+		if (size1 > size2)
+			return findMedianOfTwoSortedArrays(nums2, nums1);
+		int lowerIndex = 0;
+		int upperIndex = Math.min(size1, size2);
+		while (lowerIndex <= upperIndex) {
+			int i = (lowerIndex + upperIndex) / 2;
+			int j = (size1 + size2 + 1) / 2 - i; // think of why adding one here ?
+			int firstMaxLeft = i == 0 ? Integer.MIN_VALUE : nums1[i - 1];
+			int firstMinRight = i == size1 ? Integer.MAX_VALUE : nums1[i];
+			int secondMaxLeft = j == 0 ? Integer.MIN_VALUE : nums2[j - 1];
+			int secondMinRight = j == size2 ? Integer.MAX_VALUE : nums2[j];
+			if (firstMaxLeft <= secondMinRight && secondMaxLeft <= firstMinRight) {
+				if ((size1 + size2) % 2 == 0)
+					return (Math.max(firstMaxLeft, secondMaxLeft) + Math.min(firstMinRight, secondMinRight)) / 2;
+				else
+					return Math.max(firstMaxLeft, secondMaxLeft);
+			} else if (firstMaxLeft > secondMinRight) {
+				upperIndex = i - 1;
+			} else {
+				lowerIndex = i + 1;
+			}
+
+		}
+		// reaches here when array is not sorted
+		throw new IllegalArgumentException();
+	}
+
 	public static int findMedian(int low, int high) {
 		int median = (low + high) / 2;
 		return median;
@@ -841,7 +969,8 @@ public class MyArray {
 
 	// https://www.geeksforgeeks.org/number-subarrays-sum-exactly-equal-k/
 	// v.v.imp
-	static int findSubarraySum(int arr[], int n, int sum) {
+	// https://auth.geeksforgeeks.org/user/nik1996/articles
+	static int findNoOfSubarraySum(int arr[], int n, int sum) {
 		HashMap<Integer, Integer> prevSum = new HashMap<>();
 		int res = 0;
 		int currsum = 0;
@@ -860,10 +989,71 @@ public class MyArray {
 		}
 		return res;
 	}
+
+	// https://algorithms.tutorialhorizon.com/in-an-array-find-the-subarray-with-sum-to-a-given-value/
+	// working, also for finding no of subarrays with the given sum
+	static void findSubarrayWithGivenSum(int arr[], int n, int sum) {
+		int currSum = 0;
+		int start = 0;
+		for (int i = 0; i < n; i++) {
+			if (currSum < sum)
+				currSum = currSum + arr[i];
+			else if (currSum == sum) {
+				System.out.println("The subarray for the given sum starts from " + start + " and ends at " + (i - 1));
+				// we can remove this break statement and reduce the currSum by arr[start++] to
+				// find out all possible subArrays
+				break;
+			} else {
+				while (currSum > sum)
+					currSum = currSum - arr[start++];
+			}
+		}
+	}
+
+	// https://www.careercup.com/question?id=5698133541519360
+	public static void method(int[] array) {
+
+	}
+
+	// https://www.geeksforgeeks.org/minimum-number-swaps-required-sort-array/
+	// https://stackoverflow.com/questions/15152322/compute-the-minimal-number-of-swaps-to-order-a-sequence/15152602#15152602
+	// think of scenario's with negative members as well
+	public static int minNoOfSwapsRequiredToSortArray(int[] array) {
+		int length = array.length;
+		Map<Integer, Integer> valueIndicesMap = new HashMap<Integer, Integer>();
+		for (int i = 0; i < length; i++) {
+			valueIndicesMap.put(array[i], i);
+		}
+		Arrays.sort(array);
+		for (int i = 0; i < length; i++) {
+			array[i] = valueIndicesMap.get(array[i]);
+		}
+		int noOfSwaps = 0;
+		for (int i = 0; i < length; i++) {
+			if (i == array[i])
+				continue;
+			else {
+				JavaUtility.swap(array, i, array[i]);
+				noOfSwaps++;
+			}
+		}
+		return noOfSwaps;
+	}
+
+	// think of priority queue whenever we come across k nearest elements
+	public static void printNClosestKumbersToN(int[] array, int n, int k) {
+
+	}
+
+	// https://www.geeksforgeeks.org/find-next-greater-number-set-digits/
+	// think of the algo very carefully
+	// https://leetcode.com/problems/next-permutation/solution/
+	public static void nextHighestNumber() {
+
+	}
 	// array rotation
-	// stocks buy
-	// max incresing sub sequence
 	// finding square root
-	// next smallest polindrome
+	// next smallest palindrome
+	// merge k sorted arrays
 
 }

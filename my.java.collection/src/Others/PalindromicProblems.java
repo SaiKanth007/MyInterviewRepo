@@ -26,10 +26,12 @@ public class PalindromicProblems {
 		System.out.println("Minimum number of deletions required are: " + minNoOfDeletionToFormPalindrome(
 				minDeletionsToFormPalindrome, 0, minDeletionsToFormPalindrome.length() - 1));
 
-		String totalNumberOfPalindromicSubStrings = "abbaeae";
+		String totalNumberOfPalindromicSubStrings = "ababa";
 		System.out.println(
 				"The total number of possible substrings are: " + totalNumberOfPalindromicSubStringsUsingRecursion(
 						totalNumberOfPalindromicSubStrings, 0, totalNumberOfPalindromicSubStrings.length() - 1));
+		System.out.println("The next longest palindrom is");
+		printNextLargestPalindromicNumber("999");
 
 	}
 
@@ -37,32 +39,68 @@ public class PalindromicProblems {
 		return 0;
 	}
 
-	public static int printPalindromicNumbersLessThanTheGivenNumber() {
-		return 0;
+	// https://www.geeksforgeeks.org/given-a-number-find-next-smallest-palindrome-larger-than-this-number/
+	// working
+	public static void printNextLargestPalindromicNumber(String number) {
+		int length = number.length();
+		char[] charArray = number.toCharArray();
+		int[] numberArray = new int[length];
+		for (int i = 0; i < length; i++) {
+			numberArray[i] = (int) charArray[i] - 48;
+		}
+		int j = length / 2;
+		int i = length % 2 == 0 ? length / 2 - 1 : length / 2;
+		int carry = 0;
+		boolean oneShouldBeAdded = false;
+		while (i >= 0 && j < length && numberArray[i] == numberArray[j]) {
+			i--;
+			j++;
+		}
+
+		if (i < 0 || numberArray[i] < numberArray[j]) {
+			oneShouldBeAdded = true;
+		}
+
+		if (oneShouldBeAdded) {
+			carry = 1;
+			if (length % 2 == 1) {
+				int sum = numberArray[length / 2] + carry;
+				carry = sum / 10;
+				numberArray[length / 2] = sum % 10;
+			}
+			i = length / 2 - 1;
+			j = length % 2 == 0 ? length / 2 : length / 2 + 1;
+			while (i >= 0) {
+				int sum = numberArray[i] + carry;
+				numberArray[i] = sum % 10;
+				carry = sum / 10;
+				numberArray[j] = numberArray[i];
+				i--;
+				j++;
+			}
+		} else {
+			while (i >= 0 && j < length) {
+				numberArray[j] = numberArray[i];
+				i--;
+				j++;
+			}
+		}
+
+		String result = "";
+		if (carry == 1)
+			result = result + "1";
+
+		for (i = 0; i < length; i++) {
+			result = result + numberArray[i];
+		}
+		if (carry == 1)
+			result = result + "1";
+		System.out.println(result);
 	}
 
 	// not working, just go for matrix approach
 	// https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
 	public static int longestPalindromicSubStringLength(String input, int l, int h) {
-		if (l <= h) {
-			if (l == h)
-				return 1;
-			if (input.charAt(l) == input.charAt(h) && l + 1 == h)
-				return 2;
-			if (input.charAt(l) == input.charAt(h) && l + 2 == h)
-				return 3;
-			if (input.charAt(l) == input.charAt(h)) {
-				if (l < input.length() - 1 && h > 0 && input.charAt(l + 1) == input.charAt(h - 1)) {
-					return 2 + longestPalindromicSubStringLength(input, l + 1, h - 1);
-				} else {
-					return Math.max(longestPalindromicSubStringLength(input, l + 1, h),
-							longestPalindromicSubStringLength(input, l, h - 1));
-				}
-			}
-			if (input.charAt(l) != input.charAt(h))
-				return Math.max(longestPalindromicSubStringLength(input, l + 1, h),
-						longestPalindromicSubStringLength(input, l, h - 1));
-		}
 		return 0;
 	}
 
@@ -139,26 +177,37 @@ public class PalindromicProblems {
 		return palindromicSubStrings.size();
 	}
 
-	// not working yet
-	// also try to implement this using matrix appraoch
+	// working but cannot check for duplicates and also cannot print list of
+	// substrings, this is much worst than the two for loops appraoch
+	// also try to implement this using matrix approach
+	// // https://leetcode.com/problems/longest-palindromic-substring/solution/
+	// manacher's algorithm - solves in O(n)
+	// https://www.geeksforgeeks.org/longest-palindromic-substring-set-2/
 	public static int totalNumberOfPalindromicSubStringsUsingRecursion(String input, int l, int h) {
-		if (l == h)
-			return 0;
-		else if (h == l + 1 || h == l + 2) {
-			return input.charAt(l) == input.charAt(h) ? h - l + 1 : 0;
-		} else {
-			if (input.charAt(l) == input.charAt(h)) { // we should check for palindrome rather than just checking ends
-				return 1 + totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
-						+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
-						- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+		if (l <= h && l < input.length() && h >= 0) {
+			if (l == h)
+				return 0;
+			else if ((h == l + 1 || h == l + 2) && (input.charAt(l) == input.charAt(h))) {
+				return 1;
 			} else {
-				return totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
-						+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
-						- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+				if (input.charAt(l) == input.charAt(h)) { // we should check for palindrome rather than just checking
+															// ends
+					return 1 + totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
+							+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
+							- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+				} else {
+					// u can avoid dupl
+					return totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h)
+							+ totalNumberOfPalindromicSubStringsUsingRecursion(input, l, h - 1)
+							- totalNumberOfPalindromicSubStringsUsingRecursion(input, l + 1, h - 1);
+
+				}
 			}
 		}
+		return 0;
 	}
 
+	// https://www.geeksforgeeks.org/count-palindromic-subsequence-given-string/
 	public static int totalNumberOfPalindromsFromGivenCharacters(char[] input) {
 		return 0;
 	}

@@ -1,5 +1,8 @@
 package src.Utilities;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +14,8 @@ import src.Others.SingleTon;
 
 public class JavaUtility {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NoSuchMethodException, SecurityException, InstantiationException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		System.out.println(System.getProperty("os.arch"));
 
 		Penny[] objectList = new Penny[4];
@@ -20,6 +24,15 @@ public class JavaUtility {
 		if (s1 == s2)
 			System.out.println("SingleTon Implemented");
 
+		for (Constructor constructor : Arrays.asList(SingleTon.class.getDeclaredConstructors())) {
+			// Below code will destroy the singleton pattern
+			constructor.setAccessible(true);
+			SingleTon s3 = (SingleTon) constructor.newInstance();
+			if (s1 != s3)
+				System.out.println("SingleTon Implementation is broken through reflections");
+
+			break;
+		}
 		Map<String, String> testMap = new HashMap<>();
 		testMap.put("1", "abc");
 		String result = testMap.remove("1");
@@ -35,6 +48,20 @@ public class JavaUtility {
 			return false;
 		}
 		return true;
+	}
+	
+	public static boolean checkIfIndexAreValid(int[][] matrix, int i, int j) {
+		int breadth = matrix[0].length;
+		int length = matrix.length;
+		if (i >= length || j >= breadth || i < 0 || j < 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public static boolean checkIfIndexAreValidForMatrix(int i, int j, int length, int breadth, int[][] grid,
+			boolean[][] visited) {
+		return checkIfIndexAreValid(i, j, length, breadth) && grid[i][j] == 1 && !visited[i][j];
 	}
 
 	public static void printMatrix(int[][] matrix, int rowSize, int columnSize) {

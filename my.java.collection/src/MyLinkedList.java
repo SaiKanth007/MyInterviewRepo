@@ -159,6 +159,9 @@ public class MyLinkedList {
 		root.next.arb = root;
 		root.next.next.arb = root.next.next.next.next;
 		cloneLLWithNextAndArbitaryPointer(root);
+
+		final MyLinkedList palindromeLL = JavaUtility.prepareLinkedListForGivenData("1,2,2,1");
+		palindromeLL.isLLAPalindrome(palindromeLL.head);
 	}
 
 	public Node reverseLL(Node pRoot) {
@@ -641,6 +644,31 @@ public class MyLinkedList {
 			return newHead;
 
 		}
+	}
+
+	// try to do it in O(n) space
+	// https://leetcode.com/problems/palindrome-linked-list/
+	public boolean isLLAPalindrome(Node head) {
+		if (head == null || head.next == null)
+			return true;
+		Node first = head;
+		Node second = head.next;
+		while (first != null && second != null && second.next != null) {
+			first = first.next;
+			second = second.next.next;
+		}
+		Node middle = first;
+		Node nextStart = middle.next;
+		middle.next = reverseLL(nextStart);
+		first = head;
+		second = middle.next;
+		while (first != null && second != null && first.data == second.data) {
+          first = first.next;
+          second = second.next;
+		}
+		if (second != null)
+			return false;
+		return true;
 	}
 
 }
