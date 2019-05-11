@@ -2,6 +2,7 @@ package src.Others;
 
 import src.Utilities.JavaUtility;
 
+//The running time of your algorithm is at most 𝑁(𝑁−1)(𝑁−2)⋯(𝑁−𝐾+1), i.e., 𝑁!/(𝑁−𝐾)!. This is 𝑂(𝑁𝐾), i.e., exponential in 𝐾.
 public class MySudoku {
 
 	public static void main(String[] args) {

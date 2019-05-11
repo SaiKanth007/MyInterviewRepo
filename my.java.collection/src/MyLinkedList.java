@@ -72,16 +72,11 @@ public class MyLinkedList {
 	public static void main(String[] args) {
 
 		final MyLinkedList LL = JavaUtility.prepareLinkedListForGivenData("3,4,5,6,7,8,9,10");
-		LL.addNode(4);
-		LL.addNode(5);
-		LL.addNode(6);
-		LL.addNode(7);
-		LL.addNode(8);
-		LL.addNode(9);
-		LL.addNode(10);
 
 		LL.printLL();
-		// LL.swapNodes(3, 5);
+	    LL.swapNodes(3, 5);
+	    System.out.println("LL after swapping");
+	    LL.printLL();
 		LL.reverseLL(LL.head);
 		LL.printLL();
 		LL.reverseLLUsingRecursion(LL.head, null);
@@ -240,19 +235,22 @@ public class MyLinkedList {
 		if (secondNode == null || firstNode == null) {
 			return;
 		}
+
+		if (firstPrev != null)
+			firstPrev.next = secondNode;
+		else // make y the new head
+			head = secondNode;
+
+		// If y is not head of linked list
+		if (secondPrev != null)
+			secondPrev.next = firstNode;
+		else // make x the new head
+			head = firstNode;
+
+		// Swap next pointers
 		temp = firstNode.next;
 		firstNode.next = secondNode.next;
 		secondNode.next = temp;
-		secondNode.next = firstNode;
-		if (firstPrev != null) {
-			firstPrev.next = secondNode;
-		}
-		secondPrev.next = firstNode;
-		// remember this point strongly
-		if (firstPrev == null) {
-			this.head = secondNode;
-		}
-
 	}
 
 	// working
@@ -658,17 +656,21 @@ public class MyLinkedList {
 			second = second.next.next;
 		}
 		Node middle = first;
-		Node nextStart = middle.next;
-		middle.next = reverseLL(nextStart);
+		Node nextStart = first.next;
+		first.next = reverseLL(nextStart);
 		first = head;
 		second = middle.next;
 		while (first != null && second != null && first.data == second.data) {
-          first = first.next;
-          second = second.next;
+			first = first.next;
+			second = second.next;
 		}
 		if (second != null)
 			return false;
 		return true;
+	}
+
+	public void insertionSort(Node head) {
+
 	}
 
 }

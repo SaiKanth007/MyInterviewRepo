@@ -33,6 +33,15 @@ public class PalindromicProblems {
 		System.out.println("The next longest palindrom is");
 		printNextLargestPalindromicNumber("999");
 
+		String input = "engineers rock";
+		String pattern = "egrr";
+		System.out.println(
+				"The given string contains the pattern:" + checkIfGivenStringContainsPatternString(input, pattern));
+
+		String stringForPalindoromicPartitioning = "abcc";
+		System.out.println(
+				"The minimum cuts required are: " + palindromicPartitioning(stringForPalindoromicPartitioning));
+
 	}
 
 	public static int findMaximumPalindromeNumberInTheGivenRange(int lower, int upper) {
@@ -123,6 +132,29 @@ public class PalindromicProblems {
 						longestPalindromicSubSequenceLength(input, l, h - 1));
 		}
 		return 0;
+	}
+
+	public static boolean checkIfGivenStringContainsPatternString(String input, String pattern) {
+		return checkIfGivenStringContainsPatternString(input, pattern, 0, 0);
+	}
+
+	// working, might have to check for more scenario's
+	// https://www.interviewbit.com/problems/distinct-subsequences/ - think of this
+	// as well - total possible subsequence
+	public static boolean checkIfGivenStringContainsPatternString(String input, String pattern, int inputStart,
+			int patternStart) {
+		if (patternStart >= pattern.length())
+			return true;
+		if (inputStart >= input.length() && patternStart < pattern.length())
+			return false;
+		else if (inputStart == input.length() - 1 && patternStart == pattern.length() - 1)
+			return input.charAt(inputStart - 1) == pattern.charAt(patternStart - 1);
+
+		if (input.charAt(inputStart) == pattern.charAt(patternStart)) {
+			return checkIfGivenStringContainsPatternString(input, pattern, inputStart + 1, patternStart + 1);
+		} else {
+			return checkIfGivenStringContainsPatternString(input, pattern, inputStart + 1, patternStart);
+		}
 	}
 
 	// working
@@ -257,5 +289,64 @@ public class PalindromicProblems {
 
 		}
 		return Integer.MAX_VALUE;
+	}
+
+	// https://www.interviewbit.com/problems/palindrome-partitioning/
+	// https://leetcode.com/problems/palindrome-partitioning/
+	// https://www.youtube.com/watch?v=lDYIvtBVmgo
+	// working - Go through it thoroughly once
+	public static int palindromicPartitioning(String input) {
+		int length = input.length();
+		if (length == 0 || length == 1)
+			return 0;
+		int[][] result = new int[length][length];
+		boolean[][] P = new boolean[length][length];
+		for (int i = 0; i < length; i++) {
+			P[i][i] = true;
+		}
+		int j = 0;
+		// the loops pattern and boundaries are very important when using with string
+		// and checking for palindrom
+		for (int l = 2; l <= length; l++) {
+			for (int i = 0; i < length - l + 1; i++) {
+				j = i + l - 1;
+				if (l == 2) {
+					P[i][j] = input.charAt(i) == input.charAt(j);
+				} else {
+					P[i][j] = input.charAt(i) == input.charAt(j) && P[i + 1][j - 1];
+				}
+				if (P[i][j] == true)
+					result[i][j] = 0;
+				else {
+					result[i][j] = Integer.MAX_VALUE;
+					for (int k = i; k < j; k++)
+						result[i][j] = Integer.min(result[i][j], result[i][k] + result[k + 1][j] + 1);
+				}
+
+			}
+		}
+		return result[0][length - 1];
+	}
+
+	// to check if the given string is a palindrom or not
+	public static boolean checkIfGivenStringIsPalindrome(String input) {
+		int length = input.length();
+		if (length == 0 || length == 1)
+			return true;
+		for (int i = 0; i < length / 2; i++) {
+			if (input.charAt(i) != input.charAt(length - i - 1))
+				;
+			return false;
+		}
+		return true;
+	}
+
+	// https://www.geeksforgeeks.org/print-all-palindrome-permutations-of-a-string/
+	public static void printPalindromicPermutations() {
+
+	}
+
+	public static void printAllPossiblePalindromicCombinations() {
+
 	}
 }

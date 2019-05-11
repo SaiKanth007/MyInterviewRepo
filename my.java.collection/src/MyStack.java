@@ -89,6 +89,7 @@ public class MyStack {
 
 	// assuming the string contains only paranthesis
 	// https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/
+	// think of a scenario where the data will not fit in the main memory
 	public static boolean checkForBalanceParanthesis(String input) {
 		if (input.isEmpty())
 			return true;

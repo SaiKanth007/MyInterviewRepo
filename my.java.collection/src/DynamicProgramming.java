@@ -209,7 +209,7 @@ public class DynamicProgramming {
 		return false;
 	}
 
-	// also think of the matrix solution
+	// also think of the matrix solution and is much simpler
 	public static boolean noOfPossiblePaths(int[][] grid, int length, int breadth, int i, int j, boolean[][] visited,
 			Count count) {
 		if (i == length - 1 && j == breadth - 1) {
@@ -459,7 +459,7 @@ public class DynamicProgramming {
 
 	}
 
-	public static void knightsProblem() {
+	public static void knightsTourProblem() {
 
 	}
 
@@ -553,6 +553,8 @@ public class DynamicProgramming {
 	}
 
 	// https://www.geeksforgeeks.org/count-number-ways-tile-floor-size-n-x-m-using-1-x-m-size-tiles/
+	// also check this out -
+	// https://www.geeksforgeeks.org/minimum-number-of-square-tiles-required-to-fill-the-rectangular-floor/
 	public static int noOfTiles(int n, int m) {
 		final int[] tiles = new int[n + 1];
 		for (int i = 1; i <= n; i++) {
@@ -596,6 +598,13 @@ public class DynamicProgramming {
 
 	// https://www.careercup.com/page?pid=google-interview-questions
 	public static void colorFlipFlop() {
+
+	}
+
+	// https://www.geeksforgeeks.org/painters-partition-problem/ - check for both
+	// DP, matrix and binary search approach
+	// also check this - https://www.geeksforgeeks.org/painting-fence-algorithm/
+	public void paintersProblem() {
 
 	}
 

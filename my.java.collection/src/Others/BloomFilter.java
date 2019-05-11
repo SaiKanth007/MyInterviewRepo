@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 //https://www.sanfoundry.com/java-program-implement-bloom-filter/
+// Custom Random Generator - https://stackoverflow.com/questions/13442611/how-can-i-generate-a-random-number-without-use-of-math-random
 public class BloomFilter {
 
 	private byte[] set;

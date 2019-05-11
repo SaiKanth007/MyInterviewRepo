@@ -1,5 +1,6 @@
 package src;
 
+//https://algorithms.tutorialhorizon.com/all-elements-appears-thrice-and-one-element-appears-once-find-that-element-in-on-time-and-o1-space/
 import org.apache.commons.lang3.StringUtils;
 
 // https://www.geeksforgeeks.org/bitwise-algorithms/
@@ -26,24 +27,11 @@ public class MyBinaryOperators {
 
 	// not working - go thorugh the below link for better approach
 	// https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
-	// use a bucker sort approach
+	// use a bucker sort approach or
+	// try counting the bits at each position -
+	// https://algorithms.tutorialhorizon.com/all-elements-appears-thrice-and-one-element-appears-once-find-that-element-in-on-time-and-o1-space/
 	public static void findRepeatingAndMissingNumber(int[] array) {
 		int result = 0;
-		final int length = array.length;
-		int actualSum = 0;
-		for (int index = 1; index <= length; index++) {
-			result = result ^ index;
-		}
-		for (int index = 0; index < length; index++) {
-			result = result ^ array[index];
-			actualSum = actualSum + array[index];
-		}
-
-		System.out.println("The repeating numbers is :" + result);
-		// try finding this using only binary operators
-		final int expectedSum = length * (length + 1) / 2;
-
-		System.out.println("The missing numbers is :" + (result + expectedSum - actualSum));
 
 	}
 
@@ -62,6 +50,8 @@ public class MyBinaryOperators {
 
 	// find repeating number in sorted array
 	// https://www.geeksforgeeks.org/find-repeating-element-sorted-array-size-n/
+	// not exactly similar as finding first instance of the repeating element in
+	// sorted array
 	public static int findRepeatingNumber(int[] array, int lowerIndex, int upperIndex) {
 		if (lowerIndex > upperIndex) {
 			return -1;
@@ -142,5 +132,10 @@ public class MyBinaryOperators {
 
 	public static String numberToBinaryString() {
 		return "";
+	}
+
+	// https://www.geeksforgeeks.org/closest-next-smaller-greater-numbers-number-set-bits/
+	public static int nearestNumberWithSameSetOfBits() {
+		return 0;
 	}
 }

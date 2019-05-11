@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
 
-//djikstra's algorithm, Prims algorithm, minimum spanning tree
+//Kruskal's algorithm, Prims algorithm, minimum spanning tree
+// Dijkstra's and bellman ford solves shortest path problem
 //https://stackoverflow.com/questions/2218322/what-is-better-adjacency-lists-or-adjacency-matrices-for-graph-problems-in-c
 //bellman ford - https://www.youtube.com/watch?v=FtN3BYH2Zes
 
@@ -87,6 +88,9 @@ public class MyGraph {
 		hamiltonianGraph.addTwoSideEdge(3, 0);
 		visited = new boolean[hamiltonianGraph.noOfVertices];
 		Count count = new Count();
+		// also now think of scenario where u have multiple Hamiltonian Cycle and you
+		// have to find the one with minimum weight - called as travelling sales problem
+		// https://www.geeksforgeeks.org/travelling-salesman-problem-set-1/
 		System.out.println("Given graph is hamiltonian" + hamiltonianGraph.hamiltonianCycle(0, visited, count, -1));
 	}
 
@@ -146,6 +150,7 @@ public class MyGraph {
 		return false;
 	}
 
+	// go through this thoroughly when u have time
 	public boolean isCyclePresentForDirectedGraph(Integer startVertex, int[] visited) {
 		if (startVertex >= this.noOfVertices)
 			return false;
@@ -280,6 +285,7 @@ public class MyGraph {
 
 	// yet to do
 	// https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/
+	//https://cs.fit.edu/~ryan/java/programs/graph/Prim-java.html
 	public void primsAlgorithm() {
 
 	}

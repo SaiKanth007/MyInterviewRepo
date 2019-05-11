@@ -535,6 +535,11 @@ public class MyTree {
 
 	}
 
+	// https://www.interviewbit.com/problems/sum-root-to-leaf-numbers/
+	public static int rootToLeafNumbers() {
+		return 0;
+	}
+
 	static class HeightWrapper {
 		Integer height = 0;
 	}
@@ -575,6 +580,10 @@ public class MyTree {
 		int recMax = Math.max(Math.max(l, r) + root.data, root.data);
 		int localMax = Math.max(recMax, l + r + root.data);
 		count.value = Math.max(count.value, localMax);
+		// we are returning recMax because we can only include either right path or left
+		// path but not path with both left and right nodes,
+		// it because if we include both, we cannot add any root from the parent in the
+		// path
 		return recMax;
 	}
 
@@ -661,6 +670,7 @@ public class MyTree {
 
 	// https://leetcode.com/problems/symmetric-tree/solution/
 	// other approach would be to use two queue, to do level order processing
+	// think of an n-array tree as well
 	public static boolean checkIfTreesAreMirrorImages(Node firstRoot, Node secondRoot) {
 		if (firstRoot == null && secondRoot != null)
 			return false;
@@ -858,8 +868,9 @@ public class MyTree {
 	}
 
 	// working
-	// we can use prev as parameter as well
-	//https://leetcode.com/problems/validate-binary-search-tree/solution/
+	// we cannot use prev as parameter as well
+	// https://leetcode.com/problems/validate-binary-search-tree/solution/
+	// think of iterative appraoch as well
 	public boolean checkIfGivenTreeIsBST(Node root) {
 		if (root == null) {
 			return true;
@@ -1003,6 +1014,65 @@ public class MyTree {
 		return 0;
 	}
 
+	// 1 2 3 Null 4 5 Null 6 (level order)
+	public static Node constructTreeFromInput() {
+		return new Node(0);
+	}
+
+	// https://www.geeksforgeeks.org/sorted-array-to-balanced-bst/
+	public static Node convertArrayToBalancedBST(int[] array, int low, int high) {
+		if (low > high)
+			return null;
+		if (low == high)
+			return new Node(array[low]);
+		else {
+			int mid = (low + high) / 2;
+			Node node = new Node(array[mid]);
+			node.left = convertArrayToBalancedBST(array, low, mid - 1);
+			node.right = convertArrayToBalancedBST(array, mid + 1, high);
+			return node;
+		}
+	}
+
+	// https://www.geeksforgeeks.org/count-bst-nodes-that-are-in-a-given-range/
+	public static int countNoOfNodesInGivenRangeOfBST(Node root, int rangeLow, int rangeHigh) {
+
+		// Base Case
+		if (root == null)
+			return 0;
+
+		// If current node is in range, then
+		// include it in count and recur for
+		// left and right children of it
+		if (root.data >= rangeLow && root.data <= rangeHigh)
+			return 1 + countNoOfNodesInGivenRangeOfBST(root.left, rangeLow, rangeHigh)
+					+ countNoOfNodesInGivenRangeOfBST(root.right, rangeLow, rangeHigh);
+
+		else if (root.data < rangeLow)
+			return countNoOfNodesInGivenRangeOfBST(root.right, rangeLow, rangeHigh);
+
+		// Else recur for left child
+		else
+			return countNoOfNodesInGivenRangeOfBST(root.left, rangeLow, rangeHigh);
+	}
+
+	// https://www.geeksforgeeks.org/check-binary-tree-contains-duplicate-subtrees-size-2/
+	public void checkIfTreeContainsDuplicateSubTrees() {
+
+	}
+
+	public static List<Node> constructAllPossibleBST(int start, int end) {
+		return new ArrayList<>();
+	}
+
+	public void inPlaceBSTToMinHeapConversion() {
+
+	}
+
+	public void inPlaceBSTToSortedList() {
+
+	}
+
 	/***
 	 * 1. two nodes of a BST are swapped, 2. find out the them
 	 * https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/
@@ -1010,6 +1080,12 @@ public class MyTree {
 	 * 3. Find kth smallest element in BST 4. connect nodes at same level using
 	 * constant extra space -
 	 * https://www.geeksforgeeks.org/connect-nodes-at-same-level-with-o1-extra-space/
+	 * 4. Given two binary trees, explain how you would create a diff such that if
+	 * you have that diff and either of the trees you should be able to generate the
+	 * other binary tree. Implement a function which takes Node tree1, Node tree2
+	 * and returns that diff. 5. Determine if the inorder of the n binary trees is
+	 * same
+	 * 
 	 */
 
 }

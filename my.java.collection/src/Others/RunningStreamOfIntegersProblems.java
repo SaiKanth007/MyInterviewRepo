@@ -48,15 +48,16 @@ public class RunningStreamOfIntegersProblems {
 					nThGreatestInRunningStreamOfIntegers(minQueueForNthMax, runningStreamOfIntegers[i], 4) + " ");
 		}
 
-		KthMostRepeatedWordFromRunningStreamOfWords();
-		findFirstNonRepeatingCharacter();
+		 KthMostRepeatedWordFromRunningStreamOfWords();
+		// findFirstNonRepeatingCharacter();
 
 	}
 
+	// not working yet to do
 	public static void KthMostRepeatedWordFromRunningStreamOfWords() {
 		String input = "If you like Geeks for Geeks and would like to contribute \n"
-				+ "here is your chance You can write article and mail your article to contribute at \n"
-				+ "geeksforgeeks org See your article appearing on the Geeks for Geeks main page and help \n"
+				+ "mail your article to contribute at \n"
+				+ "geeksforgeeks org and See your article appearing on the Geeks for Geeks main page, also help \n"
 				+ "thousands of other Geeks";
 		String[] inputArray = input.split(" ");
 		int length = inputArray.length;
@@ -64,7 +65,7 @@ public class RunningStreamOfIntegersProblems {
 				(s1, s2) -> s1.getFrequency().compareTo(s2.getFrequency()));
 		Map<String, StringWithFreq> stringMap = new HashMap<String, StringWithFreq>();
 		for (int i = 0; i < length; i++) {
-			String result = kMostFreqWords(minQueueForKMostFreqWords, stringMap, inputArray[i], 3);
+			String result = kMostFreqWords(minQueueForKMostFreqWords, stringMap, inputArray[i], 2);
 			System.out.println("Kth Most Freq Word is: " + result);
 		}
 	}
@@ -151,6 +152,7 @@ public class RunningStreamOfIntegersProblems {
 		}
 	}
 
+	// similar we can go for nthSmallest as well
 	public static int nThGreatestInRunningStreamOfIntegers(PriorityQueue minQueue, int input, int n) {
 		minQueue.add(input);
 		if (minQueue.size() < n)

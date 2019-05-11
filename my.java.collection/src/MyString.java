@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+import org.apache.commons.lang3.mutable.Mutable;
+
 import src.Utilities.JavaUtility;
 
 // https://www.youtube.com/watch?v=KIQ6fZ4XRKs&list=PLF9tovyahfL020hGgLIsRMZY4bfSLCFUa
@@ -32,7 +34,7 @@ public class MyString {
 	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
 	 */
 	public static void main(String[] args) {
-		final String stringForPermutations = "abc";
+		final String stringForPermutations = "abca";
 		final String stringForCombinations = "abc";
 
 		System.out.println("The combinations of the given string are:");
@@ -40,8 +42,9 @@ public class MyString {
 		System.out.println("The combinations of the given string using recursion are:");
 		printCombinationsRecursive(stringForCombinations.toCharArray(), 0, "");
 		final Set<String> stringStore = new LinkedHashSet();
-		// printPermutations(stringForPermutations.toCharArray(), 0,
-		// stringForPermutations.length() - 1);
+
+		System.out.println("Permutations of the string without repetitions are:");
+		printPermutations(stringForPermutations.toCharArray(), 0, stringForPermutations.length() - 1);
 		printPermutationsWithoutDuplicates(stringForPermutations.toCharArray(), 0, stringForPermutations.length() - 1,
 				stringStore);
 
@@ -86,6 +89,14 @@ public class MyString {
 				"The first non repeating character is: " + getFirstNonRepeatingCharacter(firstNonRepeatingCharacter));
 
 		System.out.println("The reverse of the given string is:" + reveseString("abcde"));
+
+		System.out
+				.println("Addition of the given two strings is: " + multiplyStringByGivenSingleDigitNumber("681", '2'));
+
+		String inputStringForMinWindow = "a";
+		String patternStringForMinWindow = "a";
+		System.out.println("Minimum length of the input string to contain the pattern is:"
+				+ minWindow(inputStringForMinWindow, patternStringForMinWindow));
 
 	}
 
@@ -160,16 +171,29 @@ public class MyString {
 			System.out.println(String.valueOf(inputArray));
 		}
 		for (int i = lowerIndex; i <= upperIndex; i++) {
-			JavaUtility.swap(inputArray, lowerIndex, i);
-			printPermutations(inputArray, lowerIndex + 1, upperIndex);
-			JavaUtility.swap(inputArray, lowerIndex, i);
+			if (shouldSwap(inputArray, lowerIndex, i)) {
+				JavaUtility.swap(inputArray, lowerIndex, i);
+				printPermutations(inputArray, lowerIndex + 1, upperIndex);
+				JavaUtility.swap(inputArray, lowerIndex, i);
+			}
 		}
 
+	}
+
+	// working fine
+	static boolean shouldSwap(char str[], int lowerIndex, int upperIndex) {
+		for (int i = lowerIndex; i < upperIndex; i++) {
+			if (str[i] == str[upperIndex]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	// doesn't scale for large strings
 	// https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
 	// also think of printing it in alphabetical order
+	// https://www.geeksforgeeks.org/distinct-permutations-string-set-2/
 	public static void printPermutationsWithoutDuplicates(char[] inputArray, int lowerIndex, int upperIndex,
 			Set<String> stringStore) {
 		if (lowerIndex <= upperIndex) {
@@ -489,13 +513,6 @@ public class MyString {
 		return new String(inputArray);
 	}
 
-	// v.v.v.imp -
-	// https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
-	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
-	public static void minLengthContainingPattern() {
-
-	}
-
 	// https://code.dennyzhang.com/next-closest-time
 	// v.v.v.imp
 	public static String nextClosestTime() {
@@ -507,9 +524,173 @@ public class MyString {
 
 	}
 
-	/***
-	 * Google Interview links
-	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-hyderabad/
-	 * https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
-	 */
+	// https://leetcode.com/problems/longest-common-prefix/solution/
+	// can be done in linear time complexity - think of approaches like using Trie,
+	// Binary Search etc
+	// also think of https://www.interviewbit.com/problems/shortest-unique-prefix/
+	public String longestCommonPrefix(String[] strs) {
+
+		int length = strs.length;
+		if (length == 0)
+			return "";
+		else if (length == 1)
+			return strs[0];
+		else {
+			int min = Integer.MAX_VALUE;
+			for (int i = 0; i < length; i++) {
+				min = Math.min(min, strs[i].length());
+			}
+
+			String result = "";
+			for (int i = 0; i < min; i++) {
+				char current = strs[0].charAt(i);
+				boolean allStringHasChar = true;
+				for (int j = 1; j < length; j++) {
+					if (strs[j].charAt(i) != current) {
+						allStringHasChar = false;
+						break;
+					}
+				}
+				if (allStringHasChar) {
+					result = result.concat(String.valueOf(current));
+				} else {
+					return result;
+				}
+			}
+			return result;
+		}
+
+	}
+
+	// has to use this and implement multiplication
+	public static String AddTwoStrings(String firstNumber, String secondNumber) {
+		StringBuilder result = new StringBuilder();
+		int firstLength = firstNumber.length();
+		int secondLength = secondNumber.length();
+		if (firstLength == 0 || secondLength == 0)
+			return "";
+
+		int maxLength = Math.max(firstLength, secondLength);
+		int carry = 0;
+		int a = 0;
+		int b = 0;
+		int sum = 0;
+		int totalSum = 0;
+		for (int i = 0; i < maxLength; i++) {
+			if (firstLength - 1 - i >= 0)
+				a = firstNumber.charAt(firstLength - 1 - i) - 48;
+			else
+				a = 0;
+			if (secondLength - 1 - i >= 0)
+				b = secondNumber.charAt(secondLength - 1 - i) - 48;
+			else
+				b = 0;
+			totalSum = a + b + carry;
+			sum = totalSum % 10;
+			result = result.append(String.valueOf(sum));
+			carry = totalSum / 10;
+		}
+		if (carry != 0) {
+			result = result.append(String.valueOf(carry));
+		}
+		return result.reverse().toString();
+	}
+
+	// not implemented completely
+	public static int multiplyStringByGivenSingleDigitNumber(String number, char multiplier) {
+		int second = multiplier - 48;
+		int sum = 0;
+		if (second == 0)
+			return 0;
+		else {
+			int length = number.length();
+			int carry = 0;
+			int a = 0;
+			int totalSum = 0;
+			for (int i = length - 1; i >= 0; i--) {
+				a = number.charAt(i) - 48;
+				totalSum = a * second + carry;
+				sum = totalSum % 10;
+				carry = totalSum / 10;
+			}
+			if (carry != 0) {
+				sum = sum + carry;
+			}
+		}
+		return sum;
+	}
+
+	// https://www.interviewbit.com/problems/window-string/
+	// v.v.v.imp -
+	// https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/
+	// https://www.geeksforgeeks.org/smallest-window-contains-characters-string/
+	// working, same approach for finding the max substring with all unique
+	// characters (ex: abcadag)
+	public static String minWindow(String s, String t) {
+		Map<Character, Integer> inputMap = new HashMap();
+		Map<Character, Integer> patternMap = new HashMap();
+		int patterLength = t.length();
+		int inputLength = s.length();
+		if (patterLength == 0)
+			return "";
+		for (int i = 0; i < patterLength; i++) {
+			patternMap.put(t.charAt(i), patternMap.getOrDefault(t.charAt(i), 0) + 1);
+		}
+
+		int startIndex = 0;
+		int globalStartIndex = -1;
+		int gloablEndIndex = -1;
+		int gloablLength = Integer.MAX_VALUE;
+		for (int i = 0; i < inputLength; i++) {
+			inputMap.put(s.charAt(i), inputMap.getOrDefault(s.charAt(i), 0) + 1);
+			if (comapreMap(inputMap, patternMap)) {
+				while (startIndex <= i) {
+					inputMap.put(s.charAt(startIndex), inputMap.get(s.charAt(startIndex)) - 1);
+					if (comapreMap(inputMap, patternMap)) {
+						startIndex++;
+						continue;
+					} else {
+						startIndex++;
+						break;
+					}
+				}
+				if (i - startIndex + 2 < gloablLength) {
+					gloablLength = i - startIndex + 2;
+					globalStartIndex = startIndex - 1;
+					gloablEndIndex = i;
+				}
+			}
+
+		}
+
+		if (globalStartIndex != -1)
+			return s.substring(globalStartIndex, gloablEndIndex + 1);
+		else
+			return "";
+	}
+
+	public static boolean comapreMap(Map<Character, Integer> inputMap, Map<Character, Integer> patternMap) {
+		for (Character key : patternMap.keySet()) {
+			if (inputMap.containsKey(key) && inputMap.get(key) >= patternMap.get(key))
+				continue;
+			else
+				return false;
+		}
+		return true;
+	}
+
+	public static void sortSecondStringWithRespectToFirst() {
+
+	}
+
+	// https://www.careercup.com/question?id=5179682482814976
+	public static void maxSubStringContainingAllKeyWords() {
+
+	}
 }
+
+/***
+ * Google Interview links
+ * https://www.geeksforgeeks.org/software-engineer-interview-at-google-hyderabad/
+ * https://www.geeksforgeeks.org/software-engineer-interview-at-google-bangalore/
+ */

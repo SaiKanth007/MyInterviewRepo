@@ -4,8 +4,9 @@ package src.Others;
 /**
  * Think of infix search as well names = ['rahul', 'rohit', 'varun', 'mohit']
  * search_string = 'r' --> expected_search_result = ['rahul', 'rohit', 'varun']
- * search_string = 'ra' --> expected_search_result = ['rahul'] search_string =
- * 'hit' --> expected_search_result = ['rohit', 'mohit']
+ * -> Might have to use suffix array search_string = 'ra' -->
+ * expected_search_result = ['rahul'] search_string = 'hit' -->
+ * expected_search_result = ['rohit', 'mohit']
  * 
  * Size of Trie - Complexity In a way, yes, O(n**m) is a correct boundary too.
  * It's just pretty useless in most cases. For example, w = 200 words with an
@@ -13,6 +14,9 @@ package src.Others;
  * O(50**100), woo, doesn't fit in the universe! ...while the other boundary
  * would be O(200*100).
  * 
+ *  https://en.wikipedia.org/wiki/Suffix_tree
+ *  https://en.wikipedia.org/wiki/Suffix_array
+ *  https://www.geeksforgeeks.org/pattern-searching-using-suffix-tree/
  * @author sai_kanth
  *
  */

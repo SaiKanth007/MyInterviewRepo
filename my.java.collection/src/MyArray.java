@@ -2,7 +2,9 @@ package src;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 
 import src.Utilities.JavaUtility;;
 
@@ -158,8 +160,14 @@ public class MyArray {
 				+ binarySearchToFindNearestElementLowerThanOrEqualToKey(
 						binarySearchToFindNearestElementLowerThanOrEqualToKey, 0,
 						binarySearchToFindNearestElementLowerThanOrEqualToKey.length - 1, 26));
-		;
+		int nearestNumberWithOnlyOnesAndZeros = 800;
+		System.out.println("The nearest number with only ones and zeros is: "
+				+ nearestNumberWithOnlyOnesAndZeros(nearestNumberWithOnlyOnesAndZeros));
 
+		int[] arrayForRearranging = { 1, 3, 5, 7, 2, 4, 6, 8 };
+		rearrangeArray(arrayForRearranging);
+		System.out.println("Array after rearranging is");
+		JavaUtility.print(arrayForRearranging);
 	}
 
 	public static void bubbleSort(int[] inputArray) {
@@ -197,6 +205,9 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/merge-sort-with-o1-extra-space-merge-and-on-lg-n-time/
 	// other approach would be shifting the array, but it will time complexity would
 	// be O(n^2)
+	// https://www.geeksforgeeks.org/merge-one-array-of-size-n-into-another-one-of-size-mn/
+	// if one of the array has sufficient empty space, we can make use of it instead
+	// of creating a new array
 	public static void merge(int[] inputArray, int lowerIndex, int midIndex, int upperIndex) {
 		if (lowerIndex < upperIndex) {
 			final int[] result = new int[upperIndex - lowerIndex + 1];
@@ -222,6 +233,50 @@ public class MyArray {
 				inputArray[k] = result[--index];
 			}
 
+		}
+	}
+
+	static void mergeSortInPlace(int[] arr, int beg, int mid, int end, int maxele) {
+		int i = beg;
+		int j = mid + 1;
+		int k = beg;
+		while (i <= mid && j <= end) {
+			if (arr[i] % maxele <= arr[j] % maxele) {
+				arr[k] = arr[k] + (arr[i] % maxele) * maxele;
+				k++;
+				i++;
+			} else {
+				arr[k] = arr[k] + (arr[j] % maxele) * maxele;
+				k++;
+				j++;
+			}
+		}
+		while (i <= mid) {
+			arr[k] = arr[k] + (arr[i] % maxele) * maxele;
+			k++;
+			i++;
+		}
+		while (j <= end) {
+			arr[k] = arr[k] + (arr[j] % maxele) * maxele;
+			k++;
+			j++;
+		}
+
+		// Obtaining actual values
+		for (i = beg; i <= end; i++) {
+			arr[i] = arr[i] / maxele;
+		}
+	}
+
+	// Recursive merge sort
+	// with extra parameter, naxele
+	// https://www.geeksforgeeks.org/merge-sort-with-o1-extra-space-merge-and-on-lg-n-time/
+	static void mergeSortInPlace(int[] arr, int beg, int end, int maxele) {
+		if (beg < end) {
+			int mid = (beg + end) / 2;
+			mergeSortInPlace(arr, beg, mid, maxele);
+			mergeSortInPlace(arr, mid + 1, end, maxele);
+			mergeSortInPlace(arr, beg, mid, end, maxele);
 		}
 	}
 
@@ -356,7 +411,8 @@ public class MyArray {
 		return -1;
 	}
 
-	// not yet implemented
+	// has to check for all scenario's
+	// also think of finding k nearest elements
 	public static int binarySearchToFindNearestElementLowerThanOrEqualToKey(int[] inputArray, int lowerIndex,
 			int upperIndex, int searchKey) {
 		if (lowerIndex <= upperIndex) {
@@ -385,6 +441,12 @@ public class MyArray {
 		return -1;
 	}
 
+	// the element before which its an increasing array and after which its a
+	// decreasing array
+	public static void findPeakElement() {
+
+	}
+
 	// https://leetcode.com/problems/find-k-closest-elements/
 	// https://leetcode.com/problems/k-closest-points-to-origin/ - k closest points
 	// to origin
@@ -411,6 +473,9 @@ public class MyArray {
 		return -1;
 	}
 
+	// https://www.geeksforgeeks.org/find-four-elements-that-sum-to-a-given-value-set-2/
+	// in case of 4 numbers we can reduce complexity to O(n^2log(n)) by using an
+	// extra hashmap
 	public static void printElementsWithGivenSum(int[] inputArray, int sum) {
 		final int size = inputArray.length;
 		mergeSort(inputArray, 0, size - 1);
@@ -535,6 +600,11 @@ public class MyArray {
 		}
 	}
 
+	// if two numbers or strings may be are given and asked to check if is a rotated
+	// version of the
+	// other
+	// we can use circular linked list to check this and it takes O(n) time and O(n)
+	// space complexity
 	public static void rotateArray(int[] array, int noOfRotations) {
 		JavaUtility.reverseArray(array, 0, noOfRotations - 1);
 		JavaUtility.reverseArray(array, noOfRotations, array.length - 1);
@@ -543,6 +613,7 @@ public class MyArray {
 	}
 
 	// working
+	// we can also make it non-recursive to improve space and time complexity
 	public static void binarySearchInSortedAndRotatedArray(int[] array, int lowerIndex, int upperIndex, int key) {
 		if (lowerIndex <= upperIndex) {
 
@@ -705,8 +776,9 @@ public class MyArray {
 	}
 
 	// https://www.geeksforgeeks.org/minimum-length-unsorted-subarray-sorting-which-makes-the-complete-array-sorted/
-	// working
-	// { 10, 12, 20, 30, 25, 40, 32, 31, 35, 50, 60 };
+	// perfectly working
+	// { 10, 12, 20, 30, 16, 40, 32, 31, 35, 50, 60 };
+	// https://leetcode.com/problems/shortest-unsorted-continuous-subarray/submissions/
 	public static int minArrayLengthToMakeArraySorted(int[] array) {
 
 		final int length = array.length;
@@ -1049,6 +1121,86 @@ public class MyArray {
 	// think of the algo very carefully
 	// https://leetcode.com/problems/next-permutation/solution/
 	public static void nextHighestNumber() {
+
+	}
+
+	// https://www.interviewbit.com/problems/merge-overlapping-intervals/
+	public static void mergeOverlappingIntervals() {
+
+	}
+
+	// https://www.geeksforgeeks.org/largest-rectangle-under-histogram/
+	public static void maxRectanuglarArea(int[] array) {
+
+	}
+
+	// three possible solutions O(n), O(n); O(kLog(n)), O(1); O(n), O(1)
+	// https://www.interviewbit.com/problems/intersection-of-sorted-arrays/
+	public void intersectionOfTwoSortedArrays() {
+
+	}
+
+	// https://www.interviewbit.com/problems/points-on-the-straight-line/
+	public void pointOnAStraightLine() {
+
+	}
+
+	public static void createNewArrayFromProductOfAllOtherElmenets(int a[]) {
+
+	}
+
+	// working
+	public static int nearestNumberWithOnlyOnesAndZeros(int number) {
+		if (number <= 9) {
+			if (number < 5)
+				return 1;
+			else
+				return 10;
+		}
+		Queue<Integer> queue = new LinkedList<Integer>();
+		queue.add(10);
+		queue.add(11);
+		int element = -1;
+		while (!queue.isEmpty()) {
+
+			if (number > queue.peek()) {
+				element = queue.poll();
+				queue.add(element * 10);
+				queue.add(element * 10 + 1);
+			} else if (number == element) {
+				return number;
+			} else {
+				if (Math.abs(number - element) > Math.abs(number - queue.peek())) {
+					return queue.peek();
+				}
+				return element;
+			}
+		}
+		return -1;
+	}
+
+	// {a0, a1, a2, a3, a4, b0, b1, b2, b3, b4} to alternate numbers
+	// working
+	public static void rearrangeArray(int[] input) {
+		int length = input.length;
+		if (length == 0 || length == 2 || length % 2 != 0)
+			return;
+
+		for (int i = 1; i < Math.floor(Math.log(length)) + 1; i++) {
+			int l = length / 2 - 1;
+			int m = length / 2;
+			JavaUtility.swap(input, l, m);
+			while (l >= 2 * i && m <= length - 1 - 2 * i) {
+				JavaUtility.swap(input, l, l - 1);
+				JavaUtility.swap(input, m, m + 1);
+				l--;
+				m++;
+			}
+		}
+	}
+
+	// https://www.geeksforgeeks.org/print-all-jumping-numbers-smaller-than-or-equal-to-a-given-value/
+	public void printJumpingNumbers(int num) {
 
 	}
 	// array rotation

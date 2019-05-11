@@ -91,6 +91,7 @@ public class Streams {
 
 		empList = empList.stream().sorted((e1, e2) -> e1.getName().compareTo(e2.getName()))
 				.collect(Collectors.toList());
+		empList = empList.stream().sorted(Comparator.comparingInt(Employee::getRank)).collect(Collectors.toList());
 		empList.forEach(e -> System.out.println(e.getName() + " "));
 
 		empList.forEach(e -> e.setName(e.getName() + " modified"));

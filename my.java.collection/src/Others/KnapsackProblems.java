@@ -6,6 +6,7 @@ import java.util.List;
 
 //think of scenario of negative numbers as well
 // think of knapsack with repeated elements as well
+// matrix appraoch might not work for an array with negative numbers (check this once)
 public class KnapsackProblems {
 
 	public static void main(String[] args) {
@@ -80,6 +81,8 @@ public class KnapsackProblems {
 
 	// https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/SubsetSum.java
 	// O(sum.n) --> where n is the size of the array
+	// we can have a separate count matrix to have the no of ways to find the subset
+	// with the given sum or to find minimum size subset
 	public static boolean checkSubSetWithGivenSumUsingMatrix(int[] inputArray, int sum, int index) {
 		boolean sumMatrix[][] = new boolean[inputArray.length + 1][sum + 1];
 		for (int i = 0; i <= inputArray.length; i++) {

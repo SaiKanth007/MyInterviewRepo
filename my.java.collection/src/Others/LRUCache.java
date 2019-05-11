@@ -97,6 +97,8 @@ public class LRUCache {
 	}
 
 	public static void main(String[] args) {
+		// try implementing using this as well
+		// LinkedList listForTestinginBuildDLL = new LinkedList();
 		LRUCache cache = new LRUCache(3);
 		cache.add(4);
 		cache.add(5);
@@ -118,10 +120,10 @@ public class LRUCache {
 				this.myList.addNodeToStartOfList(input);
 				this.nodeMap.put(input, this.myList.head);
 			} else {
-				this.myList.addNodeToStartOfList((input));
 				Node lastNode = this.myList.getLastNode();
 				this.nodeMap.remove(lastNode.data);
 				this.myList.removeLastNode();
+				this.myList.addNodeToStartOfList((input));
 				this.nodeMap.put(input, this.myList.head);
 			}
 		}

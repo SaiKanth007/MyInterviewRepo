@@ -7,12 +7,18 @@ import java.util.Set;
 
 import src.Utilities.JavaUtility;
 
+/**
+ * A brute force way to loop through all possible matrices is
+ * 
+ * @author sai_kanth
+ *
+ */
 public class MyMatrix {
 
 	public static void main(String[] args) {
 
 		int[][] mat = { { 10, 20, 30, 40 }, { 15, 25, 35, 45 }, { 27, 29, 37, 48 }, { 32, 33, 39, 50 } };
-		System.out.println("Key Found:" + findElementInRowAndColumnSortedMatrix(mat, 4, 4, 22));
+		System.out.println("Key Found:" + findElementInRowAndColumnSortedMatrix(mat, 4, 4, 15));
 
 		int mat1[][] = { { 2, 4 }, { 3, 4 } };
 		int mat2[][] = { { 1, 2 }, { 1, 3 } };
@@ -49,13 +55,18 @@ public class MyMatrix {
 				{ 1, 1, 1, 1, 1, 1, 1, 0, 1, 0 }, { 1, 1, 1, 1, 0, 1, 0, 0, 1, 1 } };
 		updateMatrix(updateMatrix);
 
+		int[][] matrixForRotation = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+		rotateMatrixBy90ClockWise(matrixForRotation);
+
 	}
 
+	// working perfectly, go through the logic properly
+	// search in rowwise and column wise sorted matrix
 	public static boolean findElementInRowAndColumnSortedMatrix(int[][] matrix, int length, int breadth, int key) {
 		boolean keyFound = false;
 		int k = breadth - 1;
 		outerloop: for (int i = 0; i < length; i++) {
-			for (int j = k; j > 0; j--) {
+			for (int j = k; j >= 0; j--) {
 				if (matrix[i][j] == key) {
 					keyFound = true;
 					break outerloop;
@@ -91,7 +102,7 @@ public class MyMatrix {
 	// https://www.geeksforgeeks.org/inplace-m-x-n-size-matrix-transpose/
 	public static void findTransposeOfMatrix(int[][] matrix, int n) {
 		for (int i = 0; i < n; i++) {
-			for (int j = i; j < n; j++) {
+			for (int j = 0; j <= i; j++) {
 				int temp = matrix[i][j];
 				matrix[i][j] = matrix[j][i];
 				matrix[j][i] = temp;
@@ -154,8 +165,22 @@ public class MyMatrix {
 	// https://www.geeksforgeeks.org/inplace-rotate-square-matrix-by-90-degrees/
 	// can be achieved by rear and front column swapping and then swappng the mirror
 	// elements
-	public static void rotateMatrixBy90() {
+	// https://leetcode.com/problems/rotate-image/submissions/ -- working
+	public static void rotateMatrixBy90ClockWise(int[][] matrix) {
+		int length = matrix.length;
+		if (length == 0)
+			return;
+		for (int i = 0; i < length / 2; i++) {
+			for (int j = 0; j < length; j++) {
+				int temp = matrix[i][j];
+				matrix[i][j] = matrix[length - i - 1][j];
+				matrix[length - i - 1][j] = temp;
+			}
+		}
 
+		// matrix is now swapper;
+		findTransposeOfMatrix(matrix, length);
+		System.out.println("Matrix is rotated clockwise");
 	}
 
 	// https://www.geeksforgeeks.org/find-rectangle-binary-matrix-corners-1/
@@ -304,7 +329,15 @@ public class MyMatrix {
 		return result;
 	}
 
-	public static boolean searchInRowWiseAndColumnWiseSortedMatrix() {
-		return true;
+	//can be done using matrix approach
+	public static void subMatrixWithAllOnes() {
+
 	}
+
+	// same for square as well 
+	public static void rectangelWithMaxNumberOfOnes() {
+
+	}
+
+	// sub matrix problem
 }

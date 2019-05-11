@@ -54,4 +54,10 @@ public class SegmentTree {
 					rangeMinQuery(segArray, qLow, qHigh, mid + 1, high, 2 * pos + 2));
 		}
 	}
+
+	// we have to update segment array on every update to the existing contents of
+	// the actual array
+	public static void updateSegmentArray() {
+
+	}
 }
