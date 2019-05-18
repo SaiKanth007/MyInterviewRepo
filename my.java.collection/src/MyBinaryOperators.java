@@ -1,7 +1,6 @@
 package src;
 
 //https://algorithms.tutorialhorizon.com/all-elements-appears-thrice-and-one-element-appears-once-find-that-element-in-on-time-and-o1-space/
-import org.apache.commons.lang3.StringUtils;
 
 // https://www.geeksforgeeks.org/bitwise-algorithms/
 // https://www.geeksforgeeks.org/bitwise-hacks-for-competitive-programming/
@@ -22,6 +21,8 @@ public class MyBinaryOperators {
 		int[] arrayForMultipleRepeatingNumbers = { 10, 1, 2, 3, 5, 4, 9, 8, 5, 6, 4 };
 		System.out.println("One of the multiple repeating numbers is:"
 				+ findOneOfMultipleRepeatingNumber(arrayForMultipleRepeatingNumbers));
+
+		System.out.println("Given number is a power of 2 " + checkIfGivenNumberIsPowerOfTwo(0));
 
 	}
 
@@ -105,6 +106,13 @@ public class MyBinaryOperators {
 		return -1;
 	}
 
+	// working
+	public static boolean checkIfGivenNumberIsPowerOfTwo(int number) {
+		if (number == 0)
+			return false;
+		return (number & (number - 1)) == 0 ? true : false;
+	}
+
 	// https://www.geeksforgeeks.org/find-two-non-repeating-elements-in-an-array-of-repeating-elements/
 	public static void minValueToAddToMakeArrayBalanced() {
 
@@ -138,4 +146,10 @@ public class MyBinaryOperators {
 	public static int nearestNumberWithSameSetOfBits() {
 		return 0;
 	}
+
+	/***
+	 * Bit Manipulation hacks num |= (1 << pos); --> Setting a bit at a given
+	 * position num &= (~(1 << pos)); --> Un set a bit at a given position num ^= (1
+	 * << pos); --> Toggling bit a nth position ~num --> inverting all bits
+	 */
 }

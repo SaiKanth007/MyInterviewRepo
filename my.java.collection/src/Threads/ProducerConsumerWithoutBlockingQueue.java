@@ -111,9 +111,9 @@ class ConsumerTwo implements Runnable {
 
             try {
                 if (this.queue.size() <= 0) {
-                    synchronized (this) {
+                    synchronized (queue) {
                         System.out.println("Queue is empty, waiting for producer to put the data");
-                        wait();
+                        queue.wait();
                         System.out.println("Consumer got notifiied");
                     }
                 }

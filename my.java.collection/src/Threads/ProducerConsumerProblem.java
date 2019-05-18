@@ -108,12 +108,12 @@ class Consumer implements Runnable {
 			System.out.println("Reading from the queue");
 			System.out.println("From Consumer: current size of the queue is" + this.queue.size());
 			System.out.println(queue.poll());
-			try {
-				Thread.sleep(1000);
-			} catch (final InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(1000);
+//			} catch (final InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		}
 
 	}

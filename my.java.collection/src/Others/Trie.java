@@ -14,9 +14,17 @@ package src.Others;
  * O(50**100), woo, doesn't fit in the universe! ...while the other boundary
  * would be O(200*100).
  * 
- *  https://en.wikipedia.org/wiki/Suffix_tree
- *  https://en.wikipedia.org/wiki/Suffix_array
- *  https://www.geeksforgeeks.org/pattern-searching-using-suffix-tree/
+ * Also read suggest tree, ternary tree, segment tree
+ * http://dhruvbird.blogspot.com/2010/09/very-fast-approach-to-search.html
+ * https://en.wikipedia.org/wiki/Suffix_tree
+ * https://en.wikipedia.org/wiki/Suffix_array
+ * https://www.geeksforgeeks.org/pattern-searching-using-suffix-tree/
+ * 
+ * 
+ * 
+ * v.v.v.imp -> Before thinking of Trie, check for no of strings (Trie makes
+ * sense only when there are large no of strings)
+ * 
  * @author sai_kanth
  *
  */

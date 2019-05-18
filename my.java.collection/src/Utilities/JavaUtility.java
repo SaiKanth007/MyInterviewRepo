@@ -67,12 +67,16 @@ public class JavaUtility {
 		return checkIfIndexAreValid(i, j, length, breadth) && grid[i][j] == 1 && !visited[i][j];
 	}
 
-	public static void printMatrix(int[][] matrix, int rowSize, int columnSize) {
-		for (int i = 0; i < rowSize; i++) {
-			for (int j = 0; j < columnSize; j++) {
-				System.out.print(matrix[i][j] + " ");
+	public static void printMatrix(int[][] matrix) {
+		int rowSize = matrix.length;
+		if (rowSize > 0) {
+			int columnSize = matrix[0].length;
+			for (int i = 0; i < rowSize; i++) {
+				for (int j = 0; j < columnSize; j++) {
+					System.out.print(matrix[i][j] + " ");
+				}
+				System.out.println();
 			}
-			System.out.println();
 		}
 	}
 
@@ -163,6 +167,15 @@ public class JavaUtility {
 		return linkedList;
 	}
 
+	public static int findMaxElement(int[] array) {
+		int length = array.length;
+		int max = Integer.MIN_VALUE;
+		for (int i = 0; i < length; i++) {
+			max = Math.max(max, array[i]);
+		}
+		return max;
+	}
+
 	public static void reverseArray(int[] array) {
 		int length = array.length;
 		for (int index = 0; index < length / 2; index++) {
@@ -225,6 +238,28 @@ public class JavaUtility {
 		System.out.println("The reverse value of the string is:" + String.valueOf(output));
 		return String.valueOf(output);
 
+	}
+
+	public static boolean isSafeForNQueens(int board[][], int row, int col) {
+		int i, j;
+
+		int length = board.length;
+		/* Check this row on left side */
+		for (i = 0; i < col; i++)
+			if (board[row][i] == 1)
+				return false;
+
+		/* Check upper diagonal on left side */
+		for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
+			if (board[i][j] == 1)
+				return false;
+
+		/* Check lower diagonal on left side */
+		for (i = row, j = col; j >= 0 && i < length; i++, j--)
+			if (board[i][j] == 1)
+				return false;
+
+		return true;
 	}
 
 }

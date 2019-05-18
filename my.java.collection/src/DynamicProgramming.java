@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import src.Utilities.Count;
 import src.Utilities.JavaUtility;
 
 // yet to learn about the matrix approach of DP
@@ -59,7 +60,7 @@ public class DynamicProgramming {
 		System.out.println("Number of coins required for the given sum is:" + minCoinProblem(coinDenominations, 8777));
 
 		final int[] points = { 3, 5, 10 };
-		System.out.println("Number of ways to reach given sum are: " + noOfWaysToReachGivenSum(points, 20));
+		System.out.println("Number of ways to reach given sum are: " + noOfWaysToReachGivenSum(points, 13));
 
 		final int[] maxSumOfNonAdjacentElements = { 1, 0, 3, 9, 2, 10 };
 		System.out.println("The max sum of non adjancent elements is: "
@@ -77,6 +78,11 @@ public class DynamicProgramming {
 
 		final int[] ratingArrayForCandies = { 2, 4, 2, 6, 1, 7, 8, 9, 2, 1 };
 		System.out.println("Minimum number of candies required are: " + minNoOfCandies(ratingArrayForCandies));
+
+		final String firstSequence = "AGGTAB";
+		final String secondSequence = "GXTXAYB";
+		System.out.println("The length of the longest common subsequence is: "
+				+ lengthOfLongestCommonSubSequence(firstSequence.toCharArray(), secondSequence.toCharArray()));
 
 	}
 
@@ -312,21 +318,23 @@ public class DynamicProgramming {
 		final int[] yvalues = { 0, 0, 1, -1 };
 		int nextXValue = -1;
 		int nextYValue = -1;
+		boolean toggled = false;
 
 		for (int l = 0; l < 4; l++) {
 			nextXValue = i + xvalues[l];
 			nextYValue = j + yvalues[l];
 			if (JavaUtility.checkIfIndexAreValid(nextXValue, nextYValue, length, breadth)
 					&& grid[nextXValue][nextYValue] == 1 && !visited[nextXValue][nextYValue]) {
-				if (!solution[nextXValue][nextYValue]) {
-					solution[nextXValue][nextYValue] = true;
-				}
+
+				solution[nextXValue][nextYValue] = true;
 				localSum = minStepsPathToReachEndOfMatrix(grid, length, breadth, nextXValue, nextYValue, visited,
 						solution);
 				if (localSum != Integer.MAX_VALUE && localSum < actualSum) {
 					actualSum = localSum;
 				} else {
+
 					solution[nextXValue][nextYValue] = false;
+
 				}
 			}
 		}
@@ -385,6 +393,9 @@ public class DynamicProgramming {
 	}
 
 	// https://www.geeksforgeeks.org/count-number-ways-reach-given-score-game/
+	// v.v.v.imp read again
+	// also read for minimum no of coins required for getting the given sum (the
+	// above method)
 	public static int noOfWaysToReachGivenSum(int[] points, int sum) {
 		final int[] array = new int[sum + 1];
 		final int length = points.length;
@@ -456,10 +467,6 @@ public class DynamicProgramming {
 	}
 
 	public static void fibonacciNumbers() {
-
-	}
-
-	public static void knightsTourProblem() {
 
 	}
 
@@ -581,21 +588,6 @@ public class DynamicProgramming {
 
 	}
 
-	/**
-	 * Yet to do: 1.
-	 * https://www.geeksforgeeks.org/minimum-cost-make-two-strings-identical/ total
-	 * no of path from top left to bottom right of a matrix
-	 *
-	 * nimsum problem :
-	 * https://www.geeksforgeeks.org/combinatorial-game-theory-set-2-game-nim/
-	 * https://www.geeksforgeeks.org/painters-partition-problem-set-2/ longest
-	 * common subsequence -
-	 * https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/ minimum coin
-	 * change problem -
-	 * https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChangingMinimumCoin.java
-	 * https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/
-	 */
-
 	// https://www.careercup.com/page?pid=google-interview-questions
 	public static void colorFlipFlop() {
 
@@ -606,6 +598,90 @@ public class DynamicProgramming {
 	// also check this - https://www.geeksforgeeks.org/painting-fence-algorithm/
 	public void paintersProblem() {
 
+	}
+
+	// https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/
+	boolean solveNQueensProblem(int board[][], int col) {
+		int length = board.length;
+		/*
+		 * base case: If all queens are placed then return true
+		 */
+		if (col >= length)
+			return true;
+
+		/*
+		 * Consider this column and try placing this queen in all rows one by one
+		 */
+		for (int i = 0; i < length; i++) {
+			/*
+			 * Check if the queen can be placed on board[i][col]
+			 */
+			if (JavaUtility.isSafeForNQueens(board, i, col)) {
+				/* Place this queen in board[i][col] */
+				board[i][col] = 1;
+
+				/* recur to place rest of the queens */
+				if (solveNQueensProblem(board, col + 1) == true)
+					return true;
+
+				/*
+				 * If placing queen in board[i][col] doesn't lead to a solution then remove
+				 * queen from board[i][col]
+				 */
+				board[i][col] = 0; // BACKTRACK
+			}
+		}
+
+		/*
+		 * If the queen can not be placed in any row in this colum col, then return
+		 * false
+		 */
+		return false;
+	}
+
+	// https://www.geeksforgeeks.org/the-knights-tour-problem-backtracking-1/
+	public static void knightsTourProblem() {
+
+	}
+
+	// https://www.geeksforgeeks.org/find-number-of-islands/
+	// time complexity - O(MN)
+	public static void islandProblem() {
+
+	}
+
+	// https://www.careercup.com/question?id=5757216146587648
+	public static void maxWordLengthPossibleFromInput() {
+
+	}
+
+	// https://www.youtube.com/watch?v=yCQN096CwWM
+	// https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/SubRectangularMatrixWithMaximumSum.java
+	public static void maxRectangleInArray() {
+
+	}
+
+	// will not work if there are repeated elements (one case handeled for AGGTAB,
+	// GXTXAYB)
+	public static int lengthOfLongestCommonSubSequence(char[] firstSequnce, char[] secondSequence) {
+		int firstLength = firstSequnce.length;
+		int secondLength = secondSequence.length;
+		int[][] matrix = new int[firstLength][secondLength];
+		for (int i = 0; i < secondLength; i++) {
+			if (secondSequence[i] == firstSequnce[0] || (i > 0 && matrix[0][i - 1] == 1)) {
+				matrix[0][i] = 1;
+			}
+		}
+		int max_value = 0;
+		// A, B, C, D, G, H and A, E, D, F, H, R
+		for (int i = 1; i < firstLength; i++) {
+			for (int j = 0; j < secondLength; j++) {
+				max_value = j > 0 ? Math.max(matrix[i - 1][j], matrix[i][j - 1]) : matrix[i - 1][j];
+				matrix[i][j] = secondSequence[j] == firstSequnce[i] ? j > 0 ? 1 + max_value : 1 : max_value;
+			}
+		}
+		JavaUtility.printMatrix(matrix);
+		return matrix[firstLength - 1][secondLength - 1];
 	}
 
 }
@@ -629,3 +705,18 @@ class Coordinate {
  * pinball game board = [ . . . \ . ] [ . \ . / . ] ball_pos = (0,0), ball_dir =
  * (0,1) exit_pos = (0,1), exit_dir = (-1,0)
  **/
+
+/**
+ * Yet to do: 1.
+ * https://www.geeksforgeeks.org/minimum-cost-make-two-strings-identical/ total
+ * no of path from top left to bottom right of a matrix
+ *
+ * nimsum problem :
+ * https://www.geeksforgeeks.org/combinatorial-game-theory-set-2-game-nim/
+ * https://www.geeksforgeeks.org/painters-partition-problem-set-2/ longest
+ * common subsequence -
+ * https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/ minimum coin
+ * change problem -
+ * https://github.com/mission-peace/interview/blob/master/src/com/interview/dynamic/CoinChangingMinimumCoin.java
+ * https://www.geeksforgeeks.org/hungarian-algorithm-assignment-problem-set-1-introduction/
+ */

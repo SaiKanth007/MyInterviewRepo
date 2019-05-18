@@ -101,7 +101,7 @@ public class MyString {
 	}
 
 	// other approach would be to use hashmap
-	// this assumes that the string is sorted
+	// this assumes that the string is SORTED
 	public static char getFirstNonRepeatingCharacter(String input) {
 		int length = input.length();
 		for (int i = 0; i < length; i++) {
@@ -116,10 +116,17 @@ public class MyString {
 			}
 		}
 		return (char) 48;
+	}
+
+	// https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/
+	// String is not sorted -- use character to store frequencies of characters in
+	// the string
+	public static void findFirstNonRepeatingCharacter() {
 
 	}
 
 	// doesn't scale for large strings
+	// or we can also use recursion with each character either being included or not
 	public static void printCombinations(String input) {
 		final char[] inputArray = input.toCharArray();
 		final int length = inputArray.length;
@@ -141,7 +148,6 @@ public class MyString {
 			System.out.println(resultString.toString());
 			resultString = new StringBuilder();
 			count = 0;
-
 		}
 	}
 
@@ -153,20 +159,14 @@ public class MyString {
 			System.out.println(result + " ");
 			return;
 		}
-
-		// Subset including arr[l]
 		printCombinationsRecursive(array, index + 1, result + array[index]);
-
-		// Subset excluding arr[l]
 		printCombinationsRecursive(array, index + 1, result);
 	}
 
 	// doesn't scale for large strings
 	// https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
 	// http://blog.gainlo.co/index.php/2017/01/05/uber-interview-questions-permutations-array-arrays/
-
 	public static void printPermutations(char[] inputArray, int lowerIndex, int upperIndex) {
-
 		if (lowerIndex == upperIndex) {
 			System.out.println(String.valueOf(inputArray));
 		}
@@ -259,11 +259,6 @@ public class MyString {
 
 	}
 
-	// https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/
-	public static void findFirstNonRepeatingCharacter() {
-
-	}
-
 	// https://www.geeksforgeeks.org/print-longest-substring-without-repeating-characters/
 	// -- v.v.imp
 	public static void largestSubStringWithNoRepatingCharacters() {
@@ -271,7 +266,8 @@ public class MyString {
 	}
 
 	// https://www.geeksforgeeks.org/find-next-greater-number-set-digits/
-	// working
+	// not working
+	// 534976
 	public static void findNextSmallestNumberFromTheGivenNumber(String input) {
 		final int length = input.length();
 		final char[] inputArray = input.toCharArray();
@@ -318,7 +314,7 @@ public class MyString {
 	}
 
 	// https://www.geeksforgeeks.org/lexicographically-largest-sub-sequence-of-the-given-string/
-	// working (GO through it later)
+	// working, has to check for other scenario's (GO through it later)
 	public static String lexoGraphicallyLargestSubSequence(String input) {
 		char[] inputArray = input.toCharArray();
 		int length = inputArray.length;
@@ -347,7 +343,10 @@ public class MyString {
 			for (Integer i = 1; i > 0 && i < Integer.MAX_VALUE; i = i * 5) {
 				power5BinaryMap.put(Integer.toBinaryString(i), "1");
 			}
-			// have to account for all these cases
+			// have to account for all these cases, or instead of adding the, we can add a
+			// condition
+			// that if a string has last bit as set and all others as zero, we consider it
+			// as a valid value
 			power5BinaryMap.put("01", "1");
 			power5BinaryMap.put("001", "1");
 			power5BinaryMap.put("0001", "1");
@@ -482,12 +481,13 @@ public class MyString {
 		}
 	}
 
-	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
-	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
+	// https://ashprakasanblog.wordpress.com/2017/02/16/find-lexicographically-nth-permutation-of-an-ordered-string/
+	public void printNthSortedPermutationOfTheGivenString() {
 
 	}
 
-	public void nextHighestPalindromeOfString(String number) {
+	// https://www.geeksforgeeks.org/next-higher-palindromic-number-using-set-digits/
+	public void nextHighestPalindromeUsingSameSetOfNumbers(String number) {
 
 	}
 
@@ -649,18 +649,16 @@ public class MyString {
 					if (comapreMap(inputMap, patternMap)) {
 						startIndex++;
 						continue;
-					} else {
-						startIndex++;
-						break;
 					}
+					break;
 				}
-				if (i - startIndex + 2 < gloablLength) {
-					gloablLength = i - startIndex + 2;
-					globalStartIndex = startIndex - 1;
+				if (i - startIndex + 1 < gloablLength) {
+					gloablLength = i - startIndex + 1;
+					globalStartIndex = startIndex;
 					gloablEndIndex = i;
 				}
+				startIndex++;
 			}
-
 		}
 
 		if (globalStartIndex != -1)

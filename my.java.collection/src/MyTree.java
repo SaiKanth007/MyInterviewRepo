@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
+import src.Utilities.Count;
+
 //https://stackoverflow.com/questions/9560600/java-no-enclosing-instance-of-type-foo-is-accessible
 public class MyTree {
 
@@ -45,11 +47,6 @@ public class MyTree {
 	}
 
 	Node prev = null;
-
-	// made static since all methods are static
-	static class Storage {
-		int value = 0;
-	}
 
 	public static void main(String[] args) {
 
@@ -138,14 +135,14 @@ public class MyTree {
 
 		System.out.println("The Diameter of the given tree is: ");
 		System.out.println(printDiameterOfTree(tree1.root));
-		System.out.println(printDiameterOfTreeOptimized(tree1.root, new HeightWrapper()));
+		System.out.println(printDiameterOfTreeOptimized(tree1.root, new Count()));
 
 		// check
 		System.out.println("Trees are identical " + checkIfTreesAreIndentical(tree1.root, tree1.root));
 		System.out.println("Trees are identical " + checkIfTreesAreMirrorImages(tree1.root, tree1.root));
 
 		System.out.println("Sum of all nodes in a tree are:" + findSumOfAllNodes(tree1.root));
-		Storage sum = new Storage();
+		Count sum = new Count();
 		findSumAlongLongestPathFromRoot(tree1.root, sum);
 		System.out.println("Sum of all nodes along longest path in a tree are:" + sum.value);
 
@@ -188,6 +185,10 @@ public class MyTree {
 		Node result2 = getTreeFromPostorderAndInOrder(postOrderArray, inorderArray, 0, postOrderArray.length - 1, 0,
 				inorderArray.length - 1);
 		postorderTraversal(result2);
+
+		int[] givenPreOrderCanRepresentBST = { 40, 30, 35, 20, 80, 100 };
+		System.out.println("Given preorder can represent BST:" + checkIfGivenPreOrderCanRepresentBST(
+				givenPreOrderCanRepresentBST, 0, givenPreOrderCanRepresentBST.length - 1));
 	}
 
 	public static void inorderTraversal(Node root) {
@@ -472,36 +473,36 @@ public class MyTree {
 	public static void printBottomViewOfTheTree(Node root) {
 		if (root != null) {
 			int height = printHeightOfTree(root);
-			Map<Integer, LinkedList<Node>> nodeDepthMap = new LinkedHashMap<>();
+			Map<Integer, LinkedList<Node>> nodeWidthMap = new LinkedHashMap<>();
 			Map<Integer, Integer> utilityMap = new HashMap();
 			for (int i = height; i > 0; i--) {
-				printBottomViewOfTheTreeUtility(root, i, i, nodeDepthMap, utilityMap, 0);
+				printBottomViewOfTheTreeUtility(root, i, i, nodeWidthMap, utilityMap, 0);
 			}
 			System.out.println("The bottom view of the tree is:");
-			Set<Integer> sortedKeySet = nodeDepthMap.keySet().stream().sorted().collect(Collectors.toSet());
+			Set<Integer> sortedKeySet = nodeWidthMap.keySet().stream().sorted().collect(Collectors.toSet());
 			for (Integer depth : sortedKeySet) {
-				nodeDepthMap.get(depth).stream().forEach(node -> System.out.print(node.data + " "));
+				nodeWidthMap.get(depth).stream().forEach(node -> System.out.print(node.data + " "));
 			}
 		}
 	}
 
 	public static void printBottomViewOfTheTreeUtility(Node root, int height, int actualHeight,
-			Map<Integer, LinkedList<Node>> nodeDepthMap, Map<Integer, Integer> utilityMap, int width) {
+			Map<Integer, LinkedList<Node>> nodeWidthMap, Map<Integer, Integer> utilityMap, int width) {
 		if (root != null) {
 			if (height == 1) {
 				if (!utilityMap.containsKey(width)) {
 					utilityMap.put(width, actualHeight);
-					nodeDepthMap.put(width, new LinkedList<Node>());
-					nodeDepthMap.get(width).add(root);
+					nodeWidthMap.put(width, new LinkedList<Node>());
+					nodeWidthMap.get(width).add(root);
 					// this condition is because unvisited nodes in the same level and same widht
 					// has to be covered
 				} else if (utilityMap.get(width) == actualHeight) {
-					nodeDepthMap.get(width).add(root);
+					nodeWidthMap.get(width).add(root);
 				}
 			} else {
-				printBottomViewOfTheTreeUtility(root.left, height - 1, actualHeight, nodeDepthMap, utilityMap,
+				printBottomViewOfTheTreeUtility(root.left, height - 1, actualHeight, nodeWidthMap, utilityMap,
 						width - 1);
-				printBottomViewOfTheTreeUtility(root.right, height - 1, actualHeight, nodeDepthMap, utilityMap,
+				printBottomViewOfTheTreeUtility(root.right, height - 1, actualHeight, nodeWidthMap, utilityMap,
 						width + 1);
 			}
 		}
@@ -540,21 +541,17 @@ public class MyTree {
 		return 0;
 	}
 
-	static class HeightWrapper {
-		Integer height = 0;
-	}
-
 	// https://www.geeksforgeeks.org/diameter-of-a-binary-tree/
 	// change the height to a custom object, it should work
 	// think of scenario where diameter is not through the root
-	public static int printDiameterOfTreeOptimized(Node root, HeightWrapper height) {
+	public static int printDiameterOfTreeOptimized(Node root, Count height) {
 		if (root != null) {
-			HeightWrapper lh = new HeightWrapper();
-			HeightWrapper rh = new HeightWrapper();
+			Count lh = new Count();
+			Count rh = new Count();
 			int leftDiameter = printDiameterOfTreeOptimized(root.left, lh);
 			int rightDiameter = printDiameterOfTreeOptimized(root.right, rh);
-			height.height = Math.max(lh.height, rh.height) + 1;
-			return Math.max(Math.max(leftDiameter, rightDiameter), 1 + lh.height + rh.height);
+			height.value = Math.max(lh.value, rh.value) + 1;
+			return Math.max(Math.max(leftDiameter, rightDiameter), 1 + lh.value + rh.value);
 		}
 		return 0;
 
@@ -563,14 +560,14 @@ public class MyTree {
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
 	// path with maximum sum, path can start and end at any node
 	public static int maxPathSumInBinaryTree(Node root) {
-		Storage count = new Storage();
+		Count count = new Count();
 		maxPathSumInBinaryTree(root, count);
 		return count.value;
 	}
 
 	// https://www.geeksforgeeks.org/find-maximum-path-sum-in-a-binary-tree/
 	// read it later thoroughly
-	public static int maxPathSumInBinaryTree(Node root, Storage count) {
+	public static int maxPathSumInBinaryTree(Node root, Count count) {
 		if (root == null)
 			return 0;
 		int l = maxPathSumInBinaryTree(root.left, count);
@@ -696,20 +693,20 @@ public class MyTree {
 	// working
 	// should check again
 	// check for sum along longest path and path with largest sum
-	public static int findSumAlongLongestPathFromRoot(Node root, Storage sum) {
+	public static int findSumAlongLongestPathFromRoot(Node root, Count sum) {
 		if (root == null)
 			return 0;
 		if (root.left == null && root.right == null) {
 			sum.value = sum.value + root.data;
 			return 1;
 		}
-		Storage leftSum = new Storage();
-		Storage rightSum = new Storage();
+		Count leftSum = new Count();
+		Count rightSum = new Count();
 
 		int leftHeight = findSumAlongLongestPathFromRoot(root.left, leftSum);
 		int rightHeight = findSumAlongLongestPathFromRoot(root.right, rightSum);
 		if (leftHeight == rightHeight)
-			sum.value = sum.value + root.data + (leftSum.value > rightSum.value ? leftSum.value : rightSum.value);
+			sum.value = sum.value + root.data + (Math.max(leftSum.value, rightSum.value));
 		else
 			sum.value = sum.value + root.data + (leftHeight > rightHeight ? leftSum.value : rightSum.value);
 
@@ -786,7 +783,7 @@ public class MyTree {
 	// working
 	// also check for distance between nodes
 	public static int printDistanceFromRoot(Node root, Node node) {
-		Storage distance = new Storage();
+		Count distance = new Count();
 		printDistanceOfGivenNodeFromRoot(root, node, distance);
 		return distance.value;
 	}
@@ -794,13 +791,13 @@ public class MyTree {
 	// working
 	// can be done in other way by using maps with nodes as keys and depths
 	// as values
-	public static boolean printDistanceOfGivenNodeFromRoot(Node root, Node node, Storage distance) {
+	public static boolean printDistanceOfGivenNodeFromRoot(Node root, Node node, Count distance) {
 		if (root == null)
 			return false;
 		if (root == node)
 			return true;
-		Storage left = new Storage();
-		Storage right = new Storage();
+		Count left = new Count();
+		Count right = new Count();
 		boolean leftResult = printDistanceOfGivenNodeFromRoot(root.left, node, left);
 		boolean rightResult = printDistanceOfGivenNodeFromRoot(root.right, node, right);
 		if (leftResult) {
@@ -1071,6 +1068,33 @@ public class MyTree {
 
 	public void inPlaceBSTToSortedList() {
 
+	}
+
+	// https://www.geeksforgeeks.org/check-if-a-given-array-can-represent-preorder-traversal-of-binary-search-tree/
+	// not working, refer to the link for the correct solution
+	public static boolean checkIfGivenPreOrderCanRepresentBST(int[] a, int l, int u) {
+		if (l < u) {
+			Boolean isBST = false;
+
+			for (int i = 0; i < u - l - 1; i++) {
+
+				isBST = isBST || (a[l] > a[l + 1] && a[l] < a[l + 1 + i + 1] && a[l + 1 + i] < a[l + i + 2]
+						&& checkIfGivenPreOrderCanRepresentBST(a, l + 1, l + 1 + i)
+						&& checkIfGivenPreOrderCanRepresentBST(a, l + i + 2, u));
+				// even if one BST combination is found we return true
+				if (isBST)
+					break;
+			}
+			if (!isBST) {
+				isBST = isBST || (a[l] < a[l + 1] && a[l] < a[u] && checkIfGivenPreOrderCanRepresentBST(a, l + 1, u))
+						|| (a[l] > a[l + 1] && a[l] > a[u] && checkIfGivenPreOrderCanRepresentBST(a, l + 1, u));
+			}
+
+			return isBST;
+
+		} else {
+			return true;
+		}
 	}
 
 	/***

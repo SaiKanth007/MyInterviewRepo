@@ -74,9 +74,9 @@ public class MyLinkedList {
 		final MyLinkedList LL = JavaUtility.prepareLinkedListForGivenData("3,4,5,6,7,8,9,10");
 
 		LL.printLL();
-	    LL.swapNodes(3, 5);
-	    System.out.println("LL after swapping");
-	    LL.printLL();
+		LL.swapNodes(3, 5);
+		System.out.println("LL after swapping");
+		LL.printLL();
 		LL.reverseLL(LL.head);
 		LL.printLL();
 		LL.reverseLLUsingRecursion(LL.head, null);
@@ -470,6 +470,8 @@ public class MyLinkedList {
 	}
 
 	// working
+	// other approach would be finding the difference between the lengths of the two
+	// linked list and then starting from the lists accordingly
 	public static Node findIntersectingNode(Node head1, Node head2) {
 		if (head1 == null || head2 == null) {
 			return null;

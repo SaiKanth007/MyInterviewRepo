@@ -15,6 +15,9 @@ public class MyStack {
 		inputStack.push(1);
 		inputStack.push(3);
 		inputStack.push(4);
+
+		// a way to loop through all elements of the stack
+		inputStack.forEach(element -> System.out.println(element));
 		System.out.println(inputStack);
 		sortStack(inputStack);
 		System.out.println(inputStack);
@@ -37,10 +40,6 @@ public class MyStack {
 		System.out.println(postfixToInfix(stringForPostfixToInfix));
 		System.out.println("prefix to infix is:" + stringForPrefixToInfix + "->");
 		System.out.println(prefixToInfix(stringForPrefixToInfix));
-
-		int[] givenPreOrderCanRepresentBST = { 40, 30, 35, 20, 80, 100 };
-		System.out.println("Given preorder can represent BST:" + checkIfGivenPreOrderCanRepresentBST(
-				givenPreOrderCanRepresentBST, 0, givenPreOrderCanRepresentBST.length - 1));
 
 		String minimumNumberFromGivenSeq = "DIDI";
 		System.out.println(minimumNumberFromGivenSeq(minimumNumberFromGivenSeq));
@@ -90,6 +89,8 @@ public class MyStack {
 	// assuming the string contains only paranthesis
 	// https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/
 	// think of a scenario where the data will not fit in the main memory
+	// https://www.geeksforgeeks.org/check-balanced-parentheses-expression-o1-space/
+	// - O(1) space
 	public static boolean checkForBalanceParanthesis(String input) {
 		if (input.isEmpty())
 			return true;
@@ -423,33 +424,6 @@ public class MyStack {
 		return (int) stack.pop();
 	}
 
-	// https://www.geeksforgeeks.org/check-if-a-given-array-can-represent-preorder-traversal-of-binary-search-tree/
-	// not working, refer to the link for the correct solution
-	public static boolean checkIfGivenPreOrderCanRepresentBST(int[] a, int l, int u) {
-		if (l < u) {
-			Boolean isBST = false;
-
-			for (int i = 0; i < u - l - 1; i++) {
-
-				isBST = isBST || (a[l] > a[l + 1] && a[l] < a[l + 1 + i + 1] && a[l + 1 + i] < a[l + i + 2]
-						&& checkIfGivenPreOrderCanRepresentBST(a, l + 1, l + 1 + i)
-						&& checkIfGivenPreOrderCanRepresentBST(a, l + i + 2, u));
-				// even if one BST combination is found we return true
-				if (isBST)
-					break;
-			}
-			if (!isBST) {
-				isBST = isBST || (a[l] < a[l + 1] && a[l] < a[u] && checkIfGivenPreOrderCanRepresentBST(a, l + 1, u))
-						|| (a[l] > a[l + 1] && a[l] > a[u] && checkIfGivenPreOrderCanRepresentBST(a, l + 1, u));
-			}
-
-			return isBST;
-
-		} else {
-			return true;
-		}
-	}
-
 	// https://www.geeksforgeeks.org/form-minimum-number-from-given-sequence/
 	// yet to go through
 	public static String minimumNumberFromGivenSeq(String seq) {
@@ -518,11 +492,8 @@ public class MyStack {
 	 * with O(1) time and O(1) extra space
 	 * https://www.geeksforgeeks.org/queue-using-stacks/
 	 * 
-	 * 1. Tower of Hanoi 2. Celebrity problem 3. Infix to Prefix 4. Reverse stack
-	 * without extra space and also sorting using two stacks 5. reverse a number
-	 * using stack
-	 * 
-	 * 4. Multiple Stack using single Array
+	 * 1. Tower of Hanoi 3. Infix to Prefix 4. Reverse stack without extra space and
+	 * also sorting using two stacks 5. reverse a number using stack
 	 */
 
 }

@@ -245,7 +245,3 @@ public class KnapsackProblems {
 	}
 
 }
-
-class Count {
-	Integer value = 0;
-}

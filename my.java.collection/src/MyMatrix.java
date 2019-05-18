@@ -23,8 +23,10 @@ public class MyMatrix {
 		int mat1[][] = { { 2, 4 }, { 3, 4 } };
 		int mat2[][] = { { 1, 2 }, { 1, 3 } };
 		matrixMultiplication(mat1, mat2, 2, 2);
-		int spiralMatrix[][] = { { 1, 2, 3, 4, 5, 6 }, { 7, 8, 9, 10, 11, 12 }, { 13, 14, 15, 16, 17, 18 } };
-		// printMatrixInSpiral(spiralMatrix, 3, 6);
+		int spiralMatrix[][] = { { 1 }, { 2 }, { 3 },  { 4 }, { 5 }, { 6 } };
+		System.out.println("Sprial Print of the Matrix is");
+
+		printMatrixInSpiral(spiralMatrix, spiralMatrix.length, spiralMatrix[0].length);
 		int breadth = spiralMatrix.length;
 		int length = spiralMatrix[0].length;
 		System.out.println("Length and breadth are:" + breadth + length);
@@ -37,7 +39,7 @@ public class MyMatrix {
 		int[] bitArray = { 0, 0, 1, 1, 1, 0, 0, 0, 0 };
 		// method(bitArray, bitArray.length);
 		findTransposeOfMatrix(mat, 4);
-		JavaUtility.printMatrix(mat, 4, 4);
+		JavaUtility.printMatrix(mat);
 
 		int[][] matrixForDiagonalView = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
 		printDiagonalViewOfMatrix(matrixForDiagonalView, 3, 3);
@@ -261,6 +263,7 @@ public class MyMatrix {
 	}
 
 	// https://www.geeksforgeeks.org/find-median-row-wise-sorted-matrix/
+	//yet to do
 	public static int medianInRowWiseSortedMatrix(int[][] matrix, int rows, int columns) {
 		int min = Integer.MAX_VALUE;
 		int max = Integer.MIN_VALUE;
@@ -329,12 +332,12 @@ public class MyMatrix {
 		return result;
 	}
 
-	//can be done using matrix approach
+	// can be done using matrix approach
 	public static void subMatrixWithAllOnes() {
 
 	}
 
-	// same for square as well 
+	// same for square as well
 	public static void rectangelWithMaxNumberOfOnes() {
 
 	}

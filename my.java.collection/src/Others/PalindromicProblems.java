@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 //Go through this class again, have many issues
+//https://www.tutorialcup.com/string/palindrome-permutations-string.htm --> All problems on strings and palindromes
 public class PalindromicProblems {
 
 	public static void main(String[] args) {
@@ -116,6 +117,10 @@ public class PalindromicProblems {
 	// working
 	// https://www.geeksforgeeks.org/longest-palindromic-subsequence-dp-12/
 	// also learn about the matrix approach
+	// when matrix approach is considered for palindromes, always remember that we
+	// will
+	// one loop running for different possible lengths of palindromes
+	// think of approch finding commont subsequence between two strings
 	public static int longestPalindromicSubSequenceLength(String input, int l, int h) {
 		if (l <= h) {
 			if (l == h)
@@ -141,6 +146,7 @@ public class PalindromicProblems {
 	// working, might have to check for more scenario's
 	// https://www.interviewbit.com/problems/distinct-subsequences/ - think of this
 	// as well - total possible subsequence
+	//https://www.geeksforgeeks.org/given-two-strings-find-first-string-subsequence-second/ much simpler one
 	public static boolean checkIfGivenStringContainsPatternString(String input, String pattern, int inputStart,
 			int patternStart) {
 		if (patternStart >= pattern.length())
@@ -159,6 +165,7 @@ public class PalindromicProblems {
 
 	// working
 	// https://www.geeksforgeeks.org/longest-palindrome-substring-set-1/
+	// can be solved using two loops appraoch
 	public static String longestPalindromicSubString(String input, int l, int h) {
 		if (l <= h) {
 			if (l == h) {
@@ -328,7 +335,7 @@ public class PalindromicProblems {
 		return result[0][length - 1];
 	}
 
-	// to check if the given string is a palindrom or not
+	// to check if the given string is a palindrome or not
 	public static boolean checkIfGivenStringIsPalindrome(String input) {
 		int length = input.length();
 		if (length == 0 || length == 1)

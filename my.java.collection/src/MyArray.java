@@ -1,6 +1,7 @@
 package src;
 
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -37,6 +38,12 @@ public class MyArray {
 		JavaUtility.printBeforeSorting(arrayForMergeSort);
 		mergeSort(arrayForMergeSort, 0, arrayForMergeSort.length - 1);
 		JavaUtility.printAfterSorting(arrayForMergeSort, "merge");
+
+		final int[] arrayForMergeSortInplace = { 0, 5, -1, -2, 6, -1 };
+		JavaUtility.printBeforeSorting(arrayForMergeSortInplace);
+		mergeSortInPlace(arrayForMergeSortInplace, 0, arrayForMergeSortInplace.length - 1,
+				JavaUtility.findMaxElement(arrayForMergeSortInplace));
+		JavaUtility.printAfterSorting(arrayForMergeSort, "mergeInplace");
 
 		final int[] arrayForHeapSort = { 12, 11, 10, 5, 13, 7 };
 		JavaUtility.printBeforeSorting(arrayForHeapSort);
@@ -124,7 +131,7 @@ public class MyArray {
 		final int[] arrayOfWater = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
 		System.out.println("The amount of water stored is: " + findAmountOfWater(arrayOfWater));
 
-		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 25, 31, 35, 50, 60 };
+		final int[] minArrayLengthToMakeArraySorted = { 10, 12, 20, 30, 16, 14, 40, 32, 31, 35, 50, 60 };
 		System.out.println("The mimimum size of the array that is to be sorted is :"
 				+ minArrayLengthToMakeArraySorted(minArrayLengthToMakeArraySorted));
 
@@ -794,7 +801,6 @@ public class MyArray {
 			}
 		}
 
-		lowerIndexValue = array[lowerIndex];
 		while (lowerIndex > 0 && lowerIndexValue < array[lowerIndex - 1]) {
 			lowerIndex--;
 		}
@@ -879,8 +885,31 @@ public class MyArray {
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k/
 	// https://www.geeksforgeeks.org/sliding-window-maximum-maximum-of-all-subarrays-of-size-k-using-stack-in-on-time/
 	// https://java2blog.com/sliding-window-maximum-java/
-	public static void slidingWindowMaximum() {
+	public static void slidingWindowMaximum(int arr[], int n, int k) {
+		Deque<Integer> Qi = new LinkedList<Integer>();
+		int i;
+		// processing the first K elements
+		for (i = 0; i < k; ++i) {
+			while (!Qi.isEmpty() && arr[i] >= arr[Qi.peekLast()])
+				Qi.removeLast(); // Remove from rear
+			Qi.addLast(i);
+		}
 
+		// Process rest of the elements, i.e., from arr[k] to arr[n-1]
+		for (; i < n; ++i) {
+			System.out.print(arr[Qi.peek()] + " ");
+
+			// Remove the elements which are out of this window
+			while ((!Qi.isEmpty()) && Qi.peek() <= i - k)
+				Qi.removeFirst();
+
+			// Remove all elements smaller than the currently
+			// being added element (remove useless elements)
+			while ((!Qi.isEmpty()) && arr[i] >= arr[Qi.peekLast()])
+				Qi.removeLast();
+
+			Qi.addLast(i);
+		}
 	}
 
 	// https://www.geeksforgeeks.org/find-the-maximum-repeating-number-in-ok-time/
@@ -999,6 +1028,7 @@ public class MyArray {
 
 	// https://www.youtube.com/watch?v=LPFhl65R7ww
 	// working as well
+	// read properly when free
 	public static int findMedianOfTwoSortedArrays(int[] nums1, int[] nums2) {
 		int size1 = nums1.length;
 		int size2 = nums2.length;
@@ -1186,7 +1216,7 @@ public class MyArray {
 		if (length == 0 || length == 2 || length % 2 != 0)
 			return;
 
-		for (int i = 1; i < Math.floor(Math.log(length)) + 1; i++) {
+		for (int i = 1; i < Math.ceil(Math.log(length)); i++) {
 			int l = length / 2 - 1;
 			int m = length / 2;
 			JavaUtility.swap(input, l, m);

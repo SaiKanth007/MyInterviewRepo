@@ -1,4 +1,4 @@
-package src;
+package src.Others;
 
 //https://www.geeksforgeeks.org/create-immutable-class-java/
 public final class ImmutableClass {

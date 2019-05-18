@@ -1,9 +1,11 @@
-package src.Others;
+package src.Graphs;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+//https://algorithms.tutorialhorizon.com/kruskals-algorithm-minimum-spanning-tree-mst-complete-java-implementation/
+//https://stackoverflow.com/questions/1195872/when-should-i-use-kruskal-as-opposed-to-prim-and-vice-versa
 public class KrushkalMST {
 	static class Edge {
 		int source;
@@ -80,7 +82,6 @@ public class KrushkalMST {
 			// until an element is reached whose parent is itself
 			if (parent[vertex] != vertex)
 				return find(parent, parent[vertex]);
-			;
 			return vertex;
 		}
 
