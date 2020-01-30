@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
  */
 
 /**
+ * https://www.ntu.edu.sg/home/ehchua/programming/java/J5e_multithreading.html
  * isAlive, yield, wait, sleep, join, notify (any one of the waiting threads on the given object), notifyAll (all the
  * waiting threads of the given object) https://www.geeksforgeeks.org/difference-notify-notifyall-java/
  *
