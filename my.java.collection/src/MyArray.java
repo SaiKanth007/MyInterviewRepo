@@ -1211,6 +1211,19 @@ public class MyArray {
 
 	// {a0, a1, a2, a3, a4, b0, b1, b2, b3, b4} to alternate numbers
 	// working
+	/*      -- for reference - https://www.careercup.com/question?id=7528760
+		Better time complexity => O(nlog(n))
+		n = 1: a1 b1
+		n = 2: 
+		a1 a2 b1 b2 => a1 b1 a2 b2
+		n = 4:
+		a1 a2 a3 a4 b1 b2 b3 b4 =>  a1 a2 b1 b2 a3 a4 b3 b4 
+					=>  a1 b1 a2 b2 a3 b3 a4 b4 
+		n = 8:
+		   a1 a2 a3 a4 a5 a6 a7 a8 b1 b2 b3 b4 b5 b6 b7 b8 
+		=> a1 a2 a3 a4 b1 b2 b3 b4 a5 a6 a7 a8 b5 b6 b7 b8 
+		=> a1 b1 a2 b2 a3 b3 a4 b4 a5 b5 a6 b6 a7 b7 a8 b8
+	/*
 	public static void rearrangeArray(int[] input) {
 		int length = input.length;
 		if (length == 0 || length == 2 || length % 2 != 0)
